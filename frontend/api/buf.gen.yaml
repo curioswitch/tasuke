@@ -2,16 +2,18 @@ version: v1
 plugins:
   - plugin: go
     out: go
+    opt: module=tasuke.dev/frontend/api
     path:
       - "go"
       - "run"
-      - "github.com/protocolbuffers/protobuf-go/cmd/protoc-gen-go@v1.34.1"
+      - "google.golang.org/protobuf/cmd/protoc-gen-go@v1.34.1"
   - plugin: connect-go
     out: go
+    opt: module=tasuke.dev/frontend/api
     path:
       - "go"
       - "run"
-      - "github.com/connectrpc/connect-go/cmd/protoc-gen-connect-go@v1.16.1"
+      - "connectrpc.com/connect/cmd/protoc-gen-connect-go@v1.16.1"
   - plugin: es
     out: typescript
     path:
@@ -24,9 +26,3 @@ plugins:
       - "go"
       - "run"
       - "github.com/wasilibs/go-protoc-gen-connect-es/cmd/protoc-gen-connect-es@v1.4.0"
-  - name: connect-query
-    out: typescript
-    path:
-      - "go"
-      - "run"
-      - "github.com/wasilibs/go-protoc-gen-connect-query/cmd/protoc-gen-connect-query@v1.3.1"
