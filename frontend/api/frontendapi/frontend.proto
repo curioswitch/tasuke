@@ -1,0 +1,36 @@
+syntax = "proto3";
+
+package frontendapi;
+
+// The settings for a user.
+message User {
+  // IDs of programming languages that reviews can be created for.
+  // IDs correspond to `language_id` from github-linguist.
+  // https://github.com/github-linguist/linguist/blob/master/lib/linguist/languages.yml
+  // Required.
+  repeated uint32 programming_language_ids = 1;
+
+  // The maximum number of reviews created by the app that can be open at once.
+  // Required.
+  optional uint32 max_open_reviews = 2;
+}
+
+// A request for FrontendService.CreateUser.
+message CreateUserRequest {
+  // The user to create.
+  // Required.
+  optional User user = 1;
+}
+
+// A response for FrontendService.CreateUser.
+message CreateUserResponse {
+  // Empty to allow future extension.
+}
+
+// The service for the frontend.
+service FrontendService {
+  // Creates a new user. Tasuke is a GitHub application and users strongly
+  // tied to GitHub users. For example, the user ID used in the system is
+  // the GitHub user ID itself.
+  rpc CreateUser(CreateUserRequest) returns (CreateUserResponse);
+}

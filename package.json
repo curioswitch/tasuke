@@ -1,0 +1,16 @@
+{
+	"name": "tasuke",
+	"version": "1.0.0",
+	"license": "MIT-2.0",
+	"scripts": {
+		"format": "biome format --write . && biome lint --apply-unsafe . && prettier --write ."
+	},
+	"engines": {
+		"node": ">=18.0"
+	},
+	"packageManager": "pnpm@9.1.0",
+	"devDependencies": {
+		"@biomejs/biome": "^1.7.3",
+		"prettier": "^3.2.5"
+	}
+}
