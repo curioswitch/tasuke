@@ -7,6 +7,8 @@ require (
 	connectrpc.com/connect v1.16.1
 	firebase.google.com/go/v4 v4.14.0
 	github.com/curioswitch/go-curiostack v0.0.0-20240509070835-924ce71318b9
+	github.com/curioswitch/go-docs-handler v0.1.5
+	github.com/curioswitch/go-docs-handler/plugins/proto v0.1.5
 	github.com/curioswitch/go-usegcp v0.0.0-20240509045735-8787f967c311
 	github.com/curioswitch/tasuke/frontend/api v0.0.0
 	github.com/stretchr/testify v1.8.4
@@ -17,18 +19,21 @@ require (
 	cloud.google.com/go v0.112.1 // indirect
 	cloud.google.com/go/compute v1.24.0 // indirect
 	cloud.google.com/go/compute/metadata v0.2.3 // indirect
+	cloud.google.com/go/iam v1.1.7 // indirect
 	cloud.google.com/go/longrunning v0.5.5 // indirect
-	github.com/curioswitch/go-docs-handler v0.1.5 // indirect
-	github.com/curioswitch/go-docs-handler/plugins/proto v0.1.5 // indirect
+	cloud.google.com/go/storage v1.40.0 // indirect
+	github.com/MicahParks/keyfunc v1.9.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/felixge/httpsnoop v1.0.4 // indirect
 	github.com/go-chi/chi/v5 v5.0.12 // indirect
 	github.com/go-logr/logr v1.4.1 // indirect
 	github.com/go-logr/stdr v1.2.2 // indirect
 	github.com/go-viper/mapstructure/v2 v2.0.0-alpha.1 // indirect
+	github.com/golang-jwt/jwt/v4 v4.5.0 // indirect
 	github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da // indirect
 	github.com/golang/protobuf v1.5.4 // indirect
 	github.com/google/s2a-go v0.1.7 // indirect
+	github.com/google/uuid v1.6.0 // indirect
 	github.com/googleapis/enterprise-certificate-proxy v0.3.2 // indirect
 	github.com/googleapis/gax-go/v2 v2.12.3 // indirect
 	github.com/knadh/koanf/maps v0.1.1 // indirect
