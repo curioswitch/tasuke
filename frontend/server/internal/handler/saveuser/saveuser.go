@@ -4,16 +4,24 @@ import (
 	"context"
 	"fmt"
 
+	"cloud.google.com/go/firestore"
 	"github.com/curioswitch/go-usegcp/middleware/firebaseauth"
 
 	frontendapi "github.com/curioswitch/tasuke/frontend/api"
-	"github.com/curioswitch/tasuke/frontend/server/internal/client/firestore"
+	ifirestore "github.com/curioswitch/tasuke/frontend/server/internal/client/firestore"
 	"github.com/curioswitch/tasuke/frontend/server/internal/model"
 )
 
+// NewHandler returns a Handler that uses the given Firestore client.
+func NewHandler(client *firestore.Client) *Handler {
+	return &Handler{
+		store: ifirestore.NewClient(client),
+	}
+}
+
 // Handler is the handler for the FrontendService.SaveUser RPC.
 type Handler struct {
-	store firestore.Client
+	store ifirestore.Client
 }
 
 // SaveUser implements FrontendService.SaveUser.
