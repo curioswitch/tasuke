@@ -10,8 +10,8 @@ import (
 // Client is an interface wrapping the Firebase Admin SDK for our usage of firestore.
 // It does not use a fluent API to make mocking easier.
 type Client interface {
-	// CreateDocument creates a document in the given collection at the given path with the given data.
-	CreateDocument(ctx context.Context, collection string, path string, data any) error
+	// SetDocument creates a document in the given collection at the given path with the given data.
+	SetDocument(ctx context.Context, collection string, path string, data any) error
 }
 
 // NewClient returns a new Client wrapping the given firestore.Client.
@@ -25,9 +25,9 @@ type client struct {
 	store *firestore.Client
 }
 
-// CreateDocument implements Client.
-func (c *client) CreateDocument(ctx context.Context, collection string, path string, data any) error {
-	if _, err := c.store.Collection(collection).Doc(path).Create(ctx, data); err != nil {
+// SetDocument implements Client.
+func (c *client) SetDocument(ctx context.Context, collection string, path string, data any) error {
+	if _, err := c.store.Collection(collection).Doc(path).Set(ctx, data); err != nil {
 		return fmt.Errorf("firestore: failed to create document: %w", err)
 	}
 

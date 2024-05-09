@@ -1,4 +1,4 @@
-package createuser
+package saveuser
 
 import (
 	"context"
@@ -20,7 +20,7 @@ func TestHandler(t *testing.T) {
 	tests := []struct {
 		name              string
 		uid               string
-		req               *frontendapi.CreateUserRequest
+		req               *frontendapi.SaveUserRequest
 		createDocumentErr error
 
 		err error
@@ -28,7 +28,7 @@ func TestHandler(t *testing.T) {
 		{
 			name: "success",
 			uid:  "user-id",
-			req: &frontendapi.CreateUserRequest{
+			req: &frontendapi.SaveUserRequest{
 				User: &frontendapi.User{
 					ProgrammingLanguageIds: []uint32{1, 2, 3},
 					MaxOpenReviews:         proto.Uint32(5),
@@ -38,7 +38,7 @@ func TestHandler(t *testing.T) {
 		{
 			name: "firestore error",
 			uid:  "user-id",
-			req: &frontendapi.CreateUserRequest{
+			req: &frontendapi.SaveUserRequest{
 				User: &frontendapi.User{
 					ProgrammingLanguageIds: []uint32{1, 2, 3},
 					MaxOpenReviews:         proto.Uint32(5),
@@ -46,7 +46,7 @@ func TestHandler(t *testing.T) {
 			},
 
 			createDocumentErr: errors.New("internal error"),
-			err:               errors.New("createuser: failed to create user document"),
+			err:               errors.New("saveuser: failed to save user document"),
 		},
 	}
 
@@ -55,7 +55,7 @@ func TestHandler(t *testing.T) {
 			fsClient := testutil.NewMockFirestoreClient(t)
 
 			fsClient.EXPECT().
-				CreateDocument(mock.Anything, "users", tc.uid, mock.Anything).
+				SetDocument(mock.Anything, "users", tc.uid, mock.Anything).
 				RunAndReturn(func(_ context.Context, _ string, _ string, data interface{}) error {
 					switch {
 					case tc.createDocumentErr != nil:
@@ -76,13 +76,13 @@ func TestHandler(t *testing.T) {
 			fbToken := &auth.Token{UID: tc.uid}
 			ctx := fbatestutil.ContextWithToken(context.Background(), fbToken, "raw-token")
 
-			res, err := h.CreateUser(ctx, tc.req)
+			res, err := h.SaveUser(ctx, tc.req)
 			if tc.err != nil {
 				require.ErrorContains(t, err, tc.err.Error())
 				require.Nil(t, res)
 			} else {
 				require.NoError(t, err)
-				require.Equal(t, &frontendapi.CreateUserResponse{}, res)
+				require.Equal(t, &frontendapi.SaveUserResponse{}, res)
 			}
 		})
 	}

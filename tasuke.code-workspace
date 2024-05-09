@@ -1,47 +1,47 @@
 {
-	"folders": [
-		{
-			"name": "/",
-			"path": "."
-		}
-	],
-	"extensions": {
-		"recommendations": ["dbaeumer.vscode-eslint", "esbenp.prettier-vscode"]
-	},
-	"settings": {
-		"editor.codeActionsOnSave": {
-			"source.organizeImports.biome": "explicit",
-			"quickfix.biome": "explicit"
-		},
-		"editor.tabSize": 2,
-		"eslint.workingDirectories": [{ "mode": "auto" }],
-		"gopls": {
-			"formatting.gofumpt": true
-		},
-		"prettier.configPath": ".prettierrc.yml",
-		"prettier.requireConfig": true,
-		"jest.jestCommandLine": "yarn run test",
-		"jest.runMode": { "type": "on-demand", "deferred": true },
-		// Multiple language syntax mysteriously doesn't reliably work.
-		"[javascript][javascriptreact]": {
-			"editor.formatOnSave": true,
-			"editor.defaultFormatter": "biomejs.biome"
-		},
-		"[json]": {
-			"editor.formatOnSave": true,
-			"editor.defaultFormatter": "biomejs.biome"
-		},
-		"[jsonc]": {
-			"editor.formatOnSave": true,
-			"editor.defaultFormatter": "biomejs.biome"
-		},
-		"[typescript][typescriptreact]": {
-			"editor.formatOnSave": true,
-			"editor.defaultFormatter": "biomejs.biome"
-		},
-		"[yaml]": {
-			"editor.formatOnSave": true,
-			"editor.defaultFormatter": "esbenp.prettier-vscode"
-		}
-	}
+  "folders": [
+    {
+      "name": "/",
+      "path": "."
+    }
+  ],
+  "extensions": {
+    "recommendations": ["dbaeumer.vscode-eslint", "esbenp.prettier-vscode"]
+  },
+  "settings": {
+    "editor.codeActionsOnSave": {
+      "source.organizeImports.biome": "explicit",
+      "quickfix.biome": "explicit"
+    },
+    "editor.tabSize": 2,
+    "eslint.workingDirectories": [{ "mode": "auto" }],
+    "gopls": {
+      "formatting.gofumpt": true
+    },
+    "prettier.configPath": ".prettierrc.yml",
+    "prettier.requireConfig": true,
+    "jest.jestCommandLine": "yarn run test",
+    "jest.runMode": { "type": "on-demand", "deferred": true },
+    // Multiple language syntax mysteriously doesn't reliably work.
+    "[javascript][javascriptreact]": {
+      "editor.formatOnSave": true,
+      "editor.defaultFormatter": "biomejs.biome"
+    },
+    "[json]": {
+      "editor.formatOnSave": true,
+      "editor.defaultFormatter": "biomejs.biome"
+    },
+    "[jsonc]": {
+      "editor.formatOnSave": true,
+      "editor.defaultFormatter": "biomejs.biome"
+    },
+    "[typescript][typescriptreact]": {
+      "editor.formatOnSave": true,
+      "editor.defaultFormatter": "biomejs.biome"
+    },
+    "[yaml]": {
+      "editor.formatOnSave": true,
+      "editor.defaultFormatter": "esbenp.prettier-vscode"
+    }
+  }
 }

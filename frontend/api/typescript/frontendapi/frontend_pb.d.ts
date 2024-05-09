@@ -65,11 +65,11 @@ export declare class User extends Message<User> {
 }
 
 /**
- * A request for FrontendService.CreateUser.
+ * A request for FrontendService.SaveUser.
  *
- * @generated from message frontendapi.CreateUserRequest
+ * @generated from message frontendapi.SaveUserRequest
  */
-export declare class CreateUserRequest extends Message<CreateUserRequest> {
+export declare class SaveUserRequest extends Message<SaveUserRequest> {
   /**
    * The user to create.
    * Required.
@@ -78,64 +78,64 @@ export declare class CreateUserRequest extends Message<CreateUserRequest> {
    */
   user?: User;
 
-  constructor(data?: PartialMessage<CreateUserRequest>);
+  constructor(data?: PartialMessage<SaveUserRequest>);
 
   static readonly runtime: typeof proto3;
-  static readonly typeName = "frontendapi.CreateUserRequest";
+  static readonly typeName = "frontendapi.SaveUserRequest";
   static readonly fields: FieldList;
 
   static fromBinary(
     bytes: Uint8Array,
     options?: Partial<BinaryReadOptions>,
-  ): CreateUserRequest;
+  ): SaveUserRequest;
 
   static fromJson(
     jsonValue: JsonValue,
     options?: Partial<JsonReadOptions>,
-  ): CreateUserRequest;
+  ): SaveUserRequest;
 
   static fromJsonString(
     jsonString: string,
     options?: Partial<JsonReadOptions>,
-  ): CreateUserRequest;
+  ): SaveUserRequest;
 
   static equals(
-    a: CreateUserRequest | PlainMessage<CreateUserRequest> | undefined,
-    b: CreateUserRequest | PlainMessage<CreateUserRequest> | undefined,
+    a: SaveUserRequest | PlainMessage<SaveUserRequest> | undefined,
+    b: SaveUserRequest | PlainMessage<SaveUserRequest> | undefined,
   ): boolean;
 }
 
 /**
- * A response for FrontendService.CreateUser.
+ * A response for FrontendService.SaveUser.
  *
  * Empty to allow future extension.
  *
- * @generated from message frontendapi.CreateUserResponse
+ * @generated from message frontendapi.SaveUserResponse
  */
-export declare class CreateUserResponse extends Message<CreateUserResponse> {
-  constructor(data?: PartialMessage<CreateUserResponse>);
+export declare class SaveUserResponse extends Message<SaveUserResponse> {
+  constructor(data?: PartialMessage<SaveUserResponse>);
 
   static readonly runtime: typeof proto3;
-  static readonly typeName = "frontendapi.CreateUserResponse";
+  static readonly typeName = "frontendapi.SaveUserResponse";
   static readonly fields: FieldList;
 
   static fromBinary(
     bytes: Uint8Array,
     options?: Partial<BinaryReadOptions>,
-  ): CreateUserResponse;
+  ): SaveUserResponse;
 
   static fromJson(
     jsonValue: JsonValue,
     options?: Partial<JsonReadOptions>,
-  ): CreateUserResponse;
+  ): SaveUserResponse;
 
   static fromJsonString(
     jsonString: string,
     options?: Partial<JsonReadOptions>,
-  ): CreateUserResponse;
+  ): SaveUserResponse;
 
   static equals(
-    a: CreateUserResponse | PlainMessage<CreateUserResponse> | undefined,
-    b: CreateUserResponse | PlainMessage<CreateUserResponse> | undefined,
+    a: SaveUserResponse | PlainMessage<SaveUserResponse> | undefined,
+    b: SaveUserResponse | PlainMessage<SaveUserResponse> | undefined,
   ): boolean;
 }
