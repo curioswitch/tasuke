@@ -1,0 +1,10 @@
+with-expecter: true
+dir: internal/testutil
+filename: "mock_{{.PackageName | lower }}{{.InterfaceName | lower }}.go"
+mockname: "Mock{{.PackageName | camelcase}}{{.InterfaceName | camelcase}}"
+outpkg: testutil
+packages:
+  github.com/curioswitch/tasuke/frontend/server/internal/client/firestore:
+    interfaces:
+      Client:
+

@@ -2,14 +2,14 @@ version: v1
 plugins:
   - plugin: go
     out: go
-    opt: module=tasuke.dev/frontend/api
+    opt: module=github.com/curioswitch/tasuke/frontend/api
     path:
       - "go"
       - "run"
       - "google.golang.org/protobuf/cmd/protoc-gen-go@v1.34.1"
   - plugin: connect-go
     out: go
-    opt: module=tasuke.dev/frontend/api
+    opt: module=github.com/curioswitch/tasuke/frontend/api
     path:
       - "go"
       - "run"

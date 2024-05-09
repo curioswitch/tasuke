@@ -8,9 +8,9 @@ import (
 	connect "connectrpc.com/connect"
 	context "context"
 	errors "errors"
+	api "github.com/curioswitch/tasuke/frontend/api"
 	http "net/http"
 	strings "strings"
-	api "tasuke.dev/frontend/api"
 )
 
 // This is a compile-time assertion to ensure that this generated file and the connect package are
@@ -46,9 +46,7 @@ var (
 
 // FrontendServiceClient is a client for the frontendapi.FrontendService service.
 type FrontendServiceClient interface {
-	// Creates a new user. Tasuke is a GitHub application and users strongly
-	// tied to GitHub users. For example, the user ID used in the system is
-	// the GitHub user ID itself.
+	// Creates a new user.
 	CreateUser(context.Context, *connect.Request[api.CreateUserRequest]) (*connect.Response[api.CreateUserResponse], error)
 }
 
@@ -83,9 +81,7 @@ func (c *frontendServiceClient) CreateUser(ctx context.Context, req *connect.Req
 
 // FrontendServiceHandler is an implementation of the frontendapi.FrontendService service.
 type FrontendServiceHandler interface {
-	// Creates a new user. Tasuke is a GitHub application and users strongly
-	// tied to GitHub users. For example, the user ID used in the system is
-	// the GitHub user ID itself.
+	// Creates a new user.
 	CreateUser(context.Context, *connect.Request[api.CreateUserRequest]) (*connect.Response[api.CreateUserResponse], error)
 }
 

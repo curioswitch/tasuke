@@ -2,4 +2,6 @@ go 1.22
 
 use (
 	./frontend/api/go
+	./frontend/server
+	./frontend/server/build
 )

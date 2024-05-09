@@ -1,4 +1,4 @@
-module tasuke.dev/frontend/api
+module github.com/curioswitch/tasuke/frontend/api
 
 go 1.22
 

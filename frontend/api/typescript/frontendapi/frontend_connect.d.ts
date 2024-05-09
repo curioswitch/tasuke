@@ -3,8 +3,8 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import type { MethodKind } from "@bufbuild/protobuf";
 import type { CreateUserRequest, CreateUserResponse } from "./frontend_pb.js";
+import type { MethodKind } from "@bufbuild/protobuf";
 
 /**
  * The service for the frontend.
@@ -15,9 +15,7 @@ export declare const FrontendService: {
   readonly typeName: "frontendapi.FrontendService";
   readonly methods: {
     /**
-     * Creates a new user. Tasuke is a GitHub application and users strongly
-     * tied to GitHub users. For example, the user ID used in the system is
-     * the GitHub user ID itself.
+     * Creates a new user.
      *
      * @generated from rpc frontendapi.FrontendService.CreateUser
      */

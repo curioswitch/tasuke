@@ -1,0 +1,40 @@
+linters:
+  enable:
+    # We opt-in to style linters without the preset since many
+    # are too strict (e.g., no init functions allowed).
+    - copyloopvar
+    - decorder
+    - dupword
+    - gci
+    - gocritic
+    - gofumpt
+    - goimports
+    - goprintffuncname
+    - inamedparam
+    - intrange
+    - mirror
+    - revive
+    - stylecheck
+    - tenv
+    - unconvert
+    - usestdlibvars
+    - wastedassign
+  presets:
+    - bugs
+    - performance
+
+linters-settings:
+  gci:
+    sections:
+      - standard
+      - default
+      - prefix(github.com/curioswitch/tasuke)
+
+issues:
+  exclude-rules:
+    - path: _test\.go
+      linters:
+        - errcheck
+        - errchkjson
+        - gosec
+        - noctx

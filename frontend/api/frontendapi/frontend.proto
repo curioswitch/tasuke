@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package frontendapi;
 
-option go_package = "tasuke.dev/frontend/api;frontendapi";
+option go_package = "github.com/curioswitch/tasuke/frontend/api;frontendapi";
 
 // The settings for a user.
 message User {
@@ -31,8 +31,6 @@ message CreateUserResponse {
 
 // The service for the frontend.
 service FrontendService {
-  // Creates a new user. Tasuke is a GitHub application and users are strongly
-  // tied to GitHub users. For example, the user ID used in the system is
-  // the GitHub user ID itself.
+  // Creates a new user.
   rpc CreateUser(CreateUserRequest) returns (CreateUserResponse);
 }
