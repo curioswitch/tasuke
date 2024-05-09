@@ -22,12 +22,12 @@ jobs:
         # all the builds, especially slow ones like Windows. We will fix-forward if an issue
         # comes up on main push. Also, use workaround from
         # https://github.com/orgs/community/discussions/26253#discussioncomment-3250989
-        run-all: ${{ github.event_name != 'pull_request' }}
+        run-all: ${{ github.event_name != 'pull_request' && 'yes' || 'no' }}
         exclude:
           - os: macos-14
-            run-all: false
+            run-all: no
           - os: windows-2022
-            run-all: false
+            run-all: no
 
     steps:
       - uses: actions/checkout@v4
