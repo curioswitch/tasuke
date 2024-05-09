@@ -17,20 +17,21 @@ message User {
   optional uint32 max_open_reviews = 2;
 }
 
-// A request for FrontendService.CreateUser.
-message CreateUserRequest {
+// A request for FrontendService.SaveUser.
+message SaveUserRequest {
   // The user to create.
   // Required.
   optional User user = 1;
 }
 
-// A response for FrontendService.CreateUser.
-message CreateUserResponse {
+// A response for FrontendService.SaveUser.
+message SaveUserResponse {
   // Empty to allow future extension.
 }
 
 // The service for the frontend.
 service FrontendService {
-  // Creates a new user.
-  rpc CreateUser(CreateUserRequest) returns (CreateUserResponse);
+  // Saves information for a user. This method works both for a new or existing user.
+  // The user is identified by the firebase ID token included in the authorization header.
+  rpc SaveUser(SaveUserRequest) returns (SaveUserResponse);
 }

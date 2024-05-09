@@ -3,7 +3,7 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import { CreateUserRequest, CreateUserResponse } from "./frontend_pb.js";
+import { SaveUserRequest, SaveUserResponse } from "./frontend_pb.js";
 import { MethodKind } from "@bufbuild/protobuf";
 
 /**
@@ -15,14 +15,15 @@ export const FrontendService = {
   typeName: "frontendapi.FrontendService",
   methods: {
     /**
-     * Creates a new user.
+     * Saves information for a user. This method works both for a new or existing user.
+     * The user is identified by the firebase ID token included in the authorization header.
      *
-     * @generated from rpc frontendapi.FrontendService.CreateUser
+     * @generated from rpc frontendapi.FrontendService.SaveUser
      */
-    createUser: {
-      name: "CreateUser",
-      I: CreateUserRequest,
-      O: CreateUserResponse,
+    saveUser: {
+      name: "SaveUser",
+      I: SaveUserRequest,
+      O: SaveUserResponse,
       kind: MethodKind.Unary,
     },
   },

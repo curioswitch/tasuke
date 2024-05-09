@@ -1,4 +1,4 @@
-package createuser
+package saveuser
 
 import (
 	"context"
@@ -11,13 +11,13 @@ import (
 	"github.com/curioswitch/tasuke/frontend/server/internal/model"
 )
 
-// Handler is the handler for the FrontendService.CreateUser RPC.
+// Handler is the handler for the FrontendService.SaveUser RPC.
 type Handler struct {
 	store firestore.Client
 }
 
-// CreateUser implements FrontendService.CreateUser.
-func (h *Handler) CreateUser(ctx context.Context, req *frontendapi.CreateUserRequest) (*frontendapi.CreateUserResponse, error) {
+// SaveUser implements FrontendService.SaveUser.
+func (h *Handler) SaveUser(ctx context.Context, req *frontendapi.SaveUserRequest) (*frontendapi.SaveUserResponse, error) {
 	fbToken := firebaseauth.TokenFromContext(ctx)
 
 	u := model.User{
@@ -25,9 +25,9 @@ func (h *Handler) CreateUser(ctx context.Context, req *frontendapi.CreateUserReq
 		MaxOpenReviews:         req.GetUser().GetMaxOpenReviews(),
 	}
 
-	if err := h.store.CreateDocument(ctx, "users", fbToken.UID, u); err != nil {
-		return nil, fmt.Errorf("createuser: failed to create user document: %w", err)
+	if err := h.store.SetDocument(ctx, "users", fbToken.UID, u); err != nil {
+		return nil, fmt.Errorf("saveuser: failed to save user document: %w", err)
 	}
 
-	return &frontendapi.CreateUserResponse{}, nil
+	return &frontendapi.SaveUserResponse{}, nil
 }

@@ -31,23 +31,23 @@ export const User = /*@__PURE__*/ proto3.makeMessageType(
 );
 
 /**
- * A request for FrontendService.CreateUser.
+ * A request for FrontendService.SaveUser.
  *
- * @generated from message frontendapi.CreateUserRequest
+ * @generated from message frontendapi.SaveUserRequest
  */
-export const CreateUserRequest = /*@__PURE__*/ proto3.makeMessageType(
-  "frontendapi.CreateUserRequest",
+export const SaveUserRequest = /*@__PURE__*/ proto3.makeMessageType(
+  "frontendapi.SaveUserRequest",
   () => [{ no: 1, name: "user", kind: "message", T: User, opt: true }],
 );
 
 /**
- * A response for FrontendService.CreateUser.
+ * A response for FrontendService.SaveUser.
  *
  * Empty to allow future extension.
  *
- * @generated from message frontendapi.CreateUserResponse
+ * @generated from message frontendapi.SaveUserResponse
  */
-export const CreateUserResponse = /*@__PURE__*/ proto3.makeMessageType(
-  "frontendapi.CreateUserResponse",
+export const SaveUserResponse = /*@__PURE__*/ proto3.makeMessageType(
+  "frontendapi.SaveUserResponse",
   [],
 );

@@ -15,8 +15,6 @@ github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03
 github.com/census-instrumentation/opencensus-proto v0.2.1/go.mod h1:f6KPmirojxKA12rnyqOA5BBL4O983OfeGPqjHWSTneU=
 github.com/client9/misspell v0.3.4/go.mod h1:qj6jICC3Q7zFZvVWo7KLAzC3yx5G7kyvSDkc90ppPyw=
 github.com/cncf/udpa/go v0.0.0-20191209042840-269d4d468f6f/go.mod h1:M8M6+tZqaGXZJjfX53e64911xZQV5JYwmTeXPW+k8Sc=
-github.com/curioswitch/go-usegcp v0.0.0-20240509033800-aeda7878e01f h1:gjxtdfvZA5rY+BQl+i+VU7Hh0vNH80TCxkCmBlu8O7Q=
-github.com/curioswitch/go-usegcp v0.0.0-20240509033800-aeda7878e01f/go.mod h1:PNY8Ju15P5Qt26w69lBQNK+k/8vSjAtZ8Z0vjoljyQc=
 github.com/curioswitch/go-usegcp v0.0.0-20240509045735-8787f967c311 h1:iOFhUY2OombC3nfR6hzjVSttggz5BH2YX3gV2mchqzw=
 github.com/curioswitch/go-usegcp v0.0.0-20240509045735-8787f967c311/go.mod h1:PNY8Ju15P5Qt26w69lBQNK+k/8vSjAtZ8Z0vjoljyQc=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=

@@ -21,12 +21,12 @@ func (_m *MockFirestoreClient) EXPECT() *MockFirestoreClient_Expecter {
 	return &MockFirestoreClient_Expecter{mock: &_m.Mock}
 }
 
-// CreateDocument provides a mock function with given fields: ctx, collection, path, data
-func (_m *MockFirestoreClient) CreateDocument(ctx context.Context, collection string, path string, data interface{}) error {
+// SetDocument provides a mock function with given fields: ctx, collection, path, data
+func (_m *MockFirestoreClient) SetDocument(ctx context.Context, collection string, path string, data interface{}) error {
 	ret := _m.Called(ctx, collection, path, data)
 
 	if len(ret) == 0 {
-		panic("no return value specified for CreateDocument")
+		panic("no return value specified for SetDocument")
 	}
 
 	var r0 error
@@ -39,33 +39,33 @@ func (_m *MockFirestoreClient) CreateDocument(ctx context.Context, collection st
 	return r0
 }
 
-// MockFirestoreClient_CreateDocument_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'CreateDocument'
-type MockFirestoreClient_CreateDocument_Call struct {
+// MockFirestoreClient_SetDocument_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'SetDocument'
+type MockFirestoreClient_SetDocument_Call struct {
 	*mock.Call
 }
 
-// CreateDocument is a helper method to define mock.On call
+// SetDocument is a helper method to define mock.On call
 //   - ctx context.Context
 //   - collection string
 //   - path string
 //   - data interface{}
-func (_e *MockFirestoreClient_Expecter) CreateDocument(ctx interface{}, collection interface{}, path interface{}, data interface{}) *MockFirestoreClient_CreateDocument_Call {
-	return &MockFirestoreClient_CreateDocument_Call{Call: _e.mock.On("CreateDocument", ctx, collection, path, data)}
+func (_e *MockFirestoreClient_Expecter) SetDocument(ctx interface{}, collection interface{}, path interface{}, data interface{}) *MockFirestoreClient_SetDocument_Call {
+	return &MockFirestoreClient_SetDocument_Call{Call: _e.mock.On("SetDocument", ctx, collection, path, data)}
 }
 
-func (_c *MockFirestoreClient_CreateDocument_Call) Run(run func(ctx context.Context, collection string, path string, data interface{})) *MockFirestoreClient_CreateDocument_Call {
+func (_c *MockFirestoreClient_SetDocument_Call) Run(run func(ctx context.Context, collection string, path string, data interface{})) *MockFirestoreClient_SetDocument_Call {
 	_c.Call.Run(func(args mock.Arguments) {
 		run(args[0].(context.Context), args[1].(string), args[2].(string), args[3].(interface{}))
 	})
 	return _c
 }
 
-func (_c *MockFirestoreClient_CreateDocument_Call) Return(_a0 error) *MockFirestoreClient_CreateDocument_Call {
+func (_c *MockFirestoreClient_SetDocument_Call) Return(_a0 error) *MockFirestoreClient_SetDocument_Call {
 	_c.Call.Return(_a0)
 	return _c
 }
 
-func (_c *MockFirestoreClient_CreateDocument_Call) RunAndReturn(run func(context.Context, string, string, interface{}) error) *MockFirestoreClient_CreateDocument_Call {
+func (_c *MockFirestoreClient_SetDocument_Call) RunAndReturn(run func(context.Context, string, string, interface{}) error) *MockFirestoreClient_SetDocument_Call {
 	_c.Call.Return(run)
 	return _c
 }

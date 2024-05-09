@@ -4,9 +4,11 @@ go 1.22
 
 require (
 	cloud.google.com/go/firestore v1.15.0
+	firebase.google.com/go/v4 v4.14.0
 	github.com/curioswitch/go-usegcp v0.0.0-20240509045735-8787f967c311
 	github.com/curioswitch/tasuke/frontend/api v0.0.0
 	github.com/stretchr/testify v1.8.4
+	google.golang.org/protobuf v1.34.1
 )
 
 require (
@@ -14,7 +16,6 @@ require (
 	cloud.google.com/go/compute v1.24.0 // indirect
 	cloud.google.com/go/compute/metadata v0.2.3 // indirect
 	cloud.google.com/go/longrunning v0.5.5 // indirect
-	firebase.google.com/go/v4 v4.14.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/felixge/httpsnoop v1.0.4 // indirect
 	github.com/go-logr/logr v1.4.1 // indirect
@@ -46,7 +47,6 @@ require (
 	google.golang.org/genproto/googleapis/api v0.0.0-20240314234333-6e1732d8331c // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20240311132316-a219d84964c2 // indirect
 	google.golang.org/grpc v1.62.1 // indirect
-	google.golang.org/protobuf v1.34.1 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
 
