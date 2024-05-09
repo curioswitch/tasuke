@@ -1,0 +1,32 @@
+name: Run Go Checks
+
+on:
+  workflow_call:
+    inputs:
+      project_dir:
+        description: Directory of the project to build
+        required: true
+        type: string
+
+jobs:
+  check:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - macos-14
+          - ubuntu-22.04
+          - windows-2022
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.work
+          cache-dependency-path: "${{ inputs.project_dir }}/**/go.sum"
+
+      - name: run checks
+        run: go run build check
+        working-directory: ${{ inputs.project_dir }}

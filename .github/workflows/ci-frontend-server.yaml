@@ -1,0 +1,23 @@
+name: CI
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - frontend/server/**
+      - frontend/api/go/**
+      - .github/workflows/ci-frontend-server.yaml
+  pull_request:
+    paths:
+      - frontend/server/**
+      - frontend/api/go/**
+      - .github/workflows/ci-frontend-server.yaml
+  workflow_dispatch:
+  workflow_call:
+
+jobs:
+  check:
+    uses: ./.github/workflows/_check-go.yaml
+    with:
+      project_dir: frontend/server
+    secrets: inherit
