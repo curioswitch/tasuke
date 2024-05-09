@@ -7,11 +7,13 @@ on:
       - frontend/server/**
       - frontend/api/go/**
       - .github/workflows/ci-frontend-server.yaml
+      - .github/workflows/_check-go.yaml
   pull_request:
     paths:
       - frontend/server/**
       - frontend/api/go/**
       - .github/workflows/ci-frontend-server.yaml
+      - .github/workflows/_check-go.yaml
   workflow_dispatch:
   workflow_call:
 
