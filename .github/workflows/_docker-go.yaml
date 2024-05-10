@@ -23,9 +23,9 @@ jobs:
       fail-fast: false
       matrix:
         os:
-          #- macos-14
+          - macos-14
           - ubuntu-22.04
-          #- windows-2022
+          - windows-2022
         # We want to ensure the repo works across OS's, but it's not worth blocking PRs on
         # all the builds, especially slow ones like Windows. We will fix-forward if an issue
         # comes up on main push. Also, use workaround from
