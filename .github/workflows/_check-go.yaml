@@ -32,7 +32,7 @@ jobs:
 
     steps:
       - name: Disable Windows Defender
-        if: ${{ startsWith(runner.os, 'windows-') }}
+        if: ${{ startsWith(matrix.os, 'windows-') }}
         run: Set-MpPreference -DisableRealtimeMonitoring $true
         shell: powershell
 
@@ -46,7 +46,7 @@ jobs:
       - name: run lints
         # We don't have OS-specific code so would be completely repetitive to run
         # lint on all of them.
-        if: ${{ startsWith(runner.os, 'ubuntu-') }}
+        if: ${{ startsWith(matrix.os, 'ubuntu-') }}
         run: go run build lint
         working-directory: ${{ inputs.project_dir }}
 
