@@ -18,28 +18,13 @@ env:
 
 jobs:
   docker:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      fail-fast: false
-      matrix:
-        os:
-          - macos-14
-          - ubuntu-22.04
-          - windows-2022
-        # We want to ensure the repo works across OS's, but it's not worth blocking PRs on
-        # all the builds, especially slow ones like Windows. We will fix-forward if an issue
-        # comes up on main push. Also, use workaround from
-        # https://github.com/orgs/community/discussions/26253#discussioncomment-3250989
-        run-all:
-          - ${{ github.event_name != 'pull_request' }}
-        exclude:
-          - os: macos-14
-            run-all: false
-          - os: windows-2022
-            run-all: false
+    # TODO: We cannot use the normal `go run build docker` to verify docker builds work outside of
+    # linux because GitHub runners only enable Docker on ubuntu runners. See if we can output to
+    # tarball instead as a workaround.
+    runs-on: ubuntu-22.04
 
     env:
-      DOCKER_PUSH: ${{ github.event_name != 'pull_request' && startsWith(matrix.os, 'ubuntu-') && 'yes' || 'no' }}
+      DOCKER_PUSH: ${{ github.event_name != 'pull_request' && 'yes' || 'no' }}
 
     steps:
       - uses: actions/checkout@v4
