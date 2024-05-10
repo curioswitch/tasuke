@@ -17,9 +17,21 @@ on:
   workflow_dispatch:
   workflow_call:
 
+permissions:
+  actions: read
+  contents: read
+  id-token: write
+
 jobs:
   check:
     uses: ./.github/workflows/_check-go.yaml
+    with:
+      project_dir: frontend/server
+    secrets: inherit
+
+  docker:
+    needs: check
+    uses: ./.github/workflows/_docker-go.yaml
     with:
       project_dir: frontend/server
     secrets: inherit

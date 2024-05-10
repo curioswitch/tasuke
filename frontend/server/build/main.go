@@ -7,8 +7,7 @@ import (
 )
 
 func main() {
-	tasks.Define(
-		build.LocalPackagePrefix("github.com/curioswitch/tasuke"),
-	)
+	build.DefineTasks(build.LocalPackagePrefix("github.com/curioswitch/tasuke"))
+	tasks.DefineServer()
 	boot.Main()
 }
