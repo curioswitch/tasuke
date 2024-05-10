@@ -3,8 +3,6 @@ package model
 import (
 	"time"
 
-	"google.golang.org/protobuf/proto"
-
 	frontendapi "github.com/curioswitch/tasuke/frontend/api"
 )
 
@@ -31,6 +29,6 @@ type User struct {
 func (u *User) ToProto() *frontendapi.User {
 	return &frontendapi.User{
 		ProgrammingLanguageIds: u.ProgrammingLanguageIDs,
-		MaxOpenReviews:         proto.Uint32(u.MaxOpenReviews),
+		MaxOpenReviews:         u.MaxOpenReviews,
 	}
 }

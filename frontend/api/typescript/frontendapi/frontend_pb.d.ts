@@ -33,9 +33,9 @@ export declare class User extends Message<User> {
    * The maximum number of reviews created by the app that can be open at once.
    * Required.
    *
-   * @generated from field: optional uint32 max_open_reviews = 2;
+   * @generated from field: uint32 max_open_reviews = 2;
    */
-  maxOpenReviews?: number;
+  maxOpenReviews: number;
 
   constructor(data?: PartialMessage<User>);
 

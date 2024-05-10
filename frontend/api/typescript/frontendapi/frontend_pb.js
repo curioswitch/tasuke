@@ -25,7 +25,6 @@ export const User = /*@__PURE__*/ proto3.makeMessageType(
       name: "max_open_reviews",
       kind: "scalar",
       T: 13 /* ScalarType.UINT32 */,
-      opt: true,
     },
   ],
 );
