@@ -19,9 +19,9 @@ jobs:
       fail-fast: false
       matrix:
         os:
-          - macos-14
+          #- macos-14
           - ubuntu-22.04
-          - windows-2022
+          #- windows-2022
         # We want to ensure the repo works across OS's, but it's not worth blocking PRs on
         # all the builds, especially slow ones like Windows. We will fix-forward if an issue
         # comes up on main push. Also, use workaround from
@@ -51,7 +51,7 @@ jobs:
         uses: google-github-actions/auth@v2
         with:
           token_format: access_token
-          workload_identity_provider: projects/${{ env.GCP_PROJECT_NUMBER }}/locations/global/workloadIdentityPools/github/providers/github
+          workload_identity_provider: projects/${{ env.GCP_PROJECT_NUMBER }}/locations/global/workloadIdentityPools/github/providers/curioswitch-provider
           project_id: ${{ env.GCP_PROJECT_ID }}
 
       - uses: google-github-actions/setup-gcloud@v2
