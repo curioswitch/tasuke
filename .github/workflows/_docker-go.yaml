@@ -1,0 +1,78 @@
+name: Build Go Docker Image
+
+on:
+  workflow_call:
+    inputs:
+      project_dir:
+        description: Directory of the project to build
+        required: true
+        type: string
+
+env:
+  GCP_PROJECT_ID: ${{ startsWith(github.ref_name, 'release/') && 'tasuke-prod' || 'tasuke-dev'}}
+  GCP_PROJECT_NUMBER: ${{ startsWith(github.ref_name, 'release/') && '840011577241' || '720364425367'}}
+
+jobs:
+  docker:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - macos-14
+          - ubuntu-22.04
+          - windows-2022
+        # We want to ensure the repo works across OS's, but it's not worth blocking PRs on
+        # all the builds, especially slow ones like Windows. We will fix-forward if an issue
+        # comes up on main push. Also, use workaround from
+        # https://github.com/orgs/community/discussions/26253#discussioncomment-3250989
+        run-all:
+          - ${{ github.event_name != 'pull_request' }}
+        exclude:
+          - os: macos-14
+            run-all: false
+          - os: windows-2022
+            run-all: false
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.work
+          cache-dependency-path: "${{ inputs.project_dir }}/**/go.sum"
+
+
+      - id: google-auth
+        if: ${{ github.event_name != 'pull_request' }}
+        uses: google-github-actions/auth@v2
+        with:
+          token_format: access_token
+          workload_identity_provider: projects/582484871345/locations/global/workloadIdentityPools/github/providers/github
+
+      - uses: google-github-actions/setup-gcloud@v2
+        if: ${{ github.event_name != 'pull_request' }}
+
+      - uses: docker/login-action@v3
+        if: ${{ github.event_name != 'pull_request' }}
+        with:
+          registry: us-central1-docker.pkg.dev/${{ env.GCP_PROJECT_ID }}/docker
+          username: oauth2accesstoken
+          password: ${{ steps.google-auth.outputs.access_token }}
+
+      - uses: docker/setup-buildx-action@v3
+
+      - id: docker-meta
+        uses: docker/metadata-action@v5
+        with:
+          tags: |
+            type=ref,event=branch
+            type=ref,event=tag
+            type=ref,event=pr
+            type=sha,format=long
+          sep-tags: ","
+          sep-labels: ","
+
+      - name: Build and push image
+        working-directory: ${{ inputs.project_dir }}
+        run: go run build -v --docker-tags ${{ steps.docker-meta.outputs.tags }} --docker-labels ${{ steps.docker-meta.outputs.labels }} ${{ github.event_name != 'pull_request' && startsWith(matrix.os, 'ubuntu-') && 'push' || 'docker' }}

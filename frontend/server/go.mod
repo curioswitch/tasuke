@@ -6,13 +6,12 @@ require (
 	cloud.google.com/go/firestore v1.15.0
 	connectrpc.com/connect v1.16.1
 	firebase.google.com/go/v4 v4.14.0
-	github.com/curioswitch/go-curiostack v0.0.0-20240509070835-924ce71318b9
+	github.com/curioswitch/go-curiostack v0.0.0-20240510043735-3dbc42ae783f
 	github.com/curioswitch/go-docs-handler v0.1.5
 	github.com/curioswitch/go-docs-handler/plugins/proto v0.1.5
 	github.com/curioswitch/go-usegcp v0.0.0-20240509045735-8787f967c311
 	github.com/curioswitch/tasuke/frontend/api v0.0.0
 	github.com/stretchr/testify v1.8.4
-	google.golang.org/protobuf v1.34.1
 )
 
 require (
@@ -66,6 +65,7 @@ require (
 	google.golang.org/genproto/googleapis/api v0.0.0-20240314234333-6e1732d8331c // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20240311132316-a219d84964c2 // indirect
 	google.golang.org/grpc v1.62.1 // indirect
+	google.golang.org/protobuf v1.34.1 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
 
