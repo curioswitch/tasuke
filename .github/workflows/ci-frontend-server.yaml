@@ -36,4 +36,5 @@ jobs:
     uses: ./.github/workflows/_docker-go.yaml
     with:
       project_dir: frontend/server
+      service: frontend-server
     secrets: inherit

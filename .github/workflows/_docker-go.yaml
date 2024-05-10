@@ -7,6 +7,10 @@ on:
         description: Directory of the project to build
         required: true
         type: string
+      service:
+        description: Service to build
+        required: true
+        type: string
 
 env:
   GCP_PROJECT_ID: ${{ startsWith(github.ref_name, 'release/') && 'tasuke-prod' || 'tasuke-dev'}}
@@ -76,3 +80,7 @@ jobs:
       - name: Build and push image
         working-directory: ${{ inputs.project_dir }}
         run: go run build -v --docker-tags ${{ steps.docker-meta.outputs.tags }} --docker-labels ${{ steps.docker-meta.outputs.labels }} ${{ env.DOCKER_PUSH && 'push' || 'docker' }}
+
+      - name: Deploy service
+        if: ${{ env.DOCKER_PUSH }}
+        run: gcloud run deploy ${{ inputs.service }} --region us-central1 --image us-central1-docker.pkg.dev/${{ env.GCP_PROJECT_ID }}/docker/${{ inputs.service }}:sha-${{ github.sha }}
