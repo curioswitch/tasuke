@@ -9,7 +9,6 @@ import (
 	fbatestutil "github.com/curioswitch/go-usegcp/middleware/firebaseauth/testutil"
 	"github.com/stretchr/testify/mock"
 	"github.com/stretchr/testify/require"
-	"google.golang.org/protobuf/proto"
 
 	frontendapi "github.com/curioswitch/tasuke/frontend/api"
 	"github.com/curioswitch/tasuke/frontend/server/internal/model"
@@ -31,7 +30,7 @@ func TestHandler(t *testing.T) {
 			req: &frontendapi.SaveUserRequest{
 				User: &frontendapi.User{
 					ProgrammingLanguageIds: []uint32{1, 2, 3},
-					MaxOpenReviews:         proto.Uint32(5),
+					MaxOpenReviews:         5,
 				},
 			},
 		},
@@ -41,7 +40,7 @@ func TestHandler(t *testing.T) {
 			req: &frontendapi.SaveUserRequest{
 				User: &frontendapi.User{
 					ProgrammingLanguageIds: []uint32{1, 2, 3},
-					MaxOpenReviews:         proto.Uint32(5),
+					MaxOpenReviews:         5,
 				},
 			},
 

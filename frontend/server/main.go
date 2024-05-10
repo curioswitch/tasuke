@@ -10,7 +10,6 @@ import (
 	"github.com/curioswitch/go-curiostack/server"
 	docshandler "github.com/curioswitch/go-docs-handler"
 	protodocs "github.com/curioswitch/go-docs-handler/plugins/proto"
-	"google.golang.org/protobuf/proto"
 
 	frontendapi "github.com/curioswitch/tasuke/frontend/api"
 	"github.com/curioswitch/tasuke/frontend/api/frontendapiconnect"
@@ -35,7 +34,7 @@ func main() {
 					ProgrammingLanguageIds: []uint32{
 						132, // golang
 					},
-					MaxOpenReviews: proto.Uint32(5),
+					MaxOpenReviews: 5,
 				},
 			},
 		),

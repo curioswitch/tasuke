@@ -14,7 +14,7 @@ message User {
 
   // The maximum number of reviews created by the app that can be open at once.
   // Required.
-  optional uint32 max_open_reviews = 2;
+  uint32 max_open_reviews = 2;
 }
 
 // A request for FrontendService.SaveUser.
