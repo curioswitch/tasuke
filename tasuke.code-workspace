@@ -6,7 +6,13 @@
     }
   ],
   "extensions": {
-    "recommendations": ["dbaeumer.vscode-eslint", "esbenp.prettier-vscode"]
+    "recommendations": [
+      "biomejs.biome",
+      "bufbuild.vscode-buf",
+      "esbenp.prettier-vscode",
+      "github.vscode-github-actions",
+      "golang.go"
+    ]
   },
   "settings": {
     "editor.codeActionsOnSave": {
@@ -14,14 +20,11 @@
       "quickfix.biome": "explicit"
     },
     "editor.tabSize": 2,
-    "eslint.workingDirectories": [{ "mode": "auto" }],
     "gopls": {
       "formatting.gofumpt": true
     },
     "prettier.configPath": ".prettierrc.yml",
     "prettier.requireConfig": true,
-    "jest.jestCommandLine": "yarn run test",
-    "jest.runMode": { "type": "on-demand", "deferred": true },
     // Multiple language syntax mysteriously doesn't reliably work.
     "[javascript][javascriptreact]": {
       "editor.formatOnSave": true,
