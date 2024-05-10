@@ -13,7 +13,7 @@ env:
   GCP_PROJECT_NUMBER: ${{ startsWith(github.ref_name, 'release/') && '840011577241' || '720364425367'}}
 
 jobs:
-  check:
+  docker:
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
