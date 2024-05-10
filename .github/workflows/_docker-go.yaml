@@ -39,7 +39,7 @@ jobs:
             run-all: false
 
     env:
-      DOCKER_PUSH: ${{ github.event_name != 'pull_request' && startsWith(matrix.os, 'ubuntu-') && true || false }}
+      DOCKER_PUSH: ${{ github.event_name != 'pull_request' && startsWith(matrix.os, 'ubuntu-') && 'yes' || 'no' }}
 
     steps:
       - uses: actions/checkout@v4
@@ -51,17 +51,17 @@ jobs:
 
 
       - id: google-auth
-        if: ${{ env.DOCKER_PUSH }}
+        if: ${{ env.DOCKER_PUSH == 'yes' }}
         uses: google-github-actions/auth@v2
         with:
           workload_identity_provider: projects/${{ env.GCP_PROJECT_NUMBER }}/locations/global/workloadIdentityPools/github/providers/curioswitch
           project_id: ${{ env.GCP_PROJECT_ID }}
 
       - uses: google-github-actions/setup-gcloud@v2
-        if: ${{ env.DOCKER_PUSH }}
+        if: ${{ env.DOCKER_PUSH == 'yes' }}
 
       - name: Configure Docker
-        if: ${{ env.DOCKER_PUSH }}
+        if: ${{ env.DOCKER_PUSH == 'yes' }}
         run: gcloud auth configure-docker us-central1-docker.pkg.dev
 
       - id: docker-meta
@@ -80,5 +80,5 @@ jobs:
         run: go run build -v --docker-tags ${{ steps.docker-meta.outputs.tags }} --docker-labels ${{ steps.docker-meta.outputs.labels }} ${{ env.DOCKER_PUSH && 'push' || 'docker' }}
 
       - name: Deploy service
-        if: ${{ env.DOCKER_PUSH }}
+        if: ${{ env.DOCKER_PUSH == 'yes' }}
         run: gcloud run deploy ${{ inputs.service }} --region us-central1 --image us-central1-docker.pkg.dev/${{ env.GCP_PROJECT_ID }}/docker/${{ inputs.service }}:sha-${{ github.sha }}

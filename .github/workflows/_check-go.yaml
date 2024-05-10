@@ -38,6 +38,13 @@ jobs:
           go-version-file: go.work
           cache-dependency-path: "${{ inputs.project_dir }}/**/go.sum"
 
-      - name: run checks
-        run: go run build check
+      - name: run lints
+        # We don't have OS-specific code so would be completely repetitive to run
+        # lint on all of them.
+        if: ${{ startsWith(runner.os, 'ubuntu-') }}
+        run: go run build lint
+        working-directory: ${{ inputs.project_dir }}
+
+      - name: run tests
+        run: go run build test
         working-directory: ${{ inputs.project_dir }}
