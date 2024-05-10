@@ -64,8 +64,6 @@ jobs:
         if: ${{ env.DOCKER_PUSH }}
         run: gcloud auth configure-docker us-central1-docker.pkg.dev
 
-      - uses: docker/setup-buildx-action@v3
-
       - id: docker-meta
         uses: docker/metadata-action@v5
         with:
