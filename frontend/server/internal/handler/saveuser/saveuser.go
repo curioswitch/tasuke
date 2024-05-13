@@ -7,7 +7,7 @@ import (
 	"cloud.google.com/go/firestore"
 	"github.com/curioswitch/go-usegcp/middleware/firebaseauth"
 
-	frontendapi "github.com/curioswitch/tasuke/frontend/api"
+	frontendapi "github.com/curioswitch/tasuke/frontend/api/go"
 	ifirestore "github.com/curioswitch/tasuke/frontend/server/internal/client/firestore"
 	"github.com/curioswitch/tasuke/frontend/server/internal/model"
 )

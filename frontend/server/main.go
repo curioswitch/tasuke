@@ -11,8 +11,8 @@ import (
 	docshandler "github.com/curioswitch/go-docs-handler"
 	protodocs "github.com/curioswitch/go-docs-handler/plugins/proto"
 
-	frontendapi "github.com/curioswitch/tasuke/frontend/api"
-	"github.com/curioswitch/tasuke/frontend/api/frontendapiconnect"
+	frontendapi "github.com/curioswitch/tasuke/frontend/api/go"
+	"github.com/curioswitch/tasuke/frontend/api/go/frontendapiconnect"
 	"github.com/curioswitch/tasuke/frontend/server/internal/config"
 	"github.com/curioswitch/tasuke/frontend/server/internal/handler/saveuser"
 	"github.com/curioswitch/tasuke/frontend/server/internal/service"

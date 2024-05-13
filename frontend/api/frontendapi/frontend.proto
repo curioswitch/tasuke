@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package frontendapi;
 
-option go_package = "github.com/curioswitch/tasuke/frontend/api;frontendapi";
+option go_package = "github.com/curioswitch/tasuke/frontend/api/go;frontendapi";
 
 // The settings for a user.
 message User {
