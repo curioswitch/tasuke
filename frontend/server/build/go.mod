@@ -4,7 +4,7 @@ go 1.22
 
 require (
 	github.com/curioswitch/go-build v0.0.0-20240509032512-047a0d4b758e
-	github.com/curioswitch/go-curiostack v0.0.0-20240510043735-3dbc42ae783f
+	github.com/curioswitch/go-curiostack v0.0.0-20240513080616-6a0ab9eea5e9
 	github.com/goyek/x v0.1.7
 )
 
@@ -22,7 +22,6 @@ require (
 	github.com/mattn/go-shellwords v1.0.12 // indirect
 	github.com/mitchellh/copystructure v1.2.0 // indirect
 	github.com/mitchellh/reflectwalk v1.0.2 // indirect
-	github.com/stretchr/testify v1.8.4 // indirect
 	golang.org/x/sys v0.20.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
