@@ -7,8 +7,7 @@ import (
 	"github.com/curioswitch/go-curiostack/config"
 )
 
-//go:embed *.yaml
-var confFiles embed.FS
+var confFiles embed.FS // Currently empty
 
 // Google is configuration related to GCP.
 type Google struct {
@@ -19,9 +18,6 @@ type Google struct {
 // Config is the configuration for the frontend server.
 type Config struct {
 	config.Common
-
-	// Google is the GCP configuration.
-	Google Google `koanf:"google"`
 }
 
 // Load loads the configuration for the frontend server.
