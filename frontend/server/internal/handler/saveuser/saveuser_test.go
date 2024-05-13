@@ -10,7 +10,7 @@ import (
 	"github.com/stretchr/testify/mock"
 	"github.com/stretchr/testify/require"
 
-	frontendapi "github.com/curioswitch/tasuke/frontend/api"
+	frontendapi "github.com/curioswitch/tasuke/frontend/api/go"
 	"github.com/curioswitch/tasuke/frontend/server/internal/model"
 	"github.com/curioswitch/tasuke/frontend/server/internal/testutil"
 )

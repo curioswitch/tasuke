@@ -5,8 +5,8 @@ import (
 
 	"connectrpc.com/connect"
 
-	frontendapi "github.com/curioswitch/tasuke/frontend/api"
-	"github.com/curioswitch/tasuke/frontend/api/frontendapiconnect"
+	frontendapi "github.com/curioswitch/tasuke/frontend/api/go"
+	"github.com/curioswitch/tasuke/frontend/api/go/frontendapiconnect"
 	"github.com/curioswitch/tasuke/frontend/server/internal/handler/saveuser"
 )
 

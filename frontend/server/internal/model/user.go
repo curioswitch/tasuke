@@ -3,7 +3,7 @@ package model
 import (
 	"time"
 
-	frontendapi "github.com/curioswitch/tasuke/frontend/api"
+	frontendapi "github.com/curioswitch/tasuke/frontend/api/go"
 )
 
 // User is the information stored about a user in the database. We don't use
