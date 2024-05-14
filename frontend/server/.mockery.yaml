@@ -7,4 +7,3 @@ packages:
   github.com/curioswitch/tasuke/frontend/server/internal/client/firestore:
     interfaces:
       Client:
-
