@@ -21,6 +21,9 @@ import (
 	"github.com/curioswitch/tasuke/frontend/server/internal/service"
 )
 
+// e2e-test1@curioswitch.org
+const e2eTest1UID = "V8yRsCpZJkUfPmxcLI6pKTrx3kf1"
+
 func main() {
 	ctx := context.Background()
 
@@ -44,7 +47,7 @@ func main() {
 			),
 		),
 		docshandler.WithInjectedScriptSupplier(func() string {
-			token, err := cstest.FirebaseIDToken(context.Background(), "V8yRsCpZJkUfPmxcLI6pKTrx3kf1", "", conf.Google)
+			token, err := cstest.FirebaseIDToken(context.Background(), e2eTest1UID, "", conf.Google)
 			if err != nil {
 				log.Printf("Failed to get firebase token: %v", err)
 				return ""
