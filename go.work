@@ -1,7 +1,7 @@
 go 1.22
 
 use (
+	./build
 	./frontend/api
 	./frontend/server
-	./frontend/server/build
 )
