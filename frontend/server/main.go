@@ -3,13 +3,16 @@ package main
 import (
 	"context"
 	"errors"
+	"fmt"
 	"log"
 	"net/http"
 
 	firebase "firebase.google.com/go/v4"
 	"github.com/curioswitch/go-curiostack/server"
+	cstest "github.com/curioswitch/go-curiostack/testutil"
 	docshandler "github.com/curioswitch/go-docs-handler"
 	protodocs "github.com/curioswitch/go-docs-handler/plugins/proto"
+	"github.com/curioswitch/go-usegcp/middleware/firebaseauth"
 
 	frontendapi "github.com/curioswitch/tasuke/frontend/api/go"
 	"github.com/curioswitch/tasuke/frontend/api/go/frontendapiconnect"
@@ -18,6 +21,9 @@ import (
 	"github.com/curioswitch/tasuke/frontend/server/internal/service"
 )
 
+// e2e-test1@curioswitch.org
+const e2eTest1UID = "V8yRsCpZJkUfPmxcLI6pKTrx3kf1"
+
 func main() {
 	ctx := context.Background()
 
@@ -25,20 +31,36 @@ func main() {
 
 	r := server.NewRouter()
 
-	docs, err := docshandler.New(protodocs.NewPlugin(
-		frontendapiconnect.FrontendServiceName,
-		protodocs.WithExampleRequests(
-			frontendapiconnect.FrontendServiceSaveUserProcedure,
-			&frontendapi.SaveUserRequest{
-				User: &frontendapi.User{
-					ProgrammingLanguageIds: []uint32{
-						132, // golang
+	docs, err := docshandler.New(
+		protodocs.NewPlugin(
+			frontendapiconnect.FrontendServiceName,
+			protodocs.WithExampleRequests(
+				frontendapiconnect.FrontendServiceSaveUserProcedure,
+				&frontendapi.SaveUserRequest{
+					User: &frontendapi.User{
+						ProgrammingLanguageIds: []uint32{
+							132, // golang
+						},
+						MaxOpenReviews: 5,
 					},
-					MaxOpenReviews: 5,
 				},
-			},
+			),
 		),
-	))
+		docshandler.WithInjectedScriptSupplier(func() string {
+			token, err := cstest.FirebaseIDToken(context.Background(), e2eTest1UID, "", conf.Google)
+			if err != nil {
+				log.Printf("Failed to get firebase token: %v", err)
+				return ""
+			}
+
+			script := fmt.Sprintf(`
+			async function getAuthorization() {
+				return {"Authorization": "Bearer %s"};
+			}
+			window.armeria.registerHeaderProvider(getAuthorization);
+			`, token)
+			return script
+		}))
 	if err != nil {
 		log.Fatalf("Failed to create docs handler: %v", err)
 	}
@@ -47,6 +69,11 @@ func main() {
 	fbApp, err := firebase.NewApp(ctx, &firebase.Config{ProjectID: conf.Google.Project})
 	if err != nil {
 		log.Fatalf("Failed to create firebase app: %v", err)
+	}
+
+	fbAuth, err := fbApp.Auth(ctx)
+	if err != nil {
+		log.Fatalf("Failed to create firebase auth client: %v", err)
 	}
 
 	firestore, err := fbApp.Firestore(ctx)
@@ -58,8 +85,9 @@ func main() {
 	saveUser := saveuser.NewHandler(firestore)
 	svc := service.New(saveUser)
 
-	// TODO: Add firebase auth middleware.
+	fbMW := firebaseauth.NewMiddleware(fbAuth)
 	fapiPath, fapiHandler := frontendapiconnect.NewFrontendServiceHandler(svc)
+	fapiHandler = fbMW(fapiHandler)
 	r.Mount(fapiPath, fapiHandler)
 
 	srv := server.NewServer(r, conf.Server)

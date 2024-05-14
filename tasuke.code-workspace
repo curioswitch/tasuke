@@ -3,6 +3,10 @@
     {
       "name": "/",
       "path": "."
+    },
+    {
+      "name": "frontend/server",
+      "path": "./frontend/server"
     }
   ],
   "extensions": {
