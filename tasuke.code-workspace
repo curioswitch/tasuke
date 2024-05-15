@@ -5,6 +5,10 @@
       "path": "."
     },
     {
+      "name": "frontend/client",
+      "path": "./frontend/client"
+    },
+    {
       "name": "frontend/server",
       "path": "./frontend/server"
     }
@@ -30,7 +34,11 @@
     "prettier.configPath": ".prettierrc.yml",
     "prettier.requireConfig": true,
     // Multiple language syntax mysteriously doesn't reliably work.
-    "[javascript][javascriptreact]": {
+    "[javascript]": {
+      "editor.formatOnSave": true,
+      "editor.defaultFormatter": "biomejs.biome"
+    },
+    "[javascriptreact]": {
       "editor.formatOnSave": true,
       "editor.defaultFormatter": "biomejs.biome"
     },
@@ -42,7 +50,11 @@
       "editor.formatOnSave": true,
       "editor.defaultFormatter": "biomejs.biome"
     },
-    "[typescript][typescriptreact]": {
+    "[typescript]": {
+      "editor.formatOnSave": true,
+      "editor.defaultFormatter": "biomejs.biome"
+    },
+    "[typescriptreact]": {
       "editor.formatOnSave": true,
       "editor.defaultFormatter": "biomejs.biome"
     },

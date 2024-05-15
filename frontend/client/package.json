@@ -1,0 +1,31 @@
+{
+  "name": "my-app",
+  "version": "0.0.1",
+  "description": "",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "keywords": [],
+  "author": "",
+  "devDependencies": {
+    "@types/react": "^18.3.2",
+    "@types/react-dom": "^18.3.0",
+    "typescript": "^5.4.5",
+    "vite": "^5.2.11"
+  },
+  "dependencies": {
+    "@chakra-ui/react": "^2.8.2",
+    "@emotion/react": "^11.11.4",
+    "@emotion/styled": "^11.11.5",
+    "@vitejs/plugin-react": "^4.2.1",
+    "cross-fetch": "^4.0.0",
+    "framer-motion": "^11.2.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "vike": "^0.4.171",
+    "vike-react": "^0.4.9"
+  }
+}
