@@ -1,0 +1,51 @@
+name: Run Node Checks
+
+on:
+  workflow_call:
+    inputs:
+      project_dir:
+        description: Directory of the project to build
+        required: true
+        type: string
+
+jobs:
+  check:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - macos-14
+          - ubuntu-22.04
+          - windows-2022
+        # We want to ensure the repo works across OS's, but it's not worth blocking PRs on
+        # all the builds, especially slow ones like Windows. We will fix-forward if an issue
+        # comes up on main push. Also, use workaround from
+        # https://github.com/orgs/community/discussions/26253#discussioncomment-3250989
+        run-all:
+          - ${{ github.event_name != 'pull_request' }}
+        exclude:
+          - os: macos-14
+            run-all: false
+          - os: windows-2022
+            run-all: false
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: package.json
+          cache: pnpm
+          cache-dependency-path: pnpm-lock.yaml
+
+      - name: run lints
+        # We don't have OS-specific code so would be completely repetitive to run
+        # lint on all of them.
+        if: ${{ startsWith(matrix.os, 'ubuntu-') }}
+        run: pnpm run lint
+        working-directory: ${{ inputs.project_dir }}
+
+      - name: build app
+        run: pnpm run build
+        working-directory: ${{ inputs.project_dir }}
