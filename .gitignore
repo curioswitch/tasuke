@@ -6,3 +6,5 @@ node_modules
 out
 dist
 go.work.sum
+
+.firebase/
