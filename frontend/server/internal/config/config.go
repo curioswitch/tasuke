@@ -9,12 +9,6 @@ import (
 
 var confFiles embed.FS // Currently empty
 
-// Google is configuration related to GCP.
-type Google struct {
-	// Project is the GCP project to target.
-	Project string `koanf:"project"`
-}
-
 // Config is the configuration for the frontend server.
 type Config struct {
 	config.Common
