@@ -11,6 +11,6 @@ This project is currently under construction. An initial release will have three
 components
 
 - Frontend web client for registering as a code reviewer
-- Frontend API server (BFF) for storing registration information
+- Frontend API server (BFF) for storing registration information such as allowed review load
 - GitHub App / webhook to listen for code review requests from registered repositories
-  and match with a code reviewer based on registration settings.
+  and match with a code reviewer based on registration settings
