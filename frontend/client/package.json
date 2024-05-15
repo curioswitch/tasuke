@@ -6,6 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "format": "biome check --apply .",
+    "lint": "biome check .",
     "preview": "vite preview"
   },
   "keywords": [],

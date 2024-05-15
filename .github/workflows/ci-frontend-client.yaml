@@ -1,0 +1,30 @@
+name: CI
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - frontend/client/**
+      - frontend/api/typescript/**
+      - .github/workflows/ci-frontend-client.yaml
+      - .github/workflows/_check-node.yaml
+  pull_request:
+    paths:
+      - frontend/client/**
+      - frontend/api/typescript/**
+      - .github/workflows/ci-frontend-client.yaml
+      - .github/workflows/_check-node.yaml
+  workflow_dispatch:
+  workflow_call:
+
+permissions:
+  actions: read
+  contents: read
+  id-token: write
+
+jobs:
+  check:
+    uses: ./.github/workflows/_check-node.yaml
+    with:
+      project_dir: frontend/client
+    secrets: inherit
