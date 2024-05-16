@@ -1,5 +1,5 @@
-import { ChakraProvider } from "@chakra-ui/react";
+import { FirebaseProvider } from "../hooks/firebase";
 
 export default function Wrapper({ children }: { children: React.ReactNode }) {
-  return <ChakraProvider>{children}</ChakraProvider>;
+  return <FirebaseProvider>{children}</FirebaseProvider>;
 }
