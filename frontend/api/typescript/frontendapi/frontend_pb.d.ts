@@ -65,6 +65,80 @@ export declare class User extends Message<User> {
 }
 
 /**
+ * A request for FrontendService.GetUser.
+ *
+ * @generated from message frontendapi.GetUserRequest
+ */
+export declare class GetUserRequest extends Message<GetUserRequest> {
+  constructor(data?: PartialMessage<GetUserRequest>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "frontendapi.GetUserRequest";
+  static readonly fields: FieldList;
+
+  static fromBinary(
+    bytes: Uint8Array,
+    options?: Partial<BinaryReadOptions>,
+  ): GetUserRequest;
+
+  static fromJson(
+    jsonValue: JsonValue,
+    options?: Partial<JsonReadOptions>,
+  ): GetUserRequest;
+
+  static fromJsonString(
+    jsonString: string,
+    options?: Partial<JsonReadOptions>,
+  ): GetUserRequest;
+
+  static equals(
+    a: GetUserRequest | PlainMessage<GetUserRequest> | undefined,
+    b: GetUserRequest | PlainMessage<GetUserRequest> | undefined,
+  ): boolean;
+}
+
+/**
+ * A response for FrontendService.GetUser.
+ *
+ * @generated from message frontendapi.GetUserResponse
+ */
+export declare class GetUserResponse extends Message<GetUserResponse> {
+  /**
+   * The user information.
+   * Required.
+   *
+   * @generated from field: frontendapi.User user = 1;
+   */
+  user?: User;
+
+  constructor(data?: PartialMessage<GetUserResponse>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "frontendapi.GetUserResponse";
+  static readonly fields: FieldList;
+
+  static fromBinary(
+    bytes: Uint8Array,
+    options?: Partial<BinaryReadOptions>,
+  ): GetUserResponse;
+
+  static fromJson(
+    jsonValue: JsonValue,
+    options?: Partial<JsonReadOptions>,
+  ): GetUserResponse;
+
+  static fromJsonString(
+    jsonString: string,
+    options?: Partial<JsonReadOptions>,
+  ): GetUserResponse;
+
+  static equals(
+    a: GetUserResponse | PlainMessage<GetUserResponse> | undefined,
+    b: GetUserResponse | PlainMessage<GetUserResponse> | undefined,
+  ): boolean;
+}
+
+/**
  * A request for FrontendService.SaveUser.
  *
  * @generated from message frontendapi.SaveUserRequest
@@ -74,7 +148,7 @@ export declare class SaveUserRequest extends Message<SaveUserRequest> {
    * The user to create.
    * Required.
    *
-   * @generated from field: optional frontendapi.User user = 1;
+   * @generated from field: frontendapi.User user = 1;
    */
   user?: User;
 

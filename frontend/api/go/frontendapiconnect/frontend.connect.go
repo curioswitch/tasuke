@@ -33,6 +33,8 @@ const (
 // reflection-formatted method names, remove the leading slash and convert the remaining slash to a
 // period.
 const (
+	// FrontendServiceGetUserProcedure is the fully-qualified name of the FrontendService's GetUser RPC.
+	FrontendServiceGetUserProcedure = "/frontendapi.FrontendService/GetUser"
 	// FrontendServiceSaveUserProcedure is the fully-qualified name of the FrontendService's SaveUser
 	// RPC.
 	FrontendServiceSaveUserProcedure = "/frontendapi.FrontendService/SaveUser"
@@ -41,11 +43,14 @@ const (
 // These variables are the protoreflect.Descriptor objects for the RPCs defined in this package.
 var (
 	frontendServiceServiceDescriptor        = _go.File_frontendapi_frontend_proto.Services().ByName("FrontendService")
+	frontendServiceGetUserMethodDescriptor  = frontendServiceServiceDescriptor.Methods().ByName("GetUser")
 	frontendServiceSaveUserMethodDescriptor = frontendServiceServiceDescriptor.Methods().ByName("SaveUser")
 )
 
 // FrontendServiceClient is a client for the frontendapi.FrontendService service.
 type FrontendServiceClient interface {
+	// Gets information for the current user.
+	GetUser(context.Context, *connect.Request[_go.GetUserRequest]) (*connect.Response[_go.GetUserResponse], error)
 	// Saves information for a user. This method works both for a new or existing user.
 	// The user is identified by the firebase ID token included in the authorization header.
 	SaveUser(context.Context, *connect.Request[_go.SaveUserRequest]) (*connect.Response[_go.SaveUserResponse], error)
@@ -61,6 +66,12 @@ type FrontendServiceClient interface {
 func NewFrontendServiceClient(httpClient connect.HTTPClient, baseURL string, opts ...connect.ClientOption) FrontendServiceClient {
 	baseURL = strings.TrimRight(baseURL, "/")
 	return &frontendServiceClient{
+		getUser: connect.NewClient[_go.GetUserRequest, _go.GetUserResponse](
+			httpClient,
+			baseURL+FrontendServiceGetUserProcedure,
+			connect.WithSchema(frontendServiceGetUserMethodDescriptor),
+			connect.WithClientOptions(opts...),
+		),
 		saveUser: connect.NewClient[_go.SaveUserRequest, _go.SaveUserResponse](
 			httpClient,
 			baseURL+FrontendServiceSaveUserProcedure,
@@ -72,7 +83,13 @@ func NewFrontendServiceClient(httpClient connect.HTTPClient, baseURL string, opt
 
 // frontendServiceClient implements FrontendServiceClient.
 type frontendServiceClient struct {
+	getUser  *connect.Client[_go.GetUserRequest, _go.GetUserResponse]
 	saveUser *connect.Client[_go.SaveUserRequest, _go.SaveUserResponse]
+}
+
+// GetUser calls frontendapi.FrontendService.GetUser.
+func (c *frontendServiceClient) GetUser(ctx context.Context, req *connect.Request[_go.GetUserRequest]) (*connect.Response[_go.GetUserResponse], error) {
+	return c.getUser.CallUnary(ctx, req)
 }
 
 // SaveUser calls frontendapi.FrontendService.SaveUser.
@@ -82,6 +99,8 @@ func (c *frontendServiceClient) SaveUser(ctx context.Context, req *connect.Reque
 
 // FrontendServiceHandler is an implementation of the frontendapi.FrontendService service.
 type FrontendServiceHandler interface {
+	// Gets information for the current user.
+	GetUser(context.Context, *connect.Request[_go.GetUserRequest]) (*connect.Response[_go.GetUserResponse], error)
 	// Saves information for a user. This method works both for a new or existing user.
 	// The user is identified by the firebase ID token included in the authorization header.
 	SaveUser(context.Context, *connect.Request[_go.SaveUserRequest]) (*connect.Response[_go.SaveUserResponse], error)
@@ -93,6 +112,12 @@ type FrontendServiceHandler interface {
 // By default, handlers support the Connect, gRPC, and gRPC-Web protocols with the binary Protobuf
 // and JSON codecs. They also support gzip compression.
 func NewFrontendServiceHandler(svc FrontendServiceHandler, opts ...connect.HandlerOption) (string, http.Handler) {
+	frontendServiceGetUserHandler := connect.NewUnaryHandler(
+		FrontendServiceGetUserProcedure,
+		svc.GetUser,
+		connect.WithSchema(frontendServiceGetUserMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
+	)
 	frontendServiceSaveUserHandler := connect.NewUnaryHandler(
 		FrontendServiceSaveUserProcedure,
 		svc.SaveUser,
@@ -101,6 +126,8 @@ func NewFrontendServiceHandler(svc FrontendServiceHandler, opts ...connect.Handl
 	)
 	return "/frontendapi.FrontendService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
+		case FrontendServiceGetUserProcedure:
+			frontendServiceGetUserHandler.ServeHTTP(w, r)
 		case FrontendServiceSaveUserProcedure:
 			frontendServiceSaveUserHandler.ServeHTTP(w, r)
 		default:
@@ -111,6 +138,10 @@ func NewFrontendServiceHandler(svc FrontendServiceHandler, opts ...connect.Handl
 
 // UnimplementedFrontendServiceHandler returns CodeUnimplemented from all methods.
 type UnimplementedFrontendServiceHandler struct{}
+
+func (UnimplementedFrontendServiceHandler) GetUser(context.Context, *connect.Request[_go.GetUserRequest]) (*connect.Response[_go.GetUserResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("frontendapi.FrontendService.GetUser is not implemented"))
+}
 
 func (UnimplementedFrontendServiceHandler) SaveUser(context.Context, *connect.Request[_go.SaveUserRequest]) (*connect.Response[_go.SaveUserResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("frontendapi.FrontendService.SaveUser is not implemented"))

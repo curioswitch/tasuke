@@ -3,7 +3,12 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import type { SaveUserRequest, SaveUserResponse } from "./frontend_pb.js";
+import type {
+  GetUserRequest,
+  GetUserResponse,
+  SaveUserRequest,
+  SaveUserResponse,
+} from "./frontend_pb.js";
 import type { MethodKind } from "@bufbuild/protobuf";
 
 /**
@@ -14,6 +19,17 @@ import type { MethodKind } from "@bufbuild/protobuf";
 export declare const FrontendService: {
   readonly typeName: "frontendapi.FrontendService";
   readonly methods: {
+    /**
+     * Gets information for the current user.
+     *
+     * @generated from rpc frontendapi.FrontendService.GetUser
+     */
+    readonly getUser: {
+      readonly name: "GetUser";
+      readonly I: typeof GetUserRequest;
+      readonly O: typeof GetUserResponse;
+      readonly kind: MethodKind.Unary;
+    };
     /**
      * Saves information for a user. This method works both for a new or existing user.
      * The user is identified by the firebase ID token included in the authorization header.

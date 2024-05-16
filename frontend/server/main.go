@@ -15,6 +15,7 @@ import (
 	frontendapi "github.com/curioswitch/tasuke/frontend/api/go"
 	"github.com/curioswitch/tasuke/frontend/api/go/frontendapiconnect"
 	"github.com/curioswitch/tasuke/frontend/server/internal/config"
+	"github.com/curioswitch/tasuke/frontend/server/internal/handler/getuser"
 	"github.com/curioswitch/tasuke/frontend/server/internal/handler/saveuser"
 	"github.com/curioswitch/tasuke/frontend/server/internal/service"
 )
@@ -97,8 +98,9 @@ func main() {
 	}
 	defer firestore.Close()
 
+	getUser := getuser.NewHandler(firestore)
 	saveUser := saveuser.NewHandler(firestore)
-	svc := service.New(saveUser)
+	svc := service.New(getUser, saveUser)
 
 	fbMW := firebaseauth.NewMiddleware(fbAuth)
 	fapiPath, fapiHandler := frontendapiconnect.NewFrontendServiceHandler(svc)
