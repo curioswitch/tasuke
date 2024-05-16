@@ -49,7 +49,7 @@ jobs:
         with:
           node-version-file: package.json
           cache: pnpm
-          cache-dependency-path: frontend/client/pnpm-lock.yaml
+          cache-dependency-path: pnpm-lock.yaml
 
       - name: install dependencies
         run: pnpm install
