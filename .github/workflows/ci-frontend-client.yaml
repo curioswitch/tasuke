@@ -67,5 +67,5 @@ jobs:
 
       - name: deploy app
         if: ${{ env.DOCKER_PUSH == 'yes' }}
-        run: pnpm firebase deploy
+        run: pnpm firebase --debug deploy
         working-directory: frontend/client
