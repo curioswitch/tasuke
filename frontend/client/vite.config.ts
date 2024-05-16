@@ -6,6 +6,7 @@ import { defineConfig } from "vite";
 export default defineConfig({
   plugins: [react({}), vike({ prerender: true })],
   server: {
+    port: 8080,
     proxy: {
       "/__/firebase": {
         target: "https://tasuke-dev.web.app",
