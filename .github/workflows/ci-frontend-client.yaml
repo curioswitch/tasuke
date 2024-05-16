@@ -64,6 +64,7 @@ jobs:
         with:
           workload_identity_provider: projects/${{ env.GCP_PROJECT_NUMBER }}/locations/global/workloadIdentityPools/github/providers/curioswitch
           project_id: ${{ env.GCP_PROJECT_ID }}
+          service_account: firebase-deployer@${{ env.GCP_PROJECT_ID }}.iam.gserviceaccount.com
 
       - name: deploy app
         if: ${{ env.DOCKER_PUSH == 'yes' }}
