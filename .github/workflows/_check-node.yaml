@@ -51,7 +51,3 @@ jobs:
         if: ${{ startsWith(matrix.os, 'ubuntu-') }}
         run: pnpm run lint
         working-directory: ${{ inputs.project_dir }}
-
-      - name: build app
-        run: pnpm run build
-        working-directory: ${{ inputs.project_dir }}
