@@ -28,6 +28,7 @@ type client struct {
 	store *firestore.Client
 }
 
+// GetDocument implements Client.
 func (c *client) GetDocument(ctx context.Context, collection string, path string, res any) error {
 	doc, err := c.store.Collection(collection).Doc(path).Get(ctx)
 	if err != nil {
