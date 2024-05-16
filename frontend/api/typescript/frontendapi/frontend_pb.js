@@ -30,13 +30,33 @@ export const User = /*@__PURE__*/ proto3.makeMessageType(
 );
 
 /**
+ * A request for FrontendService.GetUser.
+ *
+ * @generated from message frontendapi.GetUserRequest
+ */
+export const GetUserRequest = /*@__PURE__*/ proto3.makeMessageType(
+  "frontendapi.GetUserRequest",
+  [],
+);
+
+/**
+ * A response for FrontendService.GetUser.
+ *
+ * @generated from message frontendapi.GetUserResponse
+ */
+export const GetUserResponse = /*@__PURE__*/ proto3.makeMessageType(
+  "frontendapi.GetUserResponse",
+  () => [{ no: 1, name: "user", kind: "message", T: User }],
+);
+
+/**
  * A request for FrontendService.SaveUser.
  *
  * @generated from message frontendapi.SaveUserRequest
  */
 export const SaveUserRequest = /*@__PURE__*/ proto3.makeMessageType(
   "frontendapi.SaveUserRequest",
-  () => [{ no: 1, name: "user", kind: "message", T: User, opt: true }],
+  () => [{ no: 1, name: "user", kind: "message", T: User }],
 );
 
 /**

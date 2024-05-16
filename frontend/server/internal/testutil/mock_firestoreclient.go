@@ -21,6 +21,55 @@ func (_m *MockFirestoreClient) EXPECT() *MockFirestoreClient_Expecter {
 	return &MockFirestoreClient_Expecter{mock: &_m.Mock}
 }
 
+// GetDocument provides a mock function with given fields: ctx, collection, path, res
+func (_m *MockFirestoreClient) GetDocument(ctx context.Context, collection string, path string, res interface{}) error {
+	ret := _m.Called(ctx, collection, path, res)
+
+	if len(ret) == 0 {
+		panic("no return value specified for GetDocument")
+	}
+
+	var r0 error
+	if rf, ok := ret.Get(0).(func(context.Context, string, string, interface{}) error); ok {
+		r0 = rf(ctx, collection, path, res)
+	} else {
+		r0 = ret.Error(0)
+	}
+
+	return r0
+}
+
+// MockFirestoreClient_GetDocument_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'GetDocument'
+type MockFirestoreClient_GetDocument_Call struct {
+	*mock.Call
+}
+
+// GetDocument is a helper method to define mock.On call
+//   - ctx context.Context
+//   - collection string
+//   - path string
+//   - res interface{}
+func (_e *MockFirestoreClient_Expecter) GetDocument(ctx interface{}, collection interface{}, path interface{}, res interface{}) *MockFirestoreClient_GetDocument_Call {
+	return &MockFirestoreClient_GetDocument_Call{Call: _e.mock.On("GetDocument", ctx, collection, path, res)}
+}
+
+func (_c *MockFirestoreClient_GetDocument_Call) Run(run func(ctx context.Context, collection string, path string, res interface{})) *MockFirestoreClient_GetDocument_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		run(args[0].(context.Context), args[1].(string), args[2].(string), args[3].(interface{}))
+	})
+	return _c
+}
+
+func (_c *MockFirestoreClient_GetDocument_Call) Return(_a0 error) *MockFirestoreClient_GetDocument_Call {
+	_c.Call.Return(_a0)
+	return _c
+}
+
+func (_c *MockFirestoreClient_GetDocument_Call) RunAndReturn(run func(context.Context, string, string, interface{}) error) *MockFirestoreClient_GetDocument_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
 // SetDocument provides a mock function with given fields: ctx, collection, path, data
 func (_m *MockFirestoreClient) SetDocument(ctx context.Context, collection string, path string, data interface{}) error {
 	ret := _m.Called(ctx, collection, path, data)
