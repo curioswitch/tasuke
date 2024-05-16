@@ -22,9 +22,50 @@ permissions:
   contents: read
   id-token: write
 
+env:
+  GCP_PROJECT_ID: ${{ startsWith(github.ref_name, 'release/') && 'tasuke-prod' || 'tasuke-dev'}}
+  GCP_PROJECT_NUMBER: ${{ startsWith(github.ref_name, 'release/') && '840011577241' || '720364425367'}}
+
 jobs:
   check:
     uses: ./.github/workflows/_check-node.yaml
     with:
       project_dir: frontend/client
     secrets: inherit
+
+  deploy:
+    needs: check
+    runs-on: ubuntu-22.04
+
+    env:
+      DOCKER_PUSH: ${{ github.event_name != 'pull_request' && 'yes' || 'no' }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: package.json
+          cache: pnpm
+          cache-dependency-path: pnpm-lock.yaml
+
+      - name: install dependencies
+        run: pnpm install
+        working-directory: frontend/client
+
+      - name: build app
+        run: pnpm run build
+        working-directory: frontend/client
+
+      - if: ${{ env.DOCKER_PUSH == 'yes' }}
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: projects/${{ env.GCP_PROJECT_NUMBER }}/locations/global/workloadIdentityPools/github/providers/curioswitch
+          project_id: ${{ env.GCP_PROJECT_ID }}
+
+      - name: deploy app
+        if: ${{ env.DOCKER_PUSH == 'yes' }}
+        run: pnpm firebase deploy
+        working-directory: frontend/client
