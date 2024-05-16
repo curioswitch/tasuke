@@ -4,7 +4,7 @@ import type React from "react";
 import logoUrl from "../assets/logo.svg";
 import { Link } from "../components/Link.js";
 
-export default function LayoutDefault({
+export default function Layout({
   children,
 }: {
   children: React.ReactNode;

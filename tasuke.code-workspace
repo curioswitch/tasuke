@@ -27,6 +27,7 @@
       "source.organizeImports.biome": "explicit",
       "quickfix.biome": "explicit"
     },
+    "editor.formatOnSave": true,
     "editor.tabSize": 2,
     "gopls": {
       "formatting.gofumpt": true
@@ -35,31 +36,24 @@
     "prettier.requireConfig": true,
     // Multiple language syntax mysteriously doesn't reliably work.
     "[javascript]": {
-      "editor.formatOnSave": true,
       "editor.defaultFormatter": "biomejs.biome"
     },
     "[javascriptreact]": {
-      "editor.formatOnSave": true,
       "editor.defaultFormatter": "biomejs.biome"
     },
     "[json]": {
-      "editor.formatOnSave": true,
       "editor.defaultFormatter": "biomejs.biome"
     },
     "[jsonc]": {
-      "editor.formatOnSave": true,
       "editor.defaultFormatter": "biomejs.biome"
     },
     "[typescript]": {
-      "editor.formatOnSave": true,
       "editor.defaultFormatter": "biomejs.biome"
     },
     "[typescriptreact]": {
-      "editor.formatOnSave": true,
       "editor.defaultFormatter": "biomejs.biome"
     },
     "[yaml]": {
-      "editor.formatOnSave": true,
       "editor.defaultFormatter": "esbenp.prettier-vscode"
     }
   }
