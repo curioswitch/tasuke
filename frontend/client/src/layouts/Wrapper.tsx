@@ -1,4 +1,6 @@
-import { FirebaseProvider } from "../hooks/firebase";
+import "./styles.css";
+
+import { FirebaseProvider } from "@/hooks/firebase";
 
 export default function Wrapper({ children }: { children: React.ReactNode }) {
   return <FirebaseProvider>{children}</FirebaseProvider>;
