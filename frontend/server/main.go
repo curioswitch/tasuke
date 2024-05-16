@@ -3,13 +3,11 @@ package main
 import (
 	"context"
 	"errors"
-	"fmt"
 	"log"
 	"net/http"
 
 	firebase "firebase.google.com/go/v4"
 	"github.com/curioswitch/go-curiostack/server"
-	cstest "github.com/curioswitch/go-curiostack/testutil"
 	docshandler "github.com/curioswitch/go-docs-handler"
 	protodocs "github.com/curioswitch/go-docs-handler/plugins/proto"
 	"github.com/curioswitch/go-usegcp/middleware/firebaseauth"
@@ -47,18 +45,35 @@ func main() {
 			),
 		),
 		docshandler.WithInjectedScriptSupplier(func() string {
-			token, err := cstest.FirebaseIDToken(context.Background(), e2eTest1UID, "", conf.Google)
-			if err != nil {
-				log.Printf("Failed to get firebase token: %v", err)
-				return ""
+			script := (`
+			function include(url) {
+				return new Promise((resolve, reject) => {
+					var script = document.createElement('script');
+					script.type = 'text/javascript';
+					script.src = url;
+
+					script.onload = function() {
+						resolve({ script });
+					};
+
+					document.getElementsByTagName('head')[0].appendChild(script);
+				});
 			}
 
-			script := fmt.Sprintf(`
+			async function loadScripts() {
+				await include("https://alpha.tasuke.dev/__/firebase/8.10.1/firebase-app.js");
+				await include("https://alpha.tasuke.dev/__/firebase/8.10.1/firebase-auth.js");
+				await include("https://alpha.tasuke.dev/__/firebase/init.js");
+				firebase.auth();
+			}
+			loadScripts();
+
 			async function getAuthorization() {
-				return {"Authorization": "Bearer %s"};
+				const token = await firebase.auth().currentUser.getIdToken();
+				return {"Authorization": "Bearer " + token};
 			}
 			window.armeria.registerHeaderProvider(getAuthorization);
-			`, token)
+			`)
 			return script
 		}))
 	if err != nil {
