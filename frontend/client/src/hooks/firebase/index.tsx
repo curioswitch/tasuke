@@ -25,6 +25,13 @@ export function FirebaseProvider({ children }: { children: React.ReactNode }) {
     async function fetchConfig() {
       const response = await fetch("/__/firebase/init.json");
       const config = await response.json();
+
+      if (import.meta.env.MODE === "development") {
+        config.authDomain = "alpha.tasuke.dev";
+      } else {
+        config.authDomain = window.location.hostname;
+      }
+
       const app = initializeApp(config);
       const auth = getAuth(app);
       setState({ app, auth });

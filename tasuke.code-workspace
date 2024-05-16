@@ -19,7 +19,8 @@
       "bufbuild.vscode-buf",
       "esbenp.prettier-vscode",
       "github.vscode-github-actions",
-      "golang.go"
+      "golang.go",
+      "bradlc.vscode-tailwindcss"
     ]
   },
   "settings": {
@@ -29,6 +30,9 @@
     },
     "editor.formatOnSave": true,
     "editor.tabSize": 2,
+    "files.associations": {
+      "*.css": "tailwindcss"
+    },
     "gopls": {
       "formatting.gofumpt": true
     },
@@ -36,9 +40,6 @@
     "prettier.requireConfig": true,
     // Multiple language syntax mysteriously doesn't reliably work.
     "[javascript]": {
-      "editor.defaultFormatter": "biomejs.biome"
-    },
-    "[javascriptreact]": {
       "editor.defaultFormatter": "biomejs.biome"
     },
     "[json]": {
@@ -51,7 +52,10 @@
       "editor.defaultFormatter": "biomejs.biome"
     },
     "[typescriptreact]": {
-      "editor.defaultFormatter": "biomejs.biome"
+      "editor.defaultFormatter": "biomejs.biome",
+      "editor.quickSuggestions": {
+        "strings": "on"
+      }
     },
     "[yaml]": {
       "editor.defaultFormatter": "esbenp.prettier-vscode"
