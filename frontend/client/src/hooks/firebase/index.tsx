@@ -7,12 +7,13 @@ interface FirebaseState {
   app: FirebaseApp;
   auth: Auth;
   user?: User;
+  userResolved?: boolean;
 }
 
 const FirebaseContext = createContext<FirebaseState | undefined>(undefined);
 
-export function useAuth(): Auth | undefined {
-  return useContext(FirebaseContext)?.auth;
+export function useFirebase(): FirebaseState | undefined {
+  return useContext(FirebaseContext);
 }
 
 export function useFirebaseUser(): User | undefined {
@@ -62,7 +63,7 @@ export function FirebaseProvider({ children }: { children: React.ReactNode }) {
 
     auth.onAuthStateChanged((u) => {
       const user = u ?? undefined;
-      setState({ app, auth, user });
+      setState({ app, auth, user, userResolved: true });
     });
   }, [data, error]);
 
