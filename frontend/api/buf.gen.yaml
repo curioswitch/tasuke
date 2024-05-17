@@ -26,3 +26,9 @@ plugins:
       - "go"
       - "run"
       - "github.com/wasilibs/go-protoc-gen-connect-es/cmd/protoc-gen-connect-es@v1.4.0"
+  - plugin: connect-query
+    out: typescript
+    path:
+      - "go"
+      - "run"
+      - "github.com/wasilibs/go-protoc-gen-connect-query/cmd/protoc-gen-connect-query@v1.4.0"

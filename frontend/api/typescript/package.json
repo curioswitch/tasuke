@@ -1,5 +1,5 @@
 {
-  "name": "tasuke",
+  "name": "@tasuke/frontendapi",
   "version": "1.0.0",
   "license": "MIT-2.0",
   "scripts": {

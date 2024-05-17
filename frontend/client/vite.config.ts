@@ -12,6 +12,10 @@ export default defineConfig({
         target: "https://tasuke-dev.web.app",
         changeOrigin: true,
       },
+      "/frontendapi.FrontendService": {
+        target: "https://frontend-server-b3atr52eha-uc.a.run.app",
+        changeOrigin: true,
+      },
     },
   },
   resolve: {
