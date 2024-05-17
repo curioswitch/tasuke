@@ -4,7 +4,6 @@ import { useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { H1, P } from "@/components/ui/typography";
 import { useFirebase } from "@/hooks/firebase";
-import { useUser } from "@/hooks/rpc";
 
 export default function Page() {
   const firebase = useFirebase();
