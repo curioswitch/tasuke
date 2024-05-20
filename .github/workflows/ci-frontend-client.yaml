@@ -58,6 +58,8 @@ jobs:
       - name: build app
         run: pnpm run build
         working-directory: frontend/client
+        env:
+          PUBLIC_ENV__FIREBASE_APP: ${{ env.GCP_PROJECT_ID }}
 
       - if: ${{ env.DOCKER_PUSH == 'yes' }}
         uses: google-github-actions/auth@v2

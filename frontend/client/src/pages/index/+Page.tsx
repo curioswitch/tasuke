@@ -1,20 +1,17 @@
-import { GithubAuthProvider, signInWithPopup } from "firebase/auth";
+import { getApp } from "firebase/app";
+import { GithubAuthProvider, getAuth, signInWithPopup } from "firebase/auth";
 import { useCallback } from "react";
 
 import { Button } from "@/components/ui/button";
 import { H1, P } from "@/components/ui/typography";
-import { useFirebase } from "@/hooks/firebase";
+import { useFirebaseState } from "@/hooks/firebase";
 
 export default function Page() {
-  const firebase = useFirebase();
+  const fbState = useFirebaseState();
 
   const onSignUpClick = useCallback(() => {
-    if (!firebase) {
-      return;
-    }
-
-    signInWithPopup(firebase.auth, new GithubAuthProvider());
-  }, [firebase]);
+    signInWithPopup(getAuth(getApp()), new GithubAuthProvider());
+  }, []);
 
   return (
     <>
@@ -46,7 +43,7 @@ export default function Page() {
         <P>
           If you are interested in helping with code reviews, create an account.
         </P>
-        {firebase?.userResolved && !firebase.user ? (
+        {fbState?.userResolved && !fbState.user ? (
           <Button onClick={onSignUpClick}>Sign up with GitHub</Button>
         ) : null}
       </div>

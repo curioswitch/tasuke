@@ -9,10 +9,10 @@ const queryClient = new QueryClient();
 
 export default function Wrapper({ children }: { children: React.ReactNode }) {
   return (
-    <QueryClientProvider client={queryClient}>
-      <FirebaseProvider>
+    <FirebaseProvider>
+      <QueryClientProvider client={queryClient}>
         <FrontendServiceProvider>{children}</FrontendServiceProvider>
-      </FirebaseProvider>
-    </QueryClientProvider>
+      </QueryClientProvider>
+    </FirebaseProvider>
   );
 }
