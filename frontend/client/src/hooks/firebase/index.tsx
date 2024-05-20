@@ -6,7 +6,6 @@ import { getFirebaseConfig } from "./config";
 
 const app = initializeApp(getFirebaseConfig());
 const auth = getAuth(app);
-auth.authStateReady;
 
 interface FirebaseState {
   user?: User;
