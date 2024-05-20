@@ -7,8 +7,9 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useFirebase, useFirebaseUser } from "@/hooks/firebase";
-import { type User as FirebaseUser, signOut } from "firebase/auth";
+import { useFirebaseUser } from "@/hooks/firebase";
+import { getApp } from "firebase/app";
+import { type User as FirebaseUser, getAuth, signOut } from "firebase/auth";
 import { LogOut, User } from "lucide-react";
 import { forwardRef, useCallback } from "react";
 
@@ -28,16 +29,15 @@ export default function Layout({
 }: {
   children: React.ReactNode;
 }) {
-  const firebase = useFirebase();
   const fbUser = useFirebaseUser();
 
   const onLogOutClick = useCallback(() => {
-    if (!firebase || !fbUser) {
+    if (!fbUser) {
       return;
     }
 
-    signOut(firebase.auth);
-  }, [firebase, fbUser]);
+    signOut(getAuth(getApp()));
+  }, [fbUser]);
 
   return (
     <>
