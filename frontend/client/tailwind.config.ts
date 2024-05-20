@@ -8,8 +8,14 @@ const config = {
     container: {
       center: true,
       padding: "2rem",
+      // This app is mostly a landing page with a simple profile editor, so
+      // it should be best to constrain the width to smaller sizes than
+      // Tailwind's default. Some landing page recommendations mention 960px
+      // so we go with it for now as the max size.
       screens: {
-        "2xl": "1400px",
+        sm: "640px",
+        md: "748px",
+        lg: "960px",
       },
     },
     extend: {
