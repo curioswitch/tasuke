@@ -14,3 +14,11 @@ components
 - Frontend API server (BFF) for storing registration information such as allowed review load
 - GitHub App / webhook to listen for code review requests from registered repositories
   and match with a code reviewer based on registration settings
+
+## Related repositories
+
+- [go-curiostack](https://github.com/curioswitch/go-curiostack) - the coding stack used by
+  the project, intended to be reusable easily for any new production-grade project
+- [tasukeinfra](https://github.com/curioswitch/tasukeinfra) - the Terraform configuration
+  for all the infrastructure for tasuke, on top of some bootstrapping in
+  [curioinfra](https://github.com/curioswitch/curioinfra).
