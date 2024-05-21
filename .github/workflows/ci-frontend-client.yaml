@@ -70,5 +70,5 @@ jobs:
 
       - name: deploy app
         if: ${{ env.DOCKER_PUSH == 'yes' }}
-        run: pnpm firebase deploy
+        run: pnpm firebase --project=${{ env.GCP_PROJECT_ID }} deploy
         working-directory: frontend/client

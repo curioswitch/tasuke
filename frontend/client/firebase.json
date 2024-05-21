@@ -1,6 +1,15 @@
 {
   "hosting": {
     "public": "dist/client",
-    "ignore": ["firebase.json", "**/.*", "**/node_modules/**"]
+    "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+    "rewrites": [
+      {
+        "source": "/frontendapi.FrontendService/**",
+        "run": {
+          "serviceId": "frontend-server",
+          "region": "us-central1"
+        }
+      }
+    ]
   }
 }
