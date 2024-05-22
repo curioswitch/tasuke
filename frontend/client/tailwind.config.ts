@@ -5,7 +5,7 @@ import colors from "tailwindcss/colors";
 const config = {
   content: [
     "./src/**/*.{ts,tsx}",
-    "./node_modules/@nextui-org/theme/dist/components/(avatar|button|dropdown|input|ripple|spinner|menu|popover).js",
+    "./node_modules/@nextui-org/theme/dist/components/(avatar|button|chip|dropdown|input|select|ripple|spinner|menu|popover|listbox|scroll-shadow).js",
   ],
   darkMode: ["class"],
   plugins: [
