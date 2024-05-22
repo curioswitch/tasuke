@@ -2,6 +2,7 @@ import { Button } from "@nextui-org/button";
 import { getApp } from "firebase/app";
 import { GithubAuthProvider, getAuth, signInWithPopup } from "firebase/auth";
 import { useCallback } from "react";
+import { BiLogoGithub as LogoGithub } from "react-icons/bi";
 import { navigate } from "vike/client/router";
 
 import { useFirebase } from "@/hooks/firebase";
@@ -37,17 +38,41 @@ export default function Page() {
           issue in OSS - let's see if we can make it at least a little less
           lonely.
         </p>
+        <h2>Getting Started</h2>
+        <h3>For code reviewers</h3>
         <p>
-          If you are interested in helping with code reviews, create an account!
+          {fbState?.userResolved && !fbState.user ? (
+            <>
+              <p>
+                If you are interested in helping with code reviews, create an
+                account and submit your preferences for reviewing.
+              </p>
+              <Button
+                className="bg-primary-500 text-content1"
+                onClick={onSignUpClick}
+                startContent={<LogoGithub className="size-6" />}
+              >
+                Sign up with GitHub
+              </Button>
+            </>
+          ) : (
+            <>
+              <p>
+                If you are interested in helping with code reviews, submit or
+                edit your preferences for reviewing.
+              </p>
+              <p>
+                <a href="/settings">Edit your preferences</a>
+              </p>
+            </>
+          )}
         </p>
-        {fbState?.userResolved && !fbState.user ? (
-          <Button
-            className="bg-primary-500 text-content1"
-            onClick={onSignUpClick}
-          >
-            Sign up with GitHub
-          </Button>
-        ) : null}
+        <h3>For maintainers</h3>
+        <p>
+          If you have a repository you could use help with on code review,
+          register the Tasuke GitHub app.
+        </p>
+        <p>Under construction...</p>
       </div>
     </>
   );

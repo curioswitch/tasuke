@@ -6,6 +6,7 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@nextui-org/button";
 import { Input } from "@nextui-org/input";
+import { Spinner } from "@nextui-org/spinner";
 import { useQueryClient } from "@tanstack/react-query";
 import {
   SaveUserRequest,
@@ -40,6 +41,15 @@ const formSchema = z
   .required();
 
 function SettingsForm({ user }: { user?: User }) {
+  const queryClient = useQueryClient();
+  const doSaveUser = useMutation(saveUser, {
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: createConnectQueryKey(getUser),
+      });
+    },
+  });
+
   const {
     control,
     register,
@@ -50,15 +60,6 @@ function SettingsForm({ user }: { user?: User }) {
     defaultValues: {
       programmingLanguageIds: user?.programmingLanguageIds ?? [],
       maxOpenReviews: user?.maxOpenReviews ?? 1,
-    },
-  });
-
-  const queryClient = useQueryClient();
-  const doSaveUser = useMutation(saveUser, {
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: createConnectQueryKey(getUser),
-      });
     },
   });
 
@@ -74,7 +75,7 @@ function SettingsForm({ user }: { user?: User }) {
   );
 
   return (
-    <form onSubmit={handleSubmit(onFormSubmit)} className="space-y-8">
+    <form onSubmit={handleSubmit(onFormSubmit)} className="space-y-8 not-prose">
       <Input
         {...register("maxOpenReviews", { valueAsNumber: true })}
         type="number"
@@ -122,9 +123,16 @@ function SettingsForm({ user }: { user?: User }) {
           </div>
         )}
       />
-      <Button type="submit" className="bg-primary-500 text-content1">
-        Submit
-      </Button>
+      <div className="flex">
+        <Button
+          type="submit"
+          className="bg-primary-500 text-content1"
+          disabled={doSaveUser.isPending}
+        >
+          Submit
+        </Button>
+        {doSaveUser.isPending && <Spinner className="text-content1 ml-3" />}
+      </div>
     </form>
   );
 }
@@ -136,19 +144,25 @@ export default function Page() {
     enabled: queryClient.getDefaultOptions().queries?.enabled,
   });
 
-  const { data, isSuccess } = result;
+  const { data, isPending } = result;
 
-  const user = data?.user;
-
-  if (!isSuccess) {
+  if (isPending) {
     // TODO: Better loading screen.
     return <div>Loading...</div>;
   }
+
+  const user = data?.user;
 
   return (
     <>
       <div className="col-span-4 md:col-span-8 lg:col-span-12">
         <h1>Settings</h1>
+        {!user && (
+          <p>
+            Register your code review preferences to start receiving review
+            requests.
+          </p>
+        )}
         <SettingsForm user={user} />
       </div>
     </>
