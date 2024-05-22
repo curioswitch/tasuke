@@ -5,7 +5,8 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { type User, getUser } from "@tasuke/frontendapi";
 import type { User as FirebaseUser } from "firebase/auth";
 import { useMemo } from "react";
-import { useFirebaseState, useFirebaseUser } from "../firebase";
+
+import { useFirebase, useFirebaseUser } from "@/hooks/firebase";
 
 function createFirebaseAuthInterceptor(user: FirebaseUser): Interceptor {
   return (next) => async (request) => {
@@ -28,7 +29,7 @@ export function useUser(): User | undefined {
 export function FrontendServiceProvider({
   children,
 }: { children: React.ReactNode }) {
-  const fbUser = useFirebaseState()?.user;
+  const fbUser = useFirebase()?.user;
 
   const transport = useMemo(() => {
     const interceptors = fbUser ? [createFirebaseAuthInterceptor(fbUser)] : [];

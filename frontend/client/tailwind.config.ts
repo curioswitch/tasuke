@@ -1,4 +1,5 @@
 import { nextui } from "@nextui-org/theme";
+import typography from "@tailwindcss/typography";
 import type { Config } from "tailwindcss";
 import colors from "tailwindcss/colors";
 
@@ -19,6 +20,7 @@ const config = {
         },
       },
     }),
+    typography,
   ],
   theme: {
     // This app is mostly a landing page with a simple profile editor, so

@@ -2,30 +2,29 @@ import { Button } from "@nextui-org/button";
 import { getApp } from "firebase/app";
 import { GithubAuthProvider, getAuth, signInWithPopup } from "firebase/auth";
 import { useCallback } from "react";
+import { navigate } from "vike/client/router";
 
-import { H1, P } from "@/components/ui/typography";
-import { useFirebaseState } from "@/hooks/firebase";
+import { useFirebase } from "@/hooks/firebase";
 
 export default function Page() {
-  const fbState = useFirebaseState();
+  const fbState = useFirebase();
 
-  const onSignUpClick = useCallback(() => {
-    signInWithPopup(getAuth(getApp()), new GithubAuthProvider());
+  const onSignUpClick = useCallback(async () => {
+    await signInWithPopup(getAuth(getApp()), new GithubAuthProvider());
+    navigate("/settings");
   }, []);
 
   return (
     <>
       <div className="col-span-4 md:col-span-8 lg:col-span-12">
-        <H1>Tasuke</H1>
-      </div>
-      <div className="col-span-4 md:col-span-8 lg:col-span-12">
-        <P>
+        <h1>Tasuke</h1>
+        <p className="lead">
           tasuke is short for the Japanese 手助け (tedasuke), meaning to give a
           helping hand. It aims to support OSS developers in giving each other a
           helping hand by connecting code reviewers to PRs in otherwise
           unrelated OSS repositories.
-        </P>
-        <P>
+        </p>
+        <p>
           Everyone knows the{" "}
           <a
             href="https://xkcd.com/2347/"
@@ -37,12 +36,10 @@ export default function Page() {
           </a>{" "}
           issue in OSS - let's see if we can make it at least a little less
           lonely.
-        </P>
-      </div>
-      <div className="col-span-4 md:col-span-8 lg:col-span-12">
-        <P>
+        </p>
+        <p>
           If you are interested in helping with code reviews, create an account!
-        </P>
+        </p>
         {fbState?.userResolved && !fbState.user ? (
           <Button
             className="bg-primary-500 text-content1"
