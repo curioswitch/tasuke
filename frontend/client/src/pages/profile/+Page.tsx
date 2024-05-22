@@ -1,30 +1,19 @@
 import { useQuery } from "@connectrpc/connect-query";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Button } from "@nextui-org/button";
+import { Input } from "@nextui-org/input";
 import { useQueryClient } from "@tanstack/react-query";
 import { getUser } from "@tasuke/frontendapi";
 import { useCallback } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
-import { Button } from "@/components/ui/button";
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import { H1 } from "@/components/ui/typography";
 
 const formSchema = z
   .object({
     programmingLanguageIds: z.array(z.number().int()),
-    maxOpenReviews: z.preprocess((val) => {
-      return val !== "" ? Number(val) : val;
-    }, z.number().int()),
+    maxOpenReviews: z.number().int().nonnegative(),
   })
   .required();
 
@@ -39,7 +28,11 @@ export default function Page() {
 
   const user = data?.user;
 
-  const form = useForm<z.infer<typeof formSchema>>({
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       programmingLanguageIds: user?.programmingLanguageIds ?? [],
@@ -62,31 +55,19 @@ export default function Page() {
         <H1>Profile</H1>
       </div>
       <div className="col-span-4 md:col-span-8 lg:col-span-12">
-        <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onFormSubmit)}
-            className="space-y-8"
-          >
-            <FormField
-              control={form.control}
-              name="maxOpenReviews"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Maximum open reviews</FormLabel>
-                  <FormControl>
-                    <Input type="number" {...field} />
-                  </FormControl>
-                  <FormDescription>
-                    Should be at least 1 to help with reviews, but feel free to
-                    set to 0 on breaks.
-                  </FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <Button type="submit">Submit</Button>
-          </form>
-        </Form>
+        <form onSubmit={handleSubmit(onFormSubmit)} className="space-y-8">
+          <Input
+            {...register("maxOpenReviews", { valueAsNumber: true })}
+            type="number"
+            label="Maximum open reviews"
+            description="Should be at least 1 to help with reviews, but feel free to set to 0 on breaks."
+            isInvalid={!!errors.maxOpenReviews}
+            errorMessage={errors.maxOpenReviews?.message}
+          />
+          <Button type="submit" className="bg-primary-500 text-content1">
+            Submit
+          </Button>
+        </form>
       </div>
     </>
   );

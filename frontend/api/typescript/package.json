@@ -2,6 +2,7 @@
   "name": "@tasuke/frontendapi",
   "version": "1.0.0",
   "license": "MIT-2.0",
+  "type": "module",
   "scripts": {
     "format": "biome format --write . && biome lint --apply-unsafe . && prettier --write ."
   },
