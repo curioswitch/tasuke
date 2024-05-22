@@ -1,8 +1,8 @@
+import { Button } from "@nextui-org/button";
 import { getApp } from "firebase/app";
 import { GithubAuthProvider, getAuth, signInWithPopup } from "firebase/auth";
 import { useCallback } from "react";
 
-import { Button } from "@/components/ui/button";
 import { H1, P } from "@/components/ui/typography";
 import { useFirebaseState } from "@/hooks/firebase";
 
@@ -41,10 +41,15 @@ export default function Page() {
       </div>
       <div className="col-span-4 md:col-span-8 lg:col-span-12">
         <P>
-          If you are interested in helping with code reviews, create an account.
+          If you are interested in helping with code reviews, create an account!
         </P>
         {fbState?.userResolved && !fbState.user ? (
-          <Button onClick={onSignUpClick}>Sign up with GitHub</Button>
+          <Button
+            className="bg-primary-500 text-content1"
+            onClick={onSignUpClick}
+          >
+            Sign up with GitHub
+          </Button>
         ) : null}
       </div>
     </>

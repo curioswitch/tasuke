@@ -1,28 +1,17 @@
-import type React from "react";
-
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Avatar } from "@nextui-org/avatar";
 import {
+  Dropdown,
+  DropdownItem,
   DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { useFirebaseUser } from "@/hooks/firebase";
+  DropdownTrigger,
+} from "@nextui-org/dropdown";
 import { getApp } from "firebase/app";
-import { type User as FirebaseUser, getAuth, signOut } from "firebase/auth";
-import { LogOut, User } from "lucide-react";
-import { forwardRef, useCallback } from "react";
+import { getAuth, signOut } from "firebase/auth";
+import type React from "react";
+import { useCallback } from "react";
+import { SlLogout, SlUser } from "react-icons/sl";
 
-const UserAvatar = forwardRef(
-  ({ fbUser, ...props }: { fbUser?: FirebaseUser }, ref) => {
-    return (
-      <Avatar ref={ref} {...props}>
-        <AvatarImage src={fbUser?.photoURL} />
-        <AvatarFallback />
-      </Avatar>
-    );
-  },
-);
+import { useFirebaseUser } from "@/hooks/firebase";
 
 export default function Layout({
   children,
@@ -46,23 +35,26 @@ export default function Layout({
           <div className="grid grid-cols-4 gap-6 md:grid-cols-8 lg:grid-cols-12">
             <div className="flex justify-end col-span-4 md:col-span-8 lg:col-span-12">
               {fbUser ? (
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild className="cursor-pointer">
-                    <UserAvatar fbUser={fbUser} />
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent>
-                    <DropdownMenuItem>
-                      <User className="mr-2 h-4 w-4" />
+                <Dropdown>
+                  <DropdownTrigger className="cursor-pointer">
+                    <Avatar src={fbUser.photoURL ?? undefined} />
+                  </DropdownTrigger>
+                  <DropdownMenu>
+                    <DropdownItem
+                      startContent={<SlUser className="mr-2 h-4 w-4" />}
+                    >
                       <span>Profile</span>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem onClick={onLogOutClick}>
-                      <LogOut className="mr-2 h-4 w-4" />
+                    </DropdownItem>
+                    <DropdownItem
+                      onClick={onLogOutClick}
+                      startContent={<SlLogout className="mr-2 h-4 w-4" />}
+                    >
                       <span>Log out</span>
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
+                    </DropdownItem>
+                  </DropdownMenu>
+                </Dropdown>
               ) : (
-                <UserAvatar fbUser={fbUser} />
+                <Avatar src={undefined} />
               )}
             </div>
             {children}
