@@ -16,18 +16,24 @@ plugins:
       - "connectrpc.com/connect/cmd/protoc-gen-connect-go@v1.16.1"
   - plugin: es
     out: typescript
+    opt:
+      - target=ts
     path:
       - "go"
       - "run"
       - "github.com/wasilibs/go-protoc-gen-es/cmd/protoc-gen-es@v1.9.0"
   - plugin: connect-es
     out: typescript
+    opt:
+      - target=ts
     path:
       - "go"
       - "run"
       - "github.com/wasilibs/go-protoc-gen-connect-es/cmd/protoc-gen-connect-es@v1.4.0"
   - plugin: connect-query
     out: typescript
+    opt:
+      - target=ts
     path:
       - "go"
       - "run"
