@@ -14,7 +14,7 @@ interface FirebaseState {
 
 const FirebaseContext = createContext<FirebaseState | undefined>(undefined);
 
-export function useFirebaseState(): FirebaseState | undefined {
+export function useFirebase(): FirebaseState | undefined {
   return useContext(FirebaseContext);
 }
 

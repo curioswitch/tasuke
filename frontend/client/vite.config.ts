@@ -9,11 +9,11 @@ export default defineConfig({
     port: 8080,
     proxy: {
       "/__/firebase": {
-        target: "https://tasuke-dev.web.app",
+        target: "https://alpha.tasuke.dev",
         changeOrigin: true,
       },
       "/frontendapi.FrontendService": {
-        target: "https://frontend-server-b3atr52eha-uc.a.run.app",
+        target: "https://alpha.tasuke.dev",
         changeOrigin: true,
       },
     },

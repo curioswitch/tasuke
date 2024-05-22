@@ -18,8 +18,6 @@ import { Controller, useForm } from "react-hook-form";
 import Select from "react-select";
 import { z } from "zod";
 
-import { H1 } from "@/components/ui/typography";
-
 import languages from "./languages.json";
 
 const languageOptions = Object.entries(languages)
@@ -150,9 +148,7 @@ export default function Page() {
   return (
     <>
       <div className="col-span-4 md:col-span-8 lg:col-span-12">
-        <H1>Settings</H1>
-      </div>
-      <div className="col-span-4 md:col-span-8 lg:col-span-12">
+        <h1>Settings</h1>
         <SettingsForm user={user} />
       </div>
     </>
