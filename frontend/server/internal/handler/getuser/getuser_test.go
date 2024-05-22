@@ -6,10 +6,13 @@ import (
 	"testing"
 	"time"
 
+	"connectrpc.com/connect"
 	"firebase.google.com/go/v4/auth"
 	fbatestutil "github.com/curioswitch/go-usegcp/middleware/firebaseauth/testutil"
 	"github.com/stretchr/testify/mock"
 	"github.com/stretchr/testify/require"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 
 	frontendapi "github.com/curioswitch/tasuke/frontend/api/go"
 	"github.com/curioswitch/tasuke/frontend/server/internal/model"
@@ -18,13 +21,14 @@ import (
 
 func TestHandler(t *testing.T) {
 	tests := []struct {
-		name              string
-		uid               string
-		document          *model.User
-		createDocumentErr error
+		name           string
+		uid            string
+		document       *model.User
+		getDocumentErr error
 
-		res *frontendapi.GetUserResponse
-		err error
+		res  *frontendapi.GetUserResponse
+		err  error
+		code connect.Code
 	}{
 		{
 			name: "success",
@@ -43,11 +47,20 @@ func TestHandler(t *testing.T) {
 			},
 		},
 		{
+			name: "not found",
+			uid:  "user-id",
+
+			getDocumentErr: status.Errorf(codes.NotFound, "document not found"),
+			err:            errUserNotFound,
+			code:           connect.CodeNotFound,
+		},
+		{
 			name: "firestore error",
 			uid:  "user-id",
 
-			createDocumentErr: errors.New("internal error"),
-			err:               errors.New("getuser: failed to get user document"),
+			getDocumentErr: errors.New("internal error"),
+			err:            errors.New("getuser: failed to get user document"),
+			code:           connect.CodeUnknown,
 		},
 	}
 
@@ -59,8 +72,8 @@ func TestHandler(t *testing.T) {
 				GetDocument(mock.Anything, "users", tc.uid, mock.Anything).
 				RunAndReturn(func(_ context.Context, _ string, _ string, res interface{}) error {
 					switch {
-					case tc.createDocumentErr != nil:
-						return tc.createDocumentErr
+					case tc.getDocumentErr != nil:
+						return tc.getDocumentErr
 					default:
 						*(res.(*model.User)) = *tc.document
 						return nil
@@ -81,6 +94,9 @@ func TestHandler(t *testing.T) {
 			} else {
 				require.NoError(t, err)
 				require.Equal(t, tc.res, res)
+			}
+			if tc.code != 0 {
+				require.Equal(t, tc.code, connect.CodeOf(err))
 			}
 		})
 	}
