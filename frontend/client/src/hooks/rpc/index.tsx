@@ -1,12 +1,13 @@
-import type { Interceptor } from "@connectrpc/connect";
+import { Code, ConnectError, type Interceptor } from "@connectrpc/connect";
 import { TransportProvider, useQuery } from "@connectrpc/connect-query";
 import { createConnectTransport } from "@connectrpc/connect-web";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { type User, getUser } from "@tasuke/frontendapi";
 import type { User as FirebaseUser } from "firebase/auth";
 import { useMemo } from "react";
 
-import { useFirebase, useFirebaseUser } from "@/hooks/firebase";
+import { useFirebase } from "@/hooks/firebase";
+
+const MAX_RETRIES = 3;
 
 function createFirebaseAuthInterceptor(user: FirebaseUser): Interceptor {
   return (next) => async (request) => {
@@ -16,14 +17,18 @@ function createFirebaseAuthInterceptor(user: FirebaseUser): Interceptor {
   };
 }
 
-export function useUser(): User | undefined {
-  const fbUser = useFirebaseUser();
-
-  const { data } = useQuery(getUser, undefined, {
-    enabled: !!fbUser,
-  });
-
-  return data?.user;
+function canRetry(error: Error): boolean {
+  switch (ConnectError.from(error).code) {
+    case Code.InvalidArgument:
+    case Code.NotFound:
+    case Code.AlreadyExists:
+    case Code.PermissionDenied:
+    case Code.Unimplemented:
+    case Code.Unauthenticated:
+      return false;
+    default:
+      return true;
+  }
 }
 
 export function FrontendServiceProvider({
@@ -51,6 +56,14 @@ export function FrontendServiceProvider({
       defaultOptions: {
         queries: {
           enabled: !!fbUser,
+          refetchOnWindowFocus: false,
+          retry: (failureCount, error) => {
+            if (failureCount > MAX_RETRIES) {
+              return false;
+            }
+
+            return canRetry(error);
+          },
         },
       },
     });
