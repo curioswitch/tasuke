@@ -32,7 +32,15 @@ jobs:
       - uses: actions/setup-go@v5
         with:
           go-version-file: go.work
-          cache-dependency-path: "${{ inputs.project_dir }}/**/go.sum"
+          # We have different go run commands between _check-go and _docker-go, but execute different
+          # commands with go run (ko in this file). If we use the same cache-dependency-path for both,
+          # this job will never have additional commands cached. Some setup actions have a string cache
+          # key prefix option, but setup-go doesn't, so we workaround by adding go.mod. We know it is
+          # basically a 1:1 mapping with go.sum, while also being able to change the hash to allow
+          # the two jobs to have different cache keys.
+          cache-dependency-path: |
+            "${{ inputs.project_dir }}/**/go.sum"
+            "${{ inputs.project_dir }}/go.mod"
 
 
       - id: google-auth
