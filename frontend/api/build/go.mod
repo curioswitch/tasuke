@@ -1,4 +1,4 @@
-module build
+module github.com/curioswitch/tasuke/frontend/api/build
 
 go 1.22
 
