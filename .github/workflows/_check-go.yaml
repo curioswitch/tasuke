@@ -47,9 +47,9 @@ jobs:
         # We don't have OS-specific code so would be completely repetitive to run
         # lint on all of them.
         if: ${{ startsWith(matrix.os, 'ubuntu-') }}
-        run: go run build lint
+        run: go run ./build lint
         working-directory: ${{ inputs.project_dir }}
 
       - name: run tests
-        run: go run build test
+        run: go run ./build test
         working-directory: ${{ inputs.project_dir }}

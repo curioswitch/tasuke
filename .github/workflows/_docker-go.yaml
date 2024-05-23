@@ -18,7 +18,7 @@ env:
 
 jobs:
   docker:
-    # TODO: We cannot use the normal `go run build docker` to verify docker builds work outside of
+    # TODO: We cannot use the normal `go run ./build docker` to verify docker builds work outside of
     # linux because GitHub runners only enable Docker on ubuntu runners. See if we can output to
     # tarball instead as a workaround.
     runs-on: ubuntu-22.04
@@ -32,7 +32,15 @@ jobs:
       - uses: actions/setup-go@v5
         with:
           go-version-file: go.work
-          cache-dependency-path: "${{ inputs.project_dir }}/**/go.sum"
+          # We have different go run commands between _check-go and _docker-go, but execute different
+          # commands with go run (ko in this file). If we use the same cache-dependency-path for both,
+          # this job will never have additional commands cached. Some setup actions have a string cache
+          # key prefix option, but setup-go doesn't, so we workaround by adding go.mod. We know it is
+          # basically a 1:1 mapping with go.sum, while also being able to change the hash to allow
+          # the two jobs to have different cache keys.
+          cache-dependency-path: |
+            ${{ inputs.project_dir }}/**/go.sum
+            ${{ inputs.project_dir }}/go.mod
 
 
       - id: google-auth
@@ -62,7 +70,7 @@ jobs:
 
       - name: Build and push image
         working-directory: ${{ inputs.project_dir }}
-        run: go run build -v --docker-tags ${{ steps.docker-meta.outputs.tags }} --docker-labels ${{ steps.docker-meta.outputs.labels }} ${{ env.DOCKER_PUSH == 'yes' && 'push' || 'docker' }}
+        run: go run ./build -v --docker-tags ${{ steps.docker-meta.outputs.tags }} --docker-labels ${{ steps.docker-meta.outputs.labels }} ${{ env.DOCKER_PUSH == 'yes' && 'push' || 'docker' }}
 
       - name: Deploy service
         if: ${{ env.DOCKER_PUSH == 'yes' }}
