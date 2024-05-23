@@ -18,7 +18,7 @@ env:
 
 jobs:
   docker:
-    # TODO: We cannot use the normal `go run build docker` to verify docker builds work outside of
+    # TODO: We cannot use the normal `go run ./build docker` to verify docker builds work outside of
     # linux because GitHub runners only enable Docker on ubuntu runners. See if we can output to
     # tarball instead as a workaround.
     runs-on: ubuntu-22.04
@@ -62,7 +62,7 @@ jobs:
 
       - name: Build and push image
         working-directory: ${{ inputs.project_dir }}
-        run: go run build -v --docker-tags ${{ steps.docker-meta.outputs.tags }} --docker-labels ${{ steps.docker-meta.outputs.labels }} ${{ env.DOCKER_PUSH == 'yes' && 'push' || 'docker' }}
+        run: go run ./build -v --docker-tags ${{ steps.docker-meta.outputs.tags }} --docker-labels ${{ steps.docker-meta.outputs.labels }} ${{ env.DOCKER_PUSH == 'yes' && 'push' || 'docker' }}
 
       - name: Deploy service
         if: ${{ env.DOCKER_PUSH == 'yes' }}
