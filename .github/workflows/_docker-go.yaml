@@ -39,8 +39,8 @@ jobs:
           # basically a 1:1 mapping with go.sum, while also being able to change the hash to allow
           # the two jobs to have different cache keys.
           cache-dependency-path: |
-            "${{ inputs.project_dir }}/**/go.sum"
-            "${{ inputs.project_dir }}/go.mod"
+            ${{ inputs.project_dir }}/**/go.sum
+            ${{ inputs.project_dir }}/go.mod
 
 
       - id: google-auth
