@@ -33,8 +33,8 @@ github.com/cenkalti/backoff/v4 v4.3.0/go.mod h1:Y3VNntkOUPxTVeUxJ/G5vcM//AlwfmyY
 github.com/census-instrumentation/opencensus-proto v0.2.1/go.mod h1:f6KPmirojxKA12rnyqOA5BBL4O983OfeGPqjHWSTneU=
 github.com/client9/misspell v0.3.4/go.mod h1:qj6jICC3Q7zFZvVWo7KLAzC3yx5G7kyvSDkc90ppPyw=
 github.com/cncf/udpa/go v0.0.0-20191209042840-269d4d468f6f/go.mod h1:M8M6+tZqaGXZJjfX53e64911xZQV5JYwmTeXPW+k8Sc=
-github.com/curioswitch/go-curiostack v0.0.0-20240524071145-d90fe532ae48 h1:dQl9VeqqsAh+C5Qe4FrpIGvF1Su/yhqFCMtbfRxXirM=
-github.com/curioswitch/go-curiostack v0.0.0-20240524071145-d90fe532ae48/go.mod h1:wct3dV2vzVPRG7WQ1MJ9pNgvoeMvEJs9ngrxAbA2KUo=
+github.com/curioswitch/go-curiostack v0.0.0-20240524073452-ea53b57c7acc h1:Ht3o1Y7TQTXx0zZ8SK0ErbTncGiqyUOKEDx15qzlHLE=
+github.com/curioswitch/go-curiostack v0.0.0-20240524073452-ea53b57c7acc/go.mod h1:wct3dV2vzVPRG7WQ1MJ9pNgvoeMvEJs9ngrxAbA2KUo=
 github.com/curioswitch/go-docs-handler v0.1.5 h1:MIdGAlcpiQLi1grnPwc/CVBuSOu374b7S3W2GKU0oiU=
 github.com/curioswitch/go-docs-handler v0.1.5/go.mod h1:gSxE5Z46knEcLh6EtrwlmsApqcAp2bQUJl3csQiePWI=
 github.com/curioswitch/go-docs-handler/plugins/proto v0.1.5 h1:OjIICuxWhb+3+0GJ/wsbwk4H/596lXucVBO7lcQoEh8=
