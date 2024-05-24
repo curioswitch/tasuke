@@ -6,7 +6,7 @@ require (
 	cloud.google.com/go/firestore v1.15.0
 	connectrpc.com/connect v1.16.2
 	firebase.google.com/go/v4 v4.14.0
-	github.com/curioswitch/go-curiostack v0.0.0-20240524071145-d90fe532ae48
+	github.com/curioswitch/go-curiostack v0.0.0-20240524073452-ea53b57c7acc
 	github.com/curioswitch/go-docs-handler v0.1.5
 	github.com/curioswitch/go-docs-handler/plugins/proto v0.1.5
 	github.com/curioswitch/go-usegcp v0.0.0-20240524063518-50be8b8edfd9
