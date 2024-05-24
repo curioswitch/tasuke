@@ -6,7 +6,10 @@ import (
 	"log"
 	"net/http"
 
+	"connectrpc.com/connect"
 	firebase "firebase.google.com/go/v4"
+	"github.com/curioswitch/go-curiostack/logging"
+	"github.com/curioswitch/go-curiostack/otel"
 	"github.com/curioswitch/go-curiostack/server"
 	docshandler "github.com/curioswitch/go-docs-handler"
 	protodocs "github.com/curioswitch/go-docs-handler/plugins/proto"
@@ -28,7 +31,9 @@ func main() {
 
 	conf := config.Load()
 
-	r := server.NewRouter()
+	logging.Initialize(conf.Common)
+
+	r := server.NewMux()
 
 	docs, err := docshandler.New(
 		protodocs.NewPlugin(
@@ -103,11 +108,12 @@ func main() {
 	svc := service.New(getUser, saveUser)
 
 	fbMW := firebaseauth.NewMiddleware(fbAuth)
-	fapiPath, fapiHandler := frontendapiconnect.NewFrontendServiceHandler(svc)
+	fapiPath, fapiHandler := frontendapiconnect.NewFrontendServiceHandler(svc,
+		connect.WithInterceptors(otel.ConnectInterceptor()))
 	fapiHandler = fbMW(fapiHandler)
 	r.Mount(fapiPath, fapiHandler)
 
-	srv := server.NewServer(r, conf.Server)
+	srv := server.NewServer(r, conf.Common)
 
 	log.Printf("Starting server on address %v\n", srv.Addr)
 	if err := srv.ListenAndServe(); !errors.Is(err, http.ErrServerClosed) {
