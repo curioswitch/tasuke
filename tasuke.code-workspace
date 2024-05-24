@@ -33,6 +33,8 @@
     "files.associations": {
       "*.css": "tailwindcss"
     },
+    "go.lintFlags": ["--fix"],
+    "go.lintTool": "golangci-lint",
     "gopls": {
       "formatting.gofumpt": true
     },
