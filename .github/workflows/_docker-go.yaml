@@ -42,7 +42,6 @@ jobs:
             ${{ inputs.project_dir }}/**/go.sum
             ${{ inputs.project_dir }}/go.mod
 
-
       - id: google-auth
         if: ${{ env.DOCKER_PUSH == 'yes' }}
         uses: google-github-actions/auth@v2

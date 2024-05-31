@@ -1,4 +1,6 @@
 *
-!*.yaml
-!*.yml
+!/*.md
+!/.github/
+!/*.yml
+!/*.yaml
 pnpm-lock.yaml
