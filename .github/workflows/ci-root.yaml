@@ -1,0 +1,26 @@
+name: Repository Root CI
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - .github/**
+      - '*'
+  pull_request:
+    paths:
+      - .github/**
+      - '*'
+  workflow_dispatch:
+  workflow_call:
+
+permissions:
+  actions: read
+  contents: read
+  id-token: write
+
+jobs:
+  check:
+    uses: ./.github/workflows/_check-go.yaml
+    with:
+      project_dir: frontend/server
+    secrets: inherit

@@ -3,7 +3,7 @@ module github.com/curioswitch/tasuke/frontend/server/build
 go 1.22
 
 require (
-	github.com/curioswitch/go-build v0.0.0-20240513090355-a301ee03128d
+	github.com/curioswitch/go-build v0.0.0-20240531054333-9be7d0fe3e58
 	github.com/curioswitch/go-curiostack v0.0.0-20240524084657-6009f4a3115b
 	github.com/goyek/x v0.1.7
 )
