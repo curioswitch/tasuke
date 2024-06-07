@@ -1,0 +1,27 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Webhook Server",
+      "type": "go",
+      "request": "launch",
+      "mode": "debug",
+      "program": "."
+    },
+    {
+      "name": "Webhook ngrok",
+      "type": "go",
+      "request": "launch",
+      "mode": "debug",
+      "program": "./build",
+      "args": ["ngrok"]
+    }
+  ],
+  "compounds": [
+    {
+      "name": "Webhook Server + ngrok",
+      "configurations": ["Webhook Server", "Webhook ngrok"],
+      "stopAll": true
+    }
+  ]
+}

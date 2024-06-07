@@ -1,0 +1,38 @@
+name: Webhook Server CI
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - webhook/server/**
+      - .github/workflows/ci-webhook-server.yaml
+      - .github/workflows/_check-go.yaml
+      - .github/workflows/_docker-go.yaml
+  pull_request:
+    paths:
+      - webhook/server/**
+      - .github/workflows/ci-webhook-server.yaml
+      - .github/workflows/_check-go.yaml
+      - .github/workflows/_docker-go.yaml
+  workflow_dispatch:
+  workflow_call:
+
+permissions:
+  actions: read
+  contents: read
+  id-token: write
+
+jobs:
+  check:
+    uses: ./.github/workflows/_check-go.yaml
+    with:
+      project_dir: webhook/server
+    secrets: inherit
+
+  docker:
+    needs: check
+    uses: ./.github/workflows/_docker-go.yaml
+    with:
+      project_dir: webhook/server
+      service: webhook-server
+    secrets: inherit

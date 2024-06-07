@@ -1,5 +1,5 @@
-github.com/curioswitch/go-build v0.0.0-20240531054333-9be7d0fe3e58 h1:GrwtPijiSSdoKexRqz7ST40SUGAMsHHN7Kxnj9V/EmQ=
-github.com/curioswitch/go-build v0.0.0-20240531054333-9be7d0fe3e58/go.mod h1:1reBtVlh1bRKD/d1OymtuKnXIF1aKn6ncY+dxF9uA7Q=
+github.com/curioswitch/go-build v0.0.0-20240606064955-be261ad22091 h1:uQuAhPoaAFpx7eAbKDxZSlfSgTO/nF/Oga07Ks5RZs4=
+github.com/curioswitch/go-build v0.0.0-20240606064955-be261ad22091/go.mod h1:1reBtVlh1bRKD/d1OymtuKnXIF1aKn6ncY+dxF9uA7Q=
 github.com/fatih/color v1.16.0 h1:zmkK9Ngbjj+K0yRhTVONQh1p/HknKYSlNT+vZCzyokM=
 github.com/fatih/color v1.16.0/go.mod h1:fL2Sau1YI5c0pdGEVCbKQbLXB6edEj1ZgiY4NijnWvE=
 github.com/goyek/goyek/v2 v2.1.0 h1:As5r5j6XxfcJMADfgMYJdxsp1vy9IinT6AKPbCt6fi4=
