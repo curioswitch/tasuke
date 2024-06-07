@@ -6,4 +6,6 @@ use (
 	./frontend/api/build
 	./frontend/server
 	./frontend/server/build
+	./webhook/server
+	./webhook/server/build
 )

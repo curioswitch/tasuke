@@ -11,6 +11,10 @@
     {
       "name": "frontend/server",
       "path": "./frontend/server"
+    },
+    {
+      "name": "webhook/server",
+      "path": "./webhook/server"
     }
   ],
   "extensions": {
