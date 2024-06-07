@@ -3,8 +3,9 @@ module github.com/curioswitch/tasuke/webhook/server
 go 1.22
 
 require (
+	github.com/bradleyfalzon/ghinstallation/v2 v2.11.0
 	github.com/curioswitch/go-curiostack v0.0.0-20240524084657-6009f4a3115b
-	github.com/google/go-github v17.0.0+incompatible
+	github.com/google/go-github/v62 v62.0.0
 )
 
 require (
@@ -20,6 +21,7 @@ require (
 	github.com/go-logr/logr v1.4.1 // indirect
 	github.com/go-logr/stdr v1.2.2 // indirect
 	github.com/go-viper/mapstructure/v2 v2.0.0-alpha.1 // indirect
+	github.com/golang-jwt/jwt/v4 v4.5.0 // indirect
 	github.com/google/go-querystring v1.1.0 // indirect
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.20.0 // indirect
 	github.com/knadh/koanf/maps v0.1.1 // indirect
