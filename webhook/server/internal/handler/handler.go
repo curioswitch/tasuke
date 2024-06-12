@@ -150,6 +150,9 @@ func diffLanguages(diff string) []int {
 			// Likely doesn't happen in real files, but allows simplifying
 			// logic without chance of crash by skipping.
 		case strings.HasPrefix(line, "diff --git "):
+			// Note that if the patch content contained diff --git, it would be followed by
+			// a +/- or space, so this is surprisingly robust.
+
 			langIDs = maybeAppendFileLanguageID(langIDs, filename, content.Bytes())
 			skip = false
 			filename = ""
