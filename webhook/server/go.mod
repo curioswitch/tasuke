@@ -4,7 +4,8 @@ go 1.22
 
 require (
 	github.com/bradleyfalzon/ghinstallation/v2 v2.11.0
-	github.com/curioswitch/go-curiostack v0.0.0-20240524084657-6009f4a3115b
+	github.com/curioswitch/go-curiostack v0.0.0-20240612040559-da4850f255c1
+	github.com/go-chi/chi/v5 v5.0.12
 	github.com/google/go-github/v62 v62.0.0
 	github.com/stretchr/testify v1.9.0
 )
@@ -19,7 +20,6 @@ require (
 	github.com/curioswitch/go-usegcp v0.0.0-20240524082550-9d642ba35329 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/felixge/httpsnoop v1.0.4 // indirect
-	github.com/go-chi/chi/v5 v5.0.12 // indirect
 	github.com/go-logr/logr v1.4.1 // indirect
 	github.com/go-logr/stdr v1.2.2 // indirect
 	github.com/go-viper/mapstructure/v2 v2.0.0-alpha.1 // indirect

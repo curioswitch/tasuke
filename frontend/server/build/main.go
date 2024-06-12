@@ -8,7 +8,6 @@ import (
 
 func main() {
 	tasks.DefineServer()
-
 	build.DefineTasks()
 	boot.Main()
 }

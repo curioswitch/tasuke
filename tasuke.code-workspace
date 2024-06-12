@@ -22,6 +22,7 @@
       "biomejs.biome",
       "bufbuild.vscode-buf",
       "esbenp.prettier-vscode",
+      "foxundermoon.shell-format",
       "github.vscode-github-actions",
       "golang.go",
       "bradlc.vscode-tailwindcss"
@@ -45,6 +46,18 @@
     "prettier.configPath": ".prettierrc.yml",
     "prettier.requireConfig": true,
     // Multiple language syntax mysteriously doesn't reliably work.
+    "[dockerfile]": {
+      "editor.defaultFormatter": "foxundermoon.shell-format"
+    },
+    "[dotenv]": {
+      "editor.defaultFormatter": "foxundermoon.shell-format"
+    },
+    "[github-actions-workflow]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[ignore]": {
+      "editor.defaultFormatter": "foxundermoon.shell-format"
+    },
     "[javascript]": {
       "editor.defaultFormatter": "biomejs.biome"
     },
@@ -53,6 +66,9 @@
     },
     "[jsonc]": {
       "editor.defaultFormatter": "biomejs.biome"
+    },
+    "[shellscript]": {
+      "editor.defaultFormatter": "foxundermoon.shell-format"
     },
     "[typescript]": {
       "editor.defaultFormatter": "biomejs.biome"

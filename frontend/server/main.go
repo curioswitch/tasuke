@@ -2,18 +2,18 @@ package main
 
 import (
 	"context"
-	"errors"
 	"log"
 	"net/http"
+	"os"
 
 	"connectrpc.com/connect"
 	firebase "firebase.google.com/go/v4"
-	"github.com/curioswitch/go-curiostack/logging"
 	"github.com/curioswitch/go-curiostack/otel"
 	"github.com/curioswitch/go-curiostack/server"
 	docshandler "github.com/curioswitch/go-docs-handler"
 	protodocs "github.com/curioswitch/go-docs-handler/plugins/proto"
 	"github.com/curioswitch/go-usegcp/middleware/firebaseauth"
+	"github.com/go-chi/chi/v5"
 
 	frontendapi "github.com/curioswitch/tasuke/frontend/api/go"
 	"github.com/curioswitch/tasuke/frontend/api/go/frontendapiconnect"
@@ -27,17 +27,21 @@ import (
 const e2eTest1UID = "V8yRsCpZJkUfPmxcLI6pKTrx3kf1"
 
 func main() {
+	os.Exit(doMain())
+}
+
+func doMain() int {
 	ctx := context.Background()
 
 	conf := config.Load()
 
-	logging.Initialize(conf.Common)
-
-	r := server.NewMux()
-
 	docs, err := docshandler.New(
 		protodocs.NewPlugin(
 			frontendapiconnect.FrontendServiceName,
+			protodocs.WithExampleRequests(
+				frontendapiconnect.FrontendServiceGetUserProcedure,
+				&frontendapi.GetUserRequest{},
+			),
 			protodocs.WithExampleRequests(
 				frontendapiconnect.FrontendServiceSaveUserProcedure,
 				&frontendapi.SaveUserRequest{
@@ -85,7 +89,6 @@ func main() {
 	if err != nil {
 		log.Fatalf("Failed to create docs handler: %v", err)
 	}
-	r.Handle("/internal/docs/*", http.StripPrefix("/internal/docs", docs))
 
 	fbApp, err := firebase.NewApp(ctx, &firebase.Config{ProjectID: conf.Google.Project})
 	if err != nil {
@@ -111,12 +114,12 @@ func main() {
 	fapiPath, fapiHandler := frontendapiconnect.NewFrontendServiceHandler(svc,
 		connect.WithInterceptors(otel.ConnectInterceptor()))
 	fapiHandler = fbMW(fapiHandler)
-	r.Mount(fapiPath, fapiHandler)
 
-	srv := server.NewServer(r, conf.Common)
-
-	log.Printf("Starting server on address %v\n", srv.Addr)
-	if err := srv.ListenAndServe(); !errors.Is(err, http.ErrServerClosed) {
-		log.Printf("Failed to start server: %v", err)
-	}
+	return server.Run(ctx, &conf.Common,
+		server.SetupMux(func(mux *chi.Mux) error {
+			mux.Handle("/internal/docs/*", http.StripPrefix("/internal/docs", docs))
+			mux.Mount(fapiPath, fapiHandler)
+			return nil
+		}),
+	)
 }

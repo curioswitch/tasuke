@@ -31,7 +31,7 @@ func TestClientCreator(t *testing.T) {
 	privateKeyBase64 := base64.StdEncoding.EncodeToString(privateKeyPEM)
 
 	conf := &config.Config{
-		GitHub: config.GitHub{
+		GitHub: &config.GitHub{
 			AppID:            111,
 			PrivateKeyBase64: privateKeyBase64,
 		},

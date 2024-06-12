@@ -8,7 +8,6 @@ import (
 
 func main() {
 	tasks.DefineAPI()
-
-	build.DefineTasks(build.LocalPackagePrefix("github.com/curioswitch/tasuke"))
+	build.DefineTasks()
 	boot.Main()
 }
