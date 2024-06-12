@@ -11,6 +11,7 @@ require (
 	github.com/curioswitch/go-docs-handler/plugins/proto v0.1.5
 	github.com/curioswitch/go-usegcp v0.0.0-20240524082550-9d642ba35329
 	github.com/curioswitch/tasuke/frontend/api v0.0.0
+	github.com/go-chi/chi/v5 v5.0.12
 	github.com/stretchr/testify v1.9.0
 	google.golang.org/grpc v1.64.0
 )
@@ -30,7 +31,6 @@ require (
 	github.com/cenkalti/backoff/v4 v4.3.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/felixge/httpsnoop v1.0.4 // indirect
-	github.com/go-chi/chi/v5 v5.0.12 // indirect
 	github.com/go-logr/logr v1.4.1 // indirect
 	github.com/go-logr/stdr v1.2.2 // indirect
 	github.com/go-viper/mapstructure/v2 v2.0.0-alpha.1 // indirect
