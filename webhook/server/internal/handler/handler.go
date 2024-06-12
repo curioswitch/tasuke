@@ -147,8 +147,7 @@ func diffLanguages(diff string) []int {
 
 		switch {
 		case len(line) == 0:
-			// Likely doesn't happen in real files, but allows simplifying
-			// logic without chance of crash by skipping.
+			// Note that this likely doesn't happen in practice, but prevent crashes on bad input.
 		case strings.HasPrefix(line, "diff --git "):
 			// Note that if the patch content contained diff --git, it would be followed by
 			// a +/- or space, so this is surprisingly robust.
