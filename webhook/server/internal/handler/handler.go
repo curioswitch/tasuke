@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
 	"fmt"
@@ -8,6 +9,7 @@ import (
 	"net/http"
 	"strings"
 
+	"github.com/go-enry/go-enry/v2"
 	"github.com/google/go-github/v62/github"
 
 	"github.com/curioswitch/tasuke/webhook/server/internal/config"
@@ -86,6 +88,10 @@ func (h *Handler) handleIssueComment(ctx context.Context, payload []byte) error 
 		return fmt.Errorf("handler: unmarshal payload: %w", err)
 	}
 
+	if !event.Issue.IsPullRequest() {
+		return nil
+	}
+
 	body := strings.TrimSpace(event.Comment.GetBody())
 
 	if !strings.HasPrefix(body, "/tasuke") {
@@ -97,11 +103,87 @@ func (h *Handler) handleIssueComment(ctx context.Context, payload []byte) error 
 		return fmt.Errorf("handler: create client: %w", err)
 	}
 
-	if _, _, err := client.Issues.CreateComment(ctx, event.Repo.GetOwner().GetLogin(), event.Repo.GetName(), event.Issue.GetNumber(), &github.IssueComment{
-		Body: github.String("Hi there! I'm currently under development but will be happy to help after I'm working."),
+	owner := event.Repo.GetOwner().GetLogin()
+	repo := event.Repo.GetName()
+	num := event.Issue.GetNumber()
+
+	diff, _, err := client.PullRequests.GetRaw(ctx, owner, repo, num, github.RawOptions{
+		Type: github.Diff,
+	})
+	if err != nil {
+		return fmt.Errorf("handler: get pull request diff: %w", err)
+	}
+
+	langIDs := diffLanguages(diff)
+
+	langs := make([]string, len(langIDs))
+	for i, id := range langIDs {
+		lang, _ := enry.GetLanguageInfoByID(id)
+		langs[i] = lang.Name
+	}
+
+	if _, _, err := client.Issues.CreateComment(ctx, owner, repo, num, &github.IssueComment{
+		Body: github.String(fmt.Sprintf(`Hi there! I'm currently under development but will be happy to help after I'm working.
+
+Currently, I only detect the languages in the PR. The languages I detected for this PR are: %s.
+`, strings.Join(langs, ", "))),
 	}); err != nil {
 		return fmt.Errorf("handler: create comment: %w", err)
 	}
 
 	return nil
+}
+
+func diffLanguages(diff string) []int {
+	var langIDs []int
+
+	skip := false
+
+	var filename string
+	var content bytes.Buffer
+	for len(diff) > 0 {
+		line, rest, _ := strings.Cut(diff, "\n")
+		diff = rest
+
+		switch {
+		case len(line) == 0:
+			// Note that this likely doesn't happen in practice, but prevent crashes on bad input.
+		case strings.HasPrefix(line, "diff --git "):
+			// Note that if the patch content contained diff --git, it would be following
+			// a +/- or space, so this is surprisingly robust.
+
+			langIDs = maybeAppendFileLanguageID(langIDs, filename, content.Bytes())
+			skip = false
+			filename = ""
+			content.Reset()
+		case skip:
+		case len(filename) == 0:
+			if add, ok := strings.CutPrefix(line, "+++ "); ok {
+				if name, ok := strings.CutPrefix(add, "b/"); ok {
+					filename = name
+				} else {
+					// File removal, we don't need to care about it for finding code reviewers.
+					skip = true
+				}
+			}
+		case line[0] == '+' || line[0] == ' ':
+			content.WriteString(line[1:])
+		}
+	}
+	langIDs = maybeAppendFileLanguageID(langIDs, filename, content.Bytes())
+
+	return langIDs
+}
+
+func maybeAppendFileLanguageID(langIDs []int, filename string, content []byte) []int {
+	if len(filename) == 0 {
+		return langIDs
+	}
+
+	if langs := enry.GetLanguages(filename, content); len(langs) == 1 {
+		langID, _ := enry.GetLanguageID(langs[0])
+		return append(langIDs, langID)
+	}
+
+	return langIDs
 }
