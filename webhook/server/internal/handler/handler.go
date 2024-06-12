@@ -163,6 +163,7 @@ func diffLanguages(diff string) []int {
 				if name, ok := strings.CutPrefix(add, "b/"); ok {
 					filename = name
 				} else {
+					// File removal, we don't need to care about it for finding code reviewers.
 					skip = true
 				}
 			}
