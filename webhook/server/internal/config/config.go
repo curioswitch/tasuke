@@ -27,7 +27,7 @@ type Config struct {
 	config.Common
 
 	// GitHub is the configuration for the Github webhook.
-	GitHub GitHub `koanf:"github"`
+	GitHub *GitHub `koanf:"github"`
 }
 
 // Load loads the configuration for the webhook server.

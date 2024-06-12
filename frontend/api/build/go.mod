@@ -3,8 +3,8 @@ module github.com/curioswitch/tasuke/frontend/api/build
 go 1.22
 
 require (
-	github.com/curioswitch/go-build v0.0.0-20240606064955-be261ad22091
-	github.com/curioswitch/go-curiostack v0.0.0-20240524084657-6009f4a3115b
+	github.com/curioswitch/go-build v0.0.0-20240612031439-642962f6d0f9
+	github.com/curioswitch/go-curiostack v0.0.0-20240612040559-da4850f255c1
 	github.com/goyek/x v0.1.7
 )
 
