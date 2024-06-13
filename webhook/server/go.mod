@@ -4,7 +4,7 @@ go 1.22
 
 require (
 	github.com/bradleyfalzon/ghinstallation/v2 v2.11.0
-	github.com/curioswitch/go-curiostack v0.0.0-20240613013935-9688fe467d26
+	github.com/curioswitch/go-curiostack v0.0.0-20240613020823-49106d531dd1
 	github.com/go-enry/go-enry/v2 v2.8.8
 	github.com/google/go-github/v62 v62.0.0
 	github.com/stretchr/testify v1.9.0

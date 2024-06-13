@@ -12,8 +12,7 @@ github.com/bradleyfalzon/ghinstallation/v2 v2.11.0 h1:R9d0v+iobRHSaE4wKUnXFiZp53
 github.com/bradleyfalzon/ghinstallation/v2 v2.11.0/go.mod h1:0LWKQwOHewXO/1acI6TtyE0Xc4ObDb2rFN7eHBAG71M=
 github.com/cenkalti/backoff/v4 v4.3.0 h1:MyRJ/UdXutAwSAT+s3wNd7MfTIcy71VQueUuFK343L8=
 github.com/cenkalti/backoff/v4 v4.3.0/go.mod h1:Y3VNntkOUPxTVeUxJ/G5vcM//AlwfmyYozVcomhLiZE=
-github.com/curioswitch/go-curiostack v0.0.0-20240613013935-9688fe467d26 h1:N7FsmhLTWun32S/uVLEiaTgl9RFH564RgLHnghq7ua0=
-github.com/curioswitch/go-curiostack v0.0.0-20240613013935-9688fe467d26/go.mod h1:+l+eXeKUxV9pGZtkXSW1WLcE3SsEJJRxO0dKgX8qYO0=
+github.com/curioswitch/go-curiostack v0.0.0-20240613020823-49106d531dd1 h1:FGFIKJ4xyPF/p4EcfouJCl3NVGIlHgowLMyd6tmW5kg=
 github.com/curioswitch/go-usegcp v0.0.0-20240524082550-9d642ba35329 h1:DSmpOnwOyXDen1IKB8v1MYjWRChyWrUtICfYT8acHxo=
 github.com/curioswitch/go-usegcp v0.0.0-20240524082550-9d642ba35329/go.mod h1:ro5m63BYc8wBClHIfJ5/fprG7Sx3Ie3mUtzi/9Z/beo=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=

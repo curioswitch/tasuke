@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+	"strings"
 
 	"connectrpc.com/connect"
 	firebase "firebase.google.com/go/v4"
@@ -14,6 +15,7 @@ import (
 	docshandler "github.com/curioswitch/go-docs-handler"
 	protodocs "github.com/curioswitch/go-docs-handler/plugins/proto"
 	"github.com/curioswitch/go-usegcp/middleware/firebaseauth"
+	"github.com/go-chi/chi/v5/middleware"
 
 	frontendapi "github.com/curioswitch/tasuke/frontend/api/go"
 	"github.com/curioswitch/tasuke/frontend/api/go/frontendapiconnect"
@@ -33,6 +35,34 @@ func main() {
 }
 
 func setupServer(ctx context.Context, conf *config.Config, s *server.Server) error {
+	fbApp, err := firebase.NewApp(ctx, &firebase.Config{ProjectID: conf.Google.Project})
+	if err != nil {
+		return fmt.Errorf("main: create firebase app: %w", err)
+	}
+
+	fbAuth, err := fbApp.Auth(ctx)
+	if err != nil {
+		return fmt.Errorf("main: create firebase auth client: %w", err)
+	}
+
+	firestore, err := fbApp.Firestore(ctx)
+	if err != nil {
+		return fmt.Errorf("main: create firestore client: %w", err)
+	}
+	defer firestore.Close()
+
+	s.Mux().Use(middleware.Maybe(firebaseauth.NewMiddleware(fbAuth), func(r *http.Request) bool {
+		return strings.HasPrefix(r.URL.Path, "/"+frontendapiconnect.FrontendServiceName+"/")
+	}))
+
+	getUser := getuser.NewHandler(firestore)
+	saveUser := saveuser.NewHandler(firestore)
+	svc := service.New(getUser, saveUser)
+
+	fapiPath, fapiHandler := frontendapiconnect.NewFrontendServiceHandler(svc,
+		connect.WithInterceptors(otel.ConnectInterceptor()))
+	s.Mux().Mount(fapiPath, fapiHandler)
+
 	docs, err := docshandler.New(
 		protodocs.NewPlugin(
 			frontendapiconnect.FrontendServiceName,
@@ -88,32 +118,6 @@ func setupServer(ctx context.Context, conf *config.Config, s *server.Server) err
 		return fmt.Errorf("main: create docs handler: %w", err)
 	}
 	s.Mux().Handle("/internal/docs/*", http.StripPrefix("/internal/docs", docs))
-
-	fbApp, err := firebase.NewApp(ctx, &firebase.Config{ProjectID: conf.Google.Project})
-	if err != nil {
-		return fmt.Errorf("main: create firebase app: %w", err)
-	}
-
-	fbAuth, err := fbApp.Auth(ctx)
-	if err != nil {
-		return fmt.Errorf("main: create firebase auth client: %w", err)
-	}
-
-	firestore, err := fbApp.Firestore(ctx)
-	if err != nil {
-		return fmt.Errorf("main: create firestore client: %w", err)
-	}
-	defer firestore.Close()
-
-	getUser := getuser.NewHandler(firestore)
-	saveUser := saveuser.NewHandler(firestore)
-	svc := service.New(getUser, saveUser)
-
-	fbMW := firebaseauth.NewMiddleware(fbAuth)
-	fapiPath, fapiHandler := frontendapiconnect.NewFrontendServiceHandler(svc,
-		connect.WithInterceptors(otel.ConnectInterceptor()))
-	fapiHandler = fbMW(fapiHandler)
-	s.Mux().Mount(fapiPath, fapiHandler)
 
 	return s.Start(ctx)
 }
