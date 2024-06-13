@@ -2,36 +2,28 @@ package main
 
 import (
 	"context"
+	"embed"
 	"fmt"
-	"log/slog"
 	"os"
 
 	"github.com/curioswitch/go-curiostack/server"
-	"github.com/go-chi/chi/v5"
 
 	"github.com/curioswitch/tasuke/webhook/server/internal/config"
 	"github.com/curioswitch/tasuke/webhook/server/internal/handler"
 )
 
+var confFiles embed.FS // Currently empty
+
 func main() {
-	os.Exit(doMain())
+	os.Exit(server.Main(&config.Config{}, confFiles, setupServer))
 }
 
-func doMain() int {
-	ctx := context.Background()
-
-	conf := config.Load()
-
+func setupServer(ctx context.Context, conf *config.Config, s *server.Server) error {
 	webhook, err := handler.New(conf)
 	if err != nil {
-		slog.ErrorContext(ctx, fmt.Sprintf("Failed to create handler: %v", err))
-		return 1
+		return fmt.Errorf("main: create handler: %w", err)
 	}
+	s.Mux().Handle("/github-webhook", webhook)
 
-	return server.Run(ctx, &conf.Common,
-		server.SetupMux(func(mux *chi.Mux) error {
-			mux.Handle("/github-webhook", webhook)
-			return nil
-		}),
-	)
+	return s.Start(ctx)
 }
