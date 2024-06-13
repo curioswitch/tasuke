@@ -66,17 +66,16 @@ func TestHandler(t *testing.T) {
 
 	for _, tc := range tests {
 		t.Run(tc.name, func(t *testing.T) {
-			fsClient := testutil.NewMockFirestoreClient(t)
+			fsClient := testutil.NewMockFirestoreClient[tasukedb.User](t)
 
 			fsClient.EXPECT().
-				GetDocument(mock.Anything, "users", tc.uid, mock.Anything).
-				RunAndReturn(func(_ context.Context, _ string, _ string, res interface{}) error {
+				GetDocument(mock.Anything, tc.uid).
+				RunAndReturn(func(_ context.Context, _ string) (*tasukedb.User, error) {
 					switch {
 					case tc.getDocumentErr != nil:
-						return tc.getDocumentErr
+						return nil, tc.getDocumentErr
 					default:
-						*(res.(*tasukedb.User)) = *tc.document
-						return nil
+						return tc.document, nil
 					}
 				})
 
