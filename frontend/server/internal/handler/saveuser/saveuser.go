@@ -3,8 +3,10 @@ package saveuser
 import (
 	"context"
 	"fmt"
+	"strconv"
 
 	"cloud.google.com/go/firestore"
+	"firebase.google.com/go/v4/auth"
 	"github.com/curioswitch/go-usegcp/middleware/firebaseauth"
 
 	frontendapi "github.com/curioswitch/tasuke/frontend/api/go"
@@ -28,7 +30,13 @@ type Handler struct {
 func (h *Handler) SaveUser(ctx context.Context, req *frontendapi.SaveUserRequest) (*frontendapi.SaveUserResponse, error) {
 	fbToken := firebaseauth.TokenFromContext(ctx)
 
+	githubID, err := githubUserID(fbToken)
+	if err != nil {
+		return nil, err
+	}
+
 	u := model.User{
+		GithubUserID:           int64(githubID),
 		ProgrammingLanguageIDs: req.GetUser().GetProgrammingLanguageIds(),
 		MaxOpenReviews:         req.GetUser().GetMaxOpenReviews(),
 	}
@@ -38,4 +46,22 @@ func (h *Handler) SaveUser(ctx context.Context, req *frontendapi.SaveUserRequest
 	}
 
 	return &frontendapi.SaveUserResponse{}, nil
+}
+
+func githubUserID(fbToken *auth.Token) (int, error) {
+	identity := fbToken.Firebase.Identities["github.com"]
+	if identity == nil {
+		// We only allow GitHub users so can't happen in practice.
+		return 0, fmt.Errorf("saveuser: token not a github user: %v", fbToken.UID)
+	}
+
+	if idsAny, ok := identity.([]any); ok && len(idsAny) > 0 {
+		if idStr, ok := idsAny[0].(string); ok {
+			if id, err := strconv.Atoi(idStr); err == nil {
+				return id, nil
+			}
+		}
+	}
+
+	return 0, fmt.Errorf("saveuser: malformed firebase token: %v", fbToken.UID)
 }

@@ -18,6 +18,9 @@ type User struct {
 	// MaxOpenReviews is the maximum number of open reviews the user can have at once.
 	MaxOpenReviews uint32 `firestore:"maxOpenReviews"`
 
+	// GithubUserID is the numeric user ID of the user on GitHub.
+	GithubUserID int64 `firestore:"githubUserId"`
+
 	// CreatedAt is the time the user was created.
 	CreatedAt time.Time `firestore:"createdAt"`
 

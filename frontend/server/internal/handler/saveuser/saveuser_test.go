@@ -20,6 +20,7 @@ func TestHandler(t *testing.T) {
 		name              string
 		uid               string
 		req               *frontendapi.SaveUserRequest
+		identities        map[string]any
 		createDocumentErr error
 
 		err error
@@ -33,6 +34,9 @@ func TestHandler(t *testing.T) {
 					MaxOpenReviews:         5,
 				},
 			},
+			identities: map[string]any{
+				"github.com": []any{"123"},
+			},
 		},
 		{
 			name: "firestore error",
@@ -43,9 +47,90 @@ func TestHandler(t *testing.T) {
 					MaxOpenReviews:         5,
 				},
 			},
+			identities: map[string]any{
+				"github.com": []any{"123"},
+			},
 
 			createDocumentErr: errors.New("internal error"),
 			err:               errors.New("saveuser: failed to save user document"),
+		},
+		{
+			name: "fb token no identities",
+			uid:  "user-id",
+			req: &frontendapi.SaveUserRequest{
+				User: &frontendapi.User{
+					ProgrammingLanguageIds: []uint32{1, 2, 3},
+					MaxOpenReviews:         5,
+				},
+			},
+			identities: map[string]any{},
+
+			err: errors.New("saveuser: token not a github user"),
+		},
+		{
+			name: "fb token unrelated identity",
+			uid:  "user-id",
+			req: &frontendapi.SaveUserRequest{
+				User: &frontendapi.User{
+					ProgrammingLanguageIds: []uint32{1, 2, 3},
+					MaxOpenReviews:         5,
+				},
+			},
+			identities: map[string]any{"google.com": "choko@curioswitch.org"},
+
+			err: errors.New("saveuser: token not a github user"),
+		},
+		{
+			name: "fb token github ids not correct type",
+			uid:  "user-id",
+			req: &frontendapi.SaveUserRequest{
+				User: &frontendapi.User{
+					ProgrammingLanguageIds: []uint32{1, 2, 3},
+					MaxOpenReviews:         5,
+				},
+			},
+			identities: map[string]any{"github.com": []float32{1.0}},
+
+			err: errors.New("saveuser: malformed firebase token"),
+		},
+		{
+			name: "fb token no github ids",
+			uid:  "user-id",
+			req: &frontendapi.SaveUserRequest{
+				User: &frontendapi.User{
+					ProgrammingLanguageIds: []uint32{1, 2, 3},
+					MaxOpenReviews:         5,
+				},
+			},
+			identities: map[string]any{"github.com": []any{}},
+
+			err: errors.New("saveuser: malformed firebase token"),
+		},
+		{
+			name: "fb token github id not string",
+			uid:  "user-id",
+			req: &frontendapi.SaveUserRequest{
+				User: &frontendapi.User{
+					ProgrammingLanguageIds: []uint32{1, 2, 3},
+					MaxOpenReviews:         5,
+				},
+			},
+			identities: map[string]any{"github.com": []any{123}},
+
+			err: errors.New("saveuser: malformed firebase token"),
+		},
+		{
+			name: "fb token github id not numeric string",
+			uid:  "user-id",
+			req: &frontendapi.SaveUserRequest{
+				User: &frontendapi.User{
+					ProgrammingLanguageIds: []uint32{1, 2, 3},
+					MaxOpenReviews:         5,
+				},
+			},
+			identities: map[string]any{"github.com": []any{"bear"}},
+
+			err: errors.New("saveuser: malformed firebase token"),
 		},
 	}
 
@@ -61,18 +146,25 @@ func TestHandler(t *testing.T) {
 						return tc.createDocumentErr
 					default:
 						require.Equal(t, model.User{
+							GithubUserID:           123,
 							ProgrammingLanguageIDs: tc.req.GetUser().GetProgrammingLanguageIds(),
 							MaxOpenReviews:         tc.req.GetUser().GetMaxOpenReviews(),
 						}, data)
 						return nil
 					}
-				})
+				}).
+				Maybe()
 
 			h := &Handler{
 				store: fsClient,
 			}
 
-			fbToken := &auth.Token{UID: tc.uid}
+			fbToken := &auth.Token{
+				UID: tc.uid,
+				Firebase: auth.FirebaseInfo{
+					Identities: tc.identities,
+				},
+			}
 			ctx := fbatestutil.ContextWithToken(context.Background(), fbToken, "raw-token")
 
 			res, err := h.SaveUser(ctx, tc.req)
