@@ -10,8 +10,8 @@ import (
 	"github.com/stretchr/testify/mock"
 	"github.com/stretchr/testify/require"
 
+	"github.com/curioswitch/tasuke/common/tasukedb"
 	frontendapi "github.com/curioswitch/tasuke/frontend/api/go"
-	"github.com/curioswitch/tasuke/frontend/server/internal/model"
 	"github.com/curioswitch/tasuke/frontend/server/internal/testutil"
 )
 
@@ -145,7 +145,7 @@ func TestHandler(t *testing.T) {
 					case tc.createDocumentErr != nil:
 						return tc.createDocumentErr
 					default:
-						require.Equal(t, model.User{
+						require.Equal(t, tasukedb.User{
 							GithubUserID:           123,
 							ProgrammingLanguageIDs: tc.req.GetUser().GetProgrammingLanguageIds(),
 							MaxOpenReviews:         tc.req.GetUser().GetMaxOpenReviews(),

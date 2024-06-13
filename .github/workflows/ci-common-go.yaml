@@ -1,0 +1,28 @@
+name: Go Common CI
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - common/go/**
+      - .github/workflows/ci-common-go.yaml
+      - .github/workflows/_check-go.yaml
+  pull_request:
+    paths:
+      - common/go/**
+      - .github/workflows/ci-common-go.yaml
+      - .github/workflows/_check-go.yaml
+  workflow_dispatch:
+  workflow_call:
+
+permissions:
+  actions: read
+  contents: read
+  id-token: write
+
+jobs:
+  check:
+    uses: ./.github/workflows/_check-go.yaml
+    with:
+      project_dir: common/go
+    secrets: inherit

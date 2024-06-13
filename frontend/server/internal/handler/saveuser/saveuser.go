@@ -9,9 +9,9 @@ import (
 	"firebase.google.com/go/v4/auth"
 	"github.com/curioswitch/go-usegcp/middleware/firebaseauth"
 
+	"github.com/curioswitch/tasuke/common/tasukedb"
 	frontendapi "github.com/curioswitch/tasuke/frontend/api/go"
 	ifirestore "github.com/curioswitch/tasuke/frontend/server/internal/client/firestore"
-	"github.com/curioswitch/tasuke/frontend/server/internal/model"
 )
 
 // NewHandler returns a Handler that uses the given Firestore client.
@@ -35,7 +35,7 @@ func (h *Handler) SaveUser(ctx context.Context, req *frontendapi.SaveUserRequest
 		return nil, err
 	}
 
-	u := model.User{
+	u := tasukedb.User{
 		GithubUserID:           int64(githubID),
 		ProgrammingLanguageIDs: req.GetUser().GetProgrammingLanguageIds(),
 		MaxOpenReviews:         req.GetUser().GetMaxOpenReviews(),

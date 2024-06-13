@@ -9,6 +9,7 @@ require (
 	github.com/curioswitch/go-curiostack v0.0.0-20240613050500-4d2f6f0b33b1
 	github.com/curioswitch/go-usegcp v0.0.0-20240524082550-9d642ba35329
 	github.com/curioswitch/tasuke/frontend/api v0.0.0
+	github.com/curioswitch/tasuke/common v0.0.0
 	github.com/go-chi/chi/v5 v5.0.12
 	github.com/stretchr/testify v1.9.0
 	google.golang.org/grpc v1.64.0
@@ -82,5 +83,7 @@ require (
 	google.golang.org/protobuf v1.34.1 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
+
+replace github.com/curioswitch/tasuke/common => ../../common/go
 
 replace github.com/curioswitch/tasuke/frontend/api => ../api

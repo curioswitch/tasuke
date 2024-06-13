@@ -1,10 +1,6 @@
-package model
+package tasukedb
 
-import (
-	"time"
-
-	frontendapi "github.com/curioswitch/tasuke/frontend/api/go"
-)
+import "time"
 
 // User is the information stored about a user in the database. We don't use
 // the protobuf type directly because
@@ -26,12 +22,4 @@ type User struct {
 
 	// UpdatedAt is the time the user was last updated.
 	UpdatedAt time.Time `firestore:"updatedAt,serverTimestamp"`
-}
-
-// ToProto converts a User to its API representation.
-func (u *User) ToProto() *frontendapi.User {
-	return &frontendapi.User{
-		ProgrammingLanguageIds: u.ProgrammingLanguageIDs,
-		MaxOpenReviews:         u.MaxOpenReviews,
-	}
 }

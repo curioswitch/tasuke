@@ -6,6 +6,7 @@ on:
     paths:
       - frontend/server/**
       - frontend/api/go/**
+      - common/go/**
       - .github/workflows/ci-frontend-server.yaml
       - .github/workflows/_check-go.yaml
       - .github/workflows/_docker-go.yaml
@@ -13,6 +14,7 @@ on:
     paths:
       - frontend/server/**
       - frontend/api/go/**
+      - common/go/**
       - .github/workflows/ci-frontend-server.yaml
       - .github/workflows/_check-go.yaml
       - .github/workflows/_docker-go.yaml

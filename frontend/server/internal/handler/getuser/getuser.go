@@ -11,9 +11,9 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
+	"github.com/curioswitch/tasuke/common/tasukedb"
 	frontendapi "github.com/curioswitch/tasuke/frontend/api/go"
 	ifirestore "github.com/curioswitch/tasuke/frontend/server/internal/client/firestore"
-	"github.com/curioswitch/tasuke/frontend/server/internal/model"
 )
 
 var errUserNotFound = errors.New("user not found")
@@ -34,7 +34,7 @@ type Handler struct {
 func (h *Handler) GetUser(ctx context.Context, _ *frontendapi.GetUserRequest) (*frontendapi.GetUserResponse, error) {
 	fbToken := firebaseauth.TokenFromContext(ctx)
 
-	var u model.User
+	var u tasukedb.User
 	if err := h.store.GetDocument(ctx, "users", fbToken.UID, &u); err != nil {
 		if status.Code(err) == codes.NotFound {
 			return nil, connect.NewError(connect.CodeNotFound, errUserNotFound)
@@ -43,6 +43,14 @@ func (h *Handler) GetUser(ctx context.Context, _ *frontendapi.GetUserRequest) (*
 	}
 
 	return &frontendapi.GetUserResponse{
-		User: u.ToProto(),
+		User: userToProto(&u),
 	}, nil
+}
+
+// ToProto converts a User to its API representation.
+func userToProto(u *tasukedb.User) *frontendapi.User {
+	return &frontendapi.User{
+		ProgrammingLanguageIds: u.ProgrammingLanguageIDs,
+		MaxOpenReviews:         u.MaxOpenReviews,
+	}
 }
