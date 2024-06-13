@@ -14,8 +14,8 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
+	"github.com/curioswitch/tasuke/common/tasukedb"
 	frontendapi "github.com/curioswitch/tasuke/frontend/api/go"
-	"github.com/curioswitch/tasuke/frontend/server/internal/model"
 	"github.com/curioswitch/tasuke/frontend/server/internal/testutil"
 )
 
@@ -23,7 +23,7 @@ func TestHandler(t *testing.T) {
 	tests := []struct {
 		name           string
 		uid            string
-		document       *model.User
+		document       *tasukedb.User
 		getDocumentErr error
 
 		res  *frontendapi.GetUserResponse
@@ -33,7 +33,7 @@ func TestHandler(t *testing.T) {
 		{
 			name: "success",
 			uid:  "user-id",
-			document: &model.User{
+			document: &tasukedb.User{
 				ProgrammingLanguageIDs: []uint32{1, 2, 3},
 				MaxOpenReviews:         5,
 				CreatedAt:              time.Now(),
@@ -75,7 +75,7 @@ func TestHandler(t *testing.T) {
 					case tc.getDocumentErr != nil:
 						return tc.getDocumentErr
 					default:
-						*(res.(*model.User)) = *tc.document
+						*(res.(*tasukedb.User)) = *tc.document
 						return nil
 					}
 				})

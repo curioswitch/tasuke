@@ -5,12 +5,14 @@ on:
       - main
     paths:
       - webhook/server/**
+      - common/go/**
       - .github/workflows/ci-webhook-server.yaml
       - .github/workflows/_check-go.yaml
       - .github/workflows/_docker-go.yaml
   pull_request:
     paths:
       - webhook/server/**
+      - common/go/**
       - .github/workflows/ci-webhook-server.yaml
       - .github/workflows/_check-go.yaml
       - .github/workflows/_docker-go.yaml
