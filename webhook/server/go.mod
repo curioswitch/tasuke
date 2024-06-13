@@ -4,7 +4,7 @@ go 1.22
 
 require (
 	github.com/bradleyfalzon/ghinstallation/v2 v2.11.0
-	github.com/curioswitch/go-curiostack v0.0.0-20240613020823-49106d531dd1
+	github.com/curioswitch/go-curiostack v0.0.0-20240613050500-4d2f6f0b33b1
 	github.com/go-enry/go-enry/v2 v2.8.8
 	github.com/google/go-github/v62 v62.0.0
 	github.com/stretchr/testify v1.9.0
@@ -17,6 +17,8 @@ require (
 	github.com/GoogleCloudPlatform/opentelemetry-operations-go/detectors/gcp v1.23.0 // indirect
 	github.com/GoogleCloudPlatform/opentelemetry-operations-go/propagator v0.47.0 // indirect
 	github.com/cenkalti/backoff/v4 v4.3.0 // indirect
+	github.com/curioswitch/go-docs-handler v0.1.5 // indirect
+	github.com/curioswitch/go-docs-handler/plugins/proto v0.1.5 // indirect
 	github.com/curioswitch/go-usegcp v0.0.0-20240524082550-9d642ba35329 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/felixge/httpsnoop v1.0.4 // indirect
@@ -33,6 +35,7 @@ require (
 	github.com/knadh/koanf/providers/env v0.1.0 // indirect
 	github.com/knadh/koanf/providers/rawbytes v0.1.0 // indirect
 	github.com/knadh/koanf/v2 v2.1.1 // indirect
+	github.com/magefile/mage v1.15.0 // indirect
 	github.com/mitchellh/copystructure v1.2.0 // indirect
 	github.com/mitchellh/reflectwalk v1.0.2 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
