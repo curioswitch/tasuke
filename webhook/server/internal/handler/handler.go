@@ -9,9 +9,12 @@ import (
 	"net/http"
 	"strings"
 
+	"cloud.google.com/go/firestore"
 	"github.com/go-enry/go-enry/v2"
 	"github.com/google/go-github/v62/github"
 
+	"github.com/curioswitch/tasuke/common/tasukedb"
+	ifirestore "github.com/curioswitch/tasuke/webhook/server/internal/client/firestore"
 	"github.com/curioswitch/tasuke/webhook/server/internal/config"
 	"github.com/curioswitch/tasuke/webhook/server/internal/ghapi"
 )
@@ -23,19 +26,21 @@ const (
 	githubEventTypePullRequest
 )
 
-func New(config *config.Config) (*Handler, error) {
+func New(config *config.Config, fsClient *firestore.Client) (*Handler, error) {
 	clientCreator, err := ghapi.NewClientCreator(config)
 	if err != nil {
 		return nil, fmt.Errorf("handler: create client creator: %w", err)
 	}
 	return &Handler{
 		secret:        []byte(config.GitHub.Secret),
+		store:         ifirestore.NewClient[tasukedb.User](fsClient, "users"),
 		clientCreator: clientCreator,
 	}, nil
 }
 
 type Handler struct {
 	secret        []byte
+	store         ifirestore.Client[tasukedb.User]
 	clientCreator *ghapi.ClientCreator
 }
 
@@ -98,7 +103,7 @@ func (h *Handler) handleIssueComment(ctx context.Context, payload []byte) error 
 		return nil
 	}
 
-	client, err := h.clientCreator.NewClient(event.Installation.GetID())
+	gh, err := h.clientCreator.NewClient(event.Installation.GetID())
 	if err != nil {
 		return fmt.Errorf("handler: create client: %w", err)
 	}
@@ -107,7 +112,7 @@ func (h *Handler) handleIssueComment(ctx context.Context, payload []byte) error 
 	repo := event.Repo.GetName()
 	num := event.Issue.GetNumber()
 
-	diff, _, err := client.PullRequests.GetRaw(ctx, owner, repo, num, github.RawOptions{
+	diff, _, err := gh.PullRequests.GetRaw(ctx, owner, repo, num, github.RawOptions{
 		Type: github.Diff,
 	})
 	if err != nil {
@@ -122,11 +127,34 @@ func (h *Handler) handleIssueComment(ctx context.Context, payload []byte) error 
 		langs[i] = lang.Name
 	}
 
-	if _, _, err := client.Issues.CreateComment(ctx, owner, repo, num, &github.IssueComment{
+	// TODO: Actually match with a reviewer. First, we just find any.
+	var user *tasukedb.User
+	h.store.Query(ctx, firestore.PropertyFilter{
+		Path:     "githubUserId",
+		Operator: "!=",
+		Value:    0,
+	})(func(u *tasukedb.User, e error) bool {
+		user = u
+		err = e
+		return false
+	})
+	if err != nil {
+		return fmt.Errorf("handler: query user: %w", err)
+	}
+
+	ghUser, _, err := gh.Users.GetByID(ctx, user.GithubUserID)
+	if err != nil {
+		return fmt.Errorf("handler: get user: %w", err)
+	}
+
+	if _, _, err := gh.Issues.CreateComment(ctx, owner, repo, num, &github.IssueComment{
 		Body: github.String(fmt.Sprintf(`Hi there! I'm currently under development but will be happy to help after I'm working.
 
 Currently, I only detect the languages in the PR. The languages I detected for this PR are: %s.
-`, strings.Join(langs, ", "))),
+
+I don't actually match against these languages yet. But I do still find an arbitrary user to nag.
+@%s, could you please review this PR? Thanks!
+`, strings.Join(langs, ", "), ghUser.GetLogin())),
 	}); err != nil {
 		return fmt.Errorf("handler: create comment: %w", err)
 	}
