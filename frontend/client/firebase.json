@@ -9,6 +9,13 @@
           "serviceId": "frontend-server",
           "region": "us-central1"
         }
+      },
+      {
+        "source": "/github-webhook",
+        "run": {
+          "serviceId": "webhook-server",
+          "region": "us-central1"
+        }
       }
     ]
   }
