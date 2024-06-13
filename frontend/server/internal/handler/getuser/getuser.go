@@ -21,21 +21,21 @@ var errUserNotFound = errors.New("user not found")
 // NewHandler returns a Handler that uses the given Firestore client.
 func NewHandler(client *firestore.Client) *Handler {
 	return &Handler{
-		store: ifirestore.NewClient(client),
+		store: ifirestore.NewClient[tasukedb.User](client, "users"),
 	}
 }
 
 // Handler is the handler for the FrontendService.GetUser RPC.
 type Handler struct {
-	store ifirestore.Client
+	store ifirestore.Client[tasukedb.User]
 }
 
 // GetUser implements FrontendService.GetUser.
 func (h *Handler) GetUser(ctx context.Context, _ *frontendapi.GetUserRequest) (*frontendapi.GetUserResponse, error) {
 	fbToken := firebaseauth.TokenFromContext(ctx)
 
-	var u tasukedb.User
-	if err := h.store.GetDocument(ctx, "users", fbToken.UID, &u); err != nil {
+	u, err := h.store.GetDocument(ctx, fbToken.UID)
+	if err != nil {
 		if status.Code(err) == codes.NotFound {
 			return nil, connect.NewError(connect.CodeNotFound, errUserNotFound)
 		}
@@ -43,7 +43,7 @@ func (h *Handler) GetUser(ctx context.Context, _ *frontendapi.GetUserRequest) (*
 	}
 
 	return &frontendapi.GetUserResponse{
-		User: userToProto(&u),
+		User: userToProto(u),
 	}, nil
 }
 

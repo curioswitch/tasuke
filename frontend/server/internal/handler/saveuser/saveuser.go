@@ -17,13 +17,13 @@ import (
 // NewHandler returns a Handler that uses the given Firestore client.
 func NewHandler(client *firestore.Client) *Handler {
 	return &Handler{
-		store: ifirestore.NewClient(client),
+		store: ifirestore.NewClient[tasukedb.User](client, "users"),
 	}
 }
 
 // Handler is the handler for the FrontendService.SaveUser RPC.
 type Handler struct {
-	store ifirestore.Client
+	store ifirestore.Client[tasukedb.User]
 }
 
 // SaveUser implements FrontendService.SaveUser.
@@ -41,7 +41,7 @@ func (h *Handler) SaveUser(ctx context.Context, req *frontendapi.SaveUserRequest
 		MaxOpenReviews:         req.GetUser().GetMaxOpenReviews(),
 	}
 
-	if err := h.store.SetDocument(ctx, "users", fbToken.UID, u); err != nil {
+	if err := h.store.SetDocument(ctx, fbToken.UID, &u); err != nil {
 		return nil, fmt.Errorf("saveuser: failed to save user document: %w", err)
 	}
 
