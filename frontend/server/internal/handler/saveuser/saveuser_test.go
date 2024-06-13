@@ -61,6 +61,7 @@ func TestHandler(t *testing.T) {
 						return tc.createDocumentErr
 					default:
 						require.Equal(t, model.User{
+							GithubUserID:           123,
 							ProgrammingLanguageIDs: tc.req.GetUser().GetProgrammingLanguageIds(),
 							MaxOpenReviews:         tc.req.GetUser().GetMaxOpenReviews(),
 						}, data)
@@ -72,7 +73,14 @@ func TestHandler(t *testing.T) {
 				store: fsClient,
 			}
 
-			fbToken := &auth.Token{UID: tc.uid}
+			fbToken := &auth.Token{
+				UID: tc.uid,
+				Firebase: auth.FirebaseInfo{
+					Identities: map[string]any{
+						"github.com": []any{"123"},
+					},
+				},
+			}
 			ctx := fbatestutil.ContextWithToken(context.Background(), fbToken, "raw-token")
 
 			res, err := h.SaveUser(ctx, tc.req)
