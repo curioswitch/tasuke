@@ -4,7 +4,7 @@ go 1.22
 
 require (
 	github.com/curioswitch/go-build v0.0.0-20240612031439-642962f6d0f9
-	github.com/curioswitch/go-curiostack v0.0.0-20240612040559-da4850f255c1
+	github.com/curioswitch/go-curiostack v0.0.0-20240613013935-9688fe467d26
 	github.com/goyek/goyek/v2 v2.1.0
 	github.com/goyek/x v0.1.7
 	golang.ngrok.com/ngrok v1.9.1

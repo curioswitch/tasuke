@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"embed"
 	"log"
 	"net/http"
 	"os"
@@ -13,7 +14,6 @@ import (
 	docshandler "github.com/curioswitch/go-docs-handler"
 	protodocs "github.com/curioswitch/go-docs-handler/plugins/proto"
 	"github.com/curioswitch/go-usegcp/middleware/firebaseauth"
-	"github.com/go-chi/chi/v5"
 
 	frontendapi "github.com/curioswitch/tasuke/frontend/api/go"
 	"github.com/curioswitch/tasuke/frontend/api/go/frontendapiconnect"
@@ -26,15 +26,13 @@ import (
 // e2e-test1@curioswitch.org
 const e2eTest1UID = "V8yRsCpZJkUfPmxcLI6pKTrx3kf1"
 
+var confFiles embed.FS // Currently empty
+
 func main() {
-	os.Exit(doMain())
+	os.Exit(server.Main(&config.Config{}, confFiles, setupServer))
 }
 
-func doMain() int {
-	ctx := context.Background()
-
-	conf := config.Load()
-
+func setupServer(ctx context.Context, conf *config.Config, s *server.Server) error {
 	docs, err := docshandler.New(
 		protodocs.NewPlugin(
 			frontendapiconnect.FrontendServiceName,
@@ -89,6 +87,7 @@ func doMain() int {
 	if err != nil {
 		log.Fatalf("Failed to create docs handler: %v", err)
 	}
+	s.Mux().Handle("/internal/docs/*", http.StripPrefix("/internal/docs", docs))
 
 	fbApp, err := firebase.NewApp(ctx, &firebase.Config{ProjectID: conf.Google.Project})
 	if err != nil {
@@ -114,12 +113,7 @@ func doMain() int {
 	fapiPath, fapiHandler := frontendapiconnect.NewFrontendServiceHandler(svc,
 		connect.WithInterceptors(otel.ConnectInterceptor()))
 	fapiHandler = fbMW(fapiHandler)
+	s.Mux().Mount(fapiPath, fapiHandler)
 
-	return server.Run(ctx, &conf.Common,
-		server.SetupMux(func(mux *chi.Mux) error {
-			mux.Handle("/internal/docs/*", http.StripPrefix("/internal/docs", docs))
-			mux.Mount(fapiPath, fapiHandler)
-			return nil
-		}),
-	)
+	return s.Start(ctx)
 }
