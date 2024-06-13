@@ -23,7 +23,7 @@ func setupServer(ctx context.Context, conf *config.Config, s *server.Server) err
 	if err != nil {
 		return fmt.Errorf("main: create handler: %w", err)
 	}
-	s.Mux().Handle("/github-webhook", webhook)
+	server.Mux(s).Handle("/github-webhook", webhook)
 
-	return s.Start(ctx)
+	return server.Start(ctx, s)
 }

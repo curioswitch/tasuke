@@ -6,9 +6,7 @@ require (
 	cloud.google.com/go/firestore v1.15.0
 	connectrpc.com/connect v1.16.2
 	firebase.google.com/go/v4 v4.14.0
-	github.com/curioswitch/go-curiostack v0.0.0-20240613020823-49106d531dd1
-	github.com/curioswitch/go-docs-handler v0.1.5
-	github.com/curioswitch/go-docs-handler/plugins/proto v0.1.5
+	github.com/curioswitch/go-curiostack v0.0.0-20240613050500-4d2f6f0b33b1
 	github.com/curioswitch/go-usegcp v0.0.0-20240524082550-9d642ba35329
 	github.com/curioswitch/tasuke/frontend/api v0.0.0
 	github.com/go-chi/chi/v5 v5.0.12
@@ -29,6 +27,8 @@ require (
 	github.com/GoogleCloudPlatform/opentelemetry-operations-go/propagator v0.47.0 // indirect
 	github.com/MicahParks/keyfunc v1.9.0 // indirect
 	github.com/cenkalti/backoff/v4 v4.3.0 // indirect
+	github.com/curioswitch/go-docs-handler v0.1.5 // indirect
+	github.com/curioswitch/go-docs-handler/plugins/proto v0.1.5 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/felixge/httpsnoop v1.0.4 // indirect
 	github.com/go-logr/logr v1.4.1 // indirect
