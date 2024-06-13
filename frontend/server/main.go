@@ -3,7 +3,7 @@ package main
 import (
 	"context"
 	"embed"
-	"log"
+	"fmt"
 	"net/http"
 	"os"
 
@@ -85,23 +85,23 @@ func setupServer(ctx context.Context, conf *config.Config, s *server.Server) err
 			return script
 		}))
 	if err != nil {
-		log.Fatalf("Failed to create docs handler: %v", err)
+		return fmt.Errorf("main: create docs handler: %w", err)
 	}
 	s.Mux().Handle("/internal/docs/*", http.StripPrefix("/internal/docs", docs))
 
 	fbApp, err := firebase.NewApp(ctx, &firebase.Config{ProjectID: conf.Google.Project})
 	if err != nil {
-		log.Fatalf("Failed to create firebase app: %v", err)
+		return fmt.Errorf("main: create firebase app: %w", err)
 	}
 
 	fbAuth, err := fbApp.Auth(ctx)
 	if err != nil {
-		log.Fatalf("Failed to create firebase auth client: %v", err)
+		return fmt.Errorf("main: create firebase auth client: %w", err)
 	}
 
 	firestore, err := fbApp.Firestore(ctx)
 	if err != nil {
-		log.Fatalf("Failed to create firestore client: %v", err)
+		return fmt.Errorf("main: create firestore client: %w", err)
 	}
 	defer firestore.Close()
 
