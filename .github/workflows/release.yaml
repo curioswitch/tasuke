@@ -11,14 +11,14 @@ permissions:
   id-token: write
 
 jobs:
-  firebase-handler:
+  frontend-client:
     uses: ./.github/workflows/ci-frontend-client.yaml
     secrets: inherit
 
-  frontend:
+  frontend-server:
     uses: ./.github/workflows/ci-frontend-server.yaml
     secrets: inherit
 
-  modules-runner:
+  webhook-server:
     uses: ./.github/workflows/ci-webhook-server.yaml
     secrets: inherit
