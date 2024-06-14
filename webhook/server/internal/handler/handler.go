@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"log/slog"
+	"math/rand"
 	"net/http"
 	"strings"
 
@@ -14,7 +15,6 @@ import (
 	"github.com/google/go-github/v62/github"
 
 	"github.com/curioswitch/tasuke/common/tasukedb"
-	ifirestore "github.com/curioswitch/tasuke/webhook/server/internal/client/firestore"
 	"github.com/curioswitch/tasuke/webhook/server/internal/config"
 	"github.com/curioswitch/tasuke/webhook/server/internal/ghapi"
 )
@@ -27,21 +27,25 @@ const (
 )
 
 func New(config *config.Config, fsClient *firestore.Client) (*Handler, error) {
-	clientCreator, err := ghapi.NewClientCreator(config)
+	ghCreator, err := ghapi.NewClientCreator(config)
 	if err != nil {
 		return nil, fmt.Errorf("handler: create client creator: %w", err)
 	}
 	return &Handler{
-		secret:        []byte(config.GitHub.Secret),
-		store:         ifirestore.NewClient[tasukedb.User](fsClient, "users"),
-		clientCreator: clientCreator,
+		secret:    []byte(config.GitHub.Secret),
+		ghCreator: ghCreator,
+
+		store: fsClient,
+		users: fsClient.Collection("users"),
 	}, nil
 }
 
 type Handler struct {
-	secret        []byte
-	store         ifirestore.Client[tasukedb.User]
-	clientCreator *ghapi.ClientCreator
+	secret    []byte
+	ghCreator *ghapi.ClientCreator
+
+	store *firestore.Client
+	users *firestore.CollectionRef
 }
 
 func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
@@ -64,14 +68,11 @@ func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	slog.InfoContext(ctx, "Received event "+eventTypeStr)
-
 	payload, err := github.ValidatePayload(r, h.secret)
 	if err != nil {
 		http.Error(w, "Invalid signature", http.StatusUnauthorized)
 		return
 	}
-	slog.InfoContext(ctx, "Received payload"+string(payload))
 
 	switch eventType {
 	case githubEventTypeIssueComment:
@@ -103,7 +104,7 @@ func (h *Handler) handleIssueComment(ctx context.Context, payload []byte) error 
 		return nil
 	}
 
-	gh, err := h.clientCreator.NewClient(event.Installation.GetID())
+	gh, err := h.ghCreator.NewClient(event.Installation.GetID())
 	if err != nil {
 		return fmt.Errorf("handler: create client: %w", err)
 	}
@@ -128,18 +129,85 @@ func (h *Handler) handleIssueComment(ctx context.Context, payload []byte) error 
 	}
 
 	// TODO: Actually match with a reviewer. First, we just find any.
-	var user *tasukedb.User
-	h.store.Query(ctx, firestore.PropertyFilter{
-		Path:     "githubUserId",
-		Operator: "!=",
-		Value:    0,
-	})(func(u *tasukedb.User, e error) bool {
-		user = u
-		err = e
-		return false
-	})
-	if err != nil {
-		return fmt.Errorf("handler: query user: %w", err)
+	var user tasukedb.User
+	existing := false
+
+	review := tasukedb.Review{
+		Repo:        fmt.Sprintf("%s/%s", owner, repo),
+		PullRequest: int64(num),
+	}
+	reviewID := fmt.Sprintf("%s-%s-%d", owner, repo, num)
+
+	if err := h.store.RunTransaction(ctx, func(ctx context.Context, t *firestore.Transaction) error {
+		if existingReviews, err := h.store.CollectionGroup("reviews").WhereEntity(firestore.AndFilter{
+			Filters: []firestore.EntityFilter{
+				firestore.PropertyFilter{
+					Path:     "repo",
+					Operator: "==",
+					Value:    review.Repo,
+				},
+				firestore.PropertyFilter{
+					Path:     "pullRequest",
+					Operator: "==",
+					Value:    review.PullRequest,
+				},
+				firestore.PropertyFilter{
+					Path:     "completed",
+					Operator: "==",
+					Value:    false,
+				},
+			},
+		}).Limit(1).Documents(ctx).GetAll(); err != nil {
+			return fmt.Errorf("handler: check existing reviews: %w", err)
+		} else if len(existingReviews) > 0 {
+			existing = true
+			return nil
+		}
+
+		docs, err := h.users.WhereEntity(firestore.PropertyFilter{
+			Path:     "remainingReviews",
+			Operator: ">",
+			Value:    0,
+		}).Limit(100).Documents(ctx).GetAll()
+		if err != nil {
+			return fmt.Errorf("handler: get available users: %w", err)
+		}
+		if len(docs) == 0 {
+			return nil
+		}
+
+		// For now just pick a random user.
+		doc := docs[rand.Intn(len(docs))] //nolint:gosec // We don't need cryptographically secure randomness here.
+		if err := doc.DataTo(&user); err != nil {
+			return fmt.Errorf("handler: parse user: %w", err)
+		}
+
+		user.RemainingReviews--
+		if err := t.Update(doc.Ref, []firestore.Update{
+			{
+				Path:  "remainingReviews",
+				Value: user.RemainingReviews,
+			},
+		}); err != nil {
+			return fmt.Errorf("handler: update remaining reviews: %w", err)
+		}
+
+		if _, err := doc.Ref.Collection("reviews").Doc(reviewID).Set(ctx, review); err != nil {
+			return fmt.Errorf("handler: create review: %w", err)
+		}
+
+		return nil
+	}); err != nil {
+		return err
+	}
+
+	if existing {
+		if _, _, err := gh.Issues.CreateComment(ctx, owner, repo, num, &github.IssueComment{
+			Body: github.String(`Sorry, this PR already has a reviewer assigned to it.`),
+		}); err != nil {
+			return fmt.Errorf("handler: create comment: %w", err)
+		}
+		return nil
 	}
 
 	ghUser, _, err := gh.Users.GetByID(ctx, user.GithubUserID)
