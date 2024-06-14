@@ -71,6 +71,7 @@ func updateLanguages(a *goyek.A) {
 	if err != nil {
 		a.Fatal(err)
 	}
+	resJSON = append(resJSON, '\n')
 
 	clientPath := filepath.Join("frontend", "client", "src", "pages", "settings", "languages.json")
 	if err := os.WriteFile(clientPath, resJSON, 0o644); err != nil {
