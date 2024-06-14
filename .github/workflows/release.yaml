@@ -1,0 +1,24 @@
+name: Release Build
+
+on:
+  push:
+    branches:
+      - release/**
+
+permissions:
+  actions: read
+  contents: read
+  id-token: write
+
+jobs:
+  firebase-handler:
+    uses: ./.github/workflows/ci-frontend-client.yaml
+    secrets: inherit
+
+  frontend:
+    uses: ./.github/workflows/ci-frontend-server.yaml
+    secrets: inherit
+
+  modules-runner:
+    uses: ./.github/workflows/ci-webhook-server.yaml
+    secrets: inherit
