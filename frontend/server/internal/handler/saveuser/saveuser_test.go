@@ -190,6 +190,7 @@ func TestHandler(t *testing.T) {
 							GithubUserID:           123,
 							ProgrammingLanguageIDs: tc.req.GetUser().GetProgrammingLanguageIds(),
 							MaxOpenReviews:         tc.req.GetUser().GetMaxOpenReviews(),
+							RemainingReviews:       int64(tc.req.GetUser().GetMaxOpenReviews()),
 						}, data)
 						return nil
 					}
