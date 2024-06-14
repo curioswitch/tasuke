@@ -3,6 +3,7 @@ package saveuser
 import (
 	"context"
 	"fmt"
+	"slices"
 	"strconv"
 
 	"cloud.google.com/go/firestore"
@@ -38,9 +39,13 @@ func (h *Handler) SaveUser(ctx context.Context, req *frontendapi.SaveUserRequest
 	}
 
 	langIDs := req.GetUser().GetProgrammingLanguageIds()
-	for _, langID := range langIDs {
+	slices.Sort(langIDs)
+	for i, langID := range langIDs {
 		if !languages.IsSupported(int(langID)) {
 			return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("unsupported language id: %d", langID))
+		}
+		if i > 0 && langIDs[i-1] == langID {
+			return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("duplicate language id: %d", langID))
 		}
 	}
 

@@ -30,7 +30,7 @@ func TestHandler(t *testing.T) {
 			uid:  "user-id",
 			req: &frontendapi.SaveUserRequest{
 				User: &frontendapi.User{
-					ProgrammingLanguageIds: []uint32{132, 146, 183},
+					ProgrammingLanguageIds: []uint32{146, 183, 132},
 					MaxOpenReviews:         5,
 				},
 			},
@@ -51,6 +51,33 @@ func TestHandler(t *testing.T) {
 				"github.com": []any{"123"},
 			},
 			err: errors.New("unsupported language id"),
+		},
+		{
+			name: "duplicate language",
+			uid:  "user-id",
+			req: &frontendapi.SaveUserRequest{
+				User: &frontendapi.User{
+					ProgrammingLanguageIds: []uint32{132, 146, 183, 132},
+					MaxOpenReviews:         5,
+				},
+			},
+			identities: map[string]any{
+				"github.com": []any{"123"},
+			},
+			err: errors.New("duplicate language id"),
+		},
+		{
+			name: "success",
+			uid:  "user-id",
+			req: &frontendapi.SaveUserRequest{
+				User: &frontendapi.User{
+					ProgrammingLanguageIds: []uint32{132, 146, 183},
+					MaxOpenReviews:         5,
+				},
+			},
+			identities: map[string]any{
+				"github.com": []any{"123"},
+			},
 		},
 		{
 			name: "firestore error",
