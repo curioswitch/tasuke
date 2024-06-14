@@ -53,6 +53,7 @@ func (h *Handler) SaveUser(ctx context.Context, req *frontendapi.SaveUserRequest
 		GithubUserID:           int64(githubID),
 		ProgrammingLanguageIDs: langIDs,
 		MaxOpenReviews:         req.GetUser().GetMaxOpenReviews(),
+		RemainingReviews:       int64(req.GetUser().GetMaxOpenReviews()), // TODO: Compute against existing reviews.
 	}
 
 	if err := h.store.SetDocument(ctx, fbToken.UID, &u); err != nil {
