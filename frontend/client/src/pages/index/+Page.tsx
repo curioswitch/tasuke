@@ -7,6 +7,16 @@ import { navigate } from "vike/client/router";
 
 import { useFirebase } from "@/hooks/firebase";
 
+function getBotInstallLink() {
+  if (import.meta.env.PUBLIC_ENV__FIREBASE_APP === "tasuke-dev") {
+    return "https://github.com/apps/tasuke-alpha";
+  }
+  if (import.meta.env.PUBLIC_ENV__FIREBASE_APP === "tasuke-prod") {
+    return "https://github.com/apps/tasuke-bot";
+  }
+  throw new Error("PUBLIC_ENV__FIREBASE_APP must be configured");
+}
+
 export default function Page() {
   const fbState = useFirebase();
 
@@ -72,7 +82,49 @@ export default function Page() {
           If you have a repository you could use help with on code review,
           register the Tasuke GitHub app.
         </p>
-        <p>Under construction...</p>
+        <blockquote>
+          Currently you must also register as a code reviewer to use the app. As
+          review capacity increases and we understand abuse potential better, we
+          may remove this requirement.
+        </blockquote>
+        <p>
+          <a
+            href={getBotInstallLink()}
+            target="_blank"
+            rel="noreferrer noopener"
+          >
+            Install the app
+          </a>
+        </p>
+        <p>
+          With the app installed on a repository, create a pull request in it
+          and request a review by adding a comment starting with{" "}
+          <code>/tasuke</code>, for example:
+        </p>
+        <p>
+          <code>/tasuke Can you help me with a review, please?</code>
+        </p>
+        <p>
+          Currently, the only supported command is to ask for a review, so the
+          text content is not used. In the future, we may use it for executing
+          different commands.
+        </p>
+        <h3>Contributing to tasuke</h3>
+        <p>tasuke is OSS for OSS.</p>
+        <p>
+          <a
+            href="https://github.com/curioswitch/tasuke"
+            target="_blank"
+            rel="noreferrer noopener"
+          >
+            Check out the repo
+          </a>
+        </p>
+        <p>
+          If you are interested, feel free to file issues or pull requests as
+          with any OSS project. Let's work together to find what can make the
+          service most useful for OSS developers.
+        </p>
       </div>
     </>
   );
