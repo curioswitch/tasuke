@@ -76,9 +76,19 @@ func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	switch eventType {
 	case githubEventTypeIssueComment:
-		err = h.handleIssueComment(ctx, payload)
+		var event github.IssueCommentEvent
+		if err := json.Unmarshal(payload, &event); err != nil {
+			http.Error(w, "Invalid payload", http.StatusBadRequest)
+			return
+		}
+		err = h.handleIssueComment(ctx, &event)
 	case githubEventTypePullRequest:
-		// TODO
+		var event github.PullRequestEvent
+		if err := json.Unmarshal(payload, &event); err != nil {
+			http.Error(w, "Invalid payload", http.StatusBadRequest)
+			return
+		}
+		err = h.handlePullRequest(ctx, &event)
 	}
 
 	if err != nil {
@@ -88,12 +98,7 @@ func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func (h *Handler) handleIssueComment(ctx context.Context, payload []byte) error {
-	var event github.IssueCommentEvent
-	if err := json.Unmarshal(payload, &event); err != nil {
-		return fmt.Errorf("handler: unmarshal payload: %w", err)
-	}
-
+func (h *Handler) handleIssueComment(ctx context.Context, event *github.IssueCommentEvent) error {
 	if !event.Issue.IsPullRequest() {
 		return nil
 	}
@@ -128,42 +133,31 @@ func (h *Handler) handleIssueComment(ctx context.Context, payload []byte) error 
 		langs[i] = lang.Name
 	}
 
-	// TODO: Actually match with a reviewer. First, we just find any.
-	var user tasukedb.User
-	existing := false
-
 	review := tasukedb.Review{
 		Repo:        fmt.Sprintf("%s/%s", owner, repo),
 		PullRequest: int64(num),
 	}
+
+	if existingReviews, err := h.getExistingReviews(ctx, review.Repo, review.PullRequest); err != nil {
+		return fmt.Errorf("handler: check existing reviews: %w", err)
+	} else if len(existingReviews) > 0 {
+		if _, _, err := gh.Issues.CreateComment(ctx, owner, repo, num, &github.IssueComment{
+			Body: github.String(`Sorry, this PR already has a reviewer assigned to it.`),
+		}); err != nil {
+			return fmt.Errorf("handler: create comment: %w", err)
+		}
+		return nil
+	}
+
+	// TODO: Actually match with a reviewer. First, we just find any.
+	var user tasukedb.User
+	existing := false
+
 	reviewID := fmt.Sprintf("%s-%s-%d", owner, repo, num)
 
 	if err := h.store.RunTransaction(ctx, func(ctx context.Context, t *firestore.Transaction) error {
-		if existingReviews, err := h.store.CollectionGroup("reviews").WhereEntity(firestore.AndFilter{
-			Filters: []firestore.EntityFilter{
-				firestore.PropertyFilter{
-					Path:     "repo",
-					Operator: "==",
-					Value:    review.Repo,
-				},
-				firestore.PropertyFilter{
-					Path:     "pullRequest",
-					Operator: "==",
-					Value:    review.PullRequest,
-				},
-				firestore.PropertyFilter{
-					Path:     "completed",
-					Operator: "==",
-					Value:    false,
-				},
-			},
-		}).Limit(1).Documents(ctx).GetAll(); err != nil {
-			return fmt.Errorf("handler: check existing reviews: %w", err)
-		} else if len(existingReviews) > 0 {
-			existing = true
-			return nil
-		}
-
+		// Get candidate docs without using transaction. We don't want all candidates to be docs, but
+		// do want to fetch fresh candidates on retries, at least for now.
 		docs, err := h.users.WhereEntity(firestore.PropertyFilter{
 			Path:     "remainingReviews",
 			Operator: ">",
@@ -178,6 +172,13 @@ func (h *Handler) handleIssueComment(ctx context.Context, payload []byte) error 
 
 		// For now just pick a random user.
 		doc := docs[rand.Intn(len(docs))] //nolint:gosec // We don't need cryptographically secure randomness here.
+
+		// Refetch the doc within the transaction.
+		doc, err = t.Get(doc.Ref)
+		if err != nil {
+			return fmt.Errorf("handler: refetch user: %w", err)
+		}
+
 		if err := doc.DataTo(&user); err != nil {
 			return fmt.Errorf("handler: parse user: %w", err)
 		}
@@ -282,4 +283,89 @@ func maybeAppendFileLanguageID(langIDs []int, filename string, content []byte) [
 	}
 
 	return langIDs
+}
+
+func (h *Handler) handlePullRequest(ctx context.Context, event *github.PullRequestEvent) error {
+	if *event.Action != "closed" {
+		return nil
+	}
+
+	owner := event.Repo.GetOwner().GetLogin()
+	repo := event.Repo.GetName()
+	num := event.GetNumber()
+
+	reviewDocs, err := h.getExistingReviews(ctx, fmt.Sprintf("%s/%s", owner, repo), int64(num))
+	if err != nil {
+		return fmt.Errorf("handler: get existing reviews: %w", err)
+	}
+
+	// Currently we only support one reviewer. Even if we supported multiple in the future,
+	// making parallel is likely not important, we do iterate anyways.
+
+	for _, doc := range reviewDocs {
+		var review tasukedb.Review
+		if err := doc.DataTo(&review); err != nil {
+			return fmt.Errorf("handler: parse review: %w", err)
+		}
+
+		if err := h.store.RunTransaction(ctx, func(ctx context.Context, t *firestore.Transaction) error {
+			if err := t.Update(doc.Ref, []firestore.Update{
+				{
+					Path:  "completed",
+					Value: true,
+				},
+			}); err != nil {
+				return fmt.Errorf("handler: mark review completed: %w", err)
+			}
+
+			userDoc, err := doc.Ref.Parent.Parent.Get(ctx)
+			if err != nil {
+				return fmt.Errorf("handler: get user for review completion: %w", err)
+			}
+
+			var user tasukedb.User
+			if err := userDoc.DataTo(&user); err != nil {
+				return fmt.Errorf("handler: parse user: %w", err)
+			}
+
+			user.RemainingReviews++
+
+			if err := t.Update(userDoc.Ref, []firestore.Update{
+				{
+					Path:  "remainingReviews",
+					Value: user.RemainingReviews,
+				},
+			}); err != nil {
+				return fmt.Errorf("handler: increment user remaining reviews: %w", err)
+			}
+
+			return nil
+		}); err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
+func (h *Handler) getExistingReviews(ctx context.Context, repo string, num int64) ([]*firestore.DocumentSnapshot, error) {
+	return h.store.CollectionGroup("reviews").WhereEntity(firestore.AndFilter{
+		Filters: []firestore.EntityFilter{
+			firestore.PropertyFilter{
+				Path:     "repo",
+				Operator: "==",
+				Value:    repo,
+			},
+			firestore.PropertyFilter{
+				Path:     "pullRequest",
+				Operator: "==",
+				Value:    num,
+			},
+			firestore.PropertyFilter{
+				Path:     "completed",
+				Operator: "==",
+				Value:    false,
+			},
+		},
+	}).Documents(ctx).GetAll()
 }
