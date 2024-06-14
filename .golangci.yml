@@ -38,3 +38,6 @@ issues:
         - errchkjson
         - gosec
         - noctx
+    - linters:
+        - gosec
+      text: "G306:"

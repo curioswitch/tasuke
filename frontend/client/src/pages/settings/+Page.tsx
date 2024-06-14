@@ -21,17 +21,10 @@ import { z } from "zod";
 
 import languages from "./languages.json";
 
-const languageOptions = Object.entries(languages)
-  .map(([name, language]) => ({
-    name,
-    ...language,
-  }))
-  // TODO: Filter dataset instead.
-  .filter((language) => language.type !== "data")
-  .map((language) => ({
-    label: language.name,
-    value: language.language_id,
-  }));
+const languageOptions = languages.map((language) => ({
+  label: language.name,
+  value: language.id,
+}));
 
 const formSchema = z
   .object({
