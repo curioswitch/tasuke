@@ -30,7 +30,7 @@ func TestHandler(t *testing.T) {
 			uid:  "user-id",
 			req: &frontendapi.SaveUserRequest{
 				User: &frontendapi.User{
-					ProgrammingLanguageIds: []uint32{132, 146, 183},
+					ProgrammingLanguageIds: []uint32{146, 183, 132},
 					MaxOpenReviews:         5,
 				},
 			},
