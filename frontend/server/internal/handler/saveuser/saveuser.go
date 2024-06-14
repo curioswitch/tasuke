@@ -6,9 +6,11 @@ import (
 	"strconv"
 
 	"cloud.google.com/go/firestore"
+	"connectrpc.com/connect"
 	"firebase.google.com/go/v4/auth"
 	"github.com/curioswitch/go-usegcp/middleware/firebaseauth"
 
+	"github.com/curioswitch/tasuke/common/languages"
 	"github.com/curioswitch/tasuke/common/tasukedb"
 	frontendapi "github.com/curioswitch/tasuke/frontend/api/go"
 	ifirestore "github.com/curioswitch/tasuke/frontend/server/internal/client/firestore"
@@ -35,9 +37,16 @@ func (h *Handler) SaveUser(ctx context.Context, req *frontendapi.SaveUserRequest
 		return nil, err
 	}
 
+	langIDs := req.GetUser().GetProgrammingLanguageIds()
+	for _, langID := range langIDs {
+		if !languages.IsSupported(int(langID)) {
+			return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("unsupported language id: %d", langID))
+		}
+	}
+
 	u := tasukedb.User{
 		GithubUserID:           int64(githubID),
-		ProgrammingLanguageIDs: req.GetUser().GetProgrammingLanguageIds(),
+		ProgrammingLanguageIDs: langIDs,
 		MaxOpenReviews:         req.GetUser().GetMaxOpenReviews(),
 	}
 
