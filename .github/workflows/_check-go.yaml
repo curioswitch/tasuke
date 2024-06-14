@@ -23,7 +23,7 @@ jobs:
         # comes up on main push. Also, use workaround from
         # https://github.com/orgs/community/discussions/26253#discussioncomment-3250989
         run-all:
-          - ${{ github.event_name != 'pull_request' }}
+          - ${{ github.event_name != 'pull_request' && !startsWith(github.ref_name, 'release/') }}
         exclude:
           - os: macos-14
             run-all: false
