@@ -299,6 +299,10 @@ func (h *Handler) handlePullRequest(ctx context.Context, event *github.PullReque
 		return fmt.Errorf("handler: get existing reviews: %w", err)
 	}
 
+	if (len(reviewDocs)) == 0 {
+		return nil
+	}
+
 	// Currently we only support one reviewer. Even if we supported multiple in the future,
 	// making parallel is likely not important, we do iterate anyways.
 
