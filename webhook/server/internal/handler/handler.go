@@ -14,6 +14,7 @@ import (
 	"github.com/go-enry/go-enry/v2"
 	"github.com/google/go-github/v62/github"
 
+	"github.com/curioswitch/tasuke/common/languages"
 	"github.com/curioswitch/tasuke/common/tasukedb"
 	"github.com/curioswitch/tasuke/webhook/server/internal/config"
 	"github.com/curioswitch/tasuke/webhook/server/internal/ghapi"
@@ -125,12 +126,11 @@ func (h *Handler) handleIssueComment(ctx context.Context, event *github.IssueCom
 		return fmt.Errorf("handler: get pull request diff: %w", err)
 	}
 
-	langIDs := diffLanguages(diff)
-
-	langs := make([]string, len(langIDs))
-	for i, id := range langIDs {
-		lang, _ := enry.GetLanguageInfoByID(id)
-		langs[i] = lang.Name
+	mainLangID := diffMainLanguage(diff)
+	mainLang := "unknown"
+	if mainLangID >= 0 {
+		lang, _ := enry.GetLanguageInfoByID(mainLangID)
+		mainLang = lang.Name
 	}
 
 	review := tasukedb.Review{
@@ -156,7 +156,7 @@ func (h *Handler) handleIssueComment(ctx context.Context, event *github.IssueCom
 	reviewID := fmt.Sprintf("%s-%s-%d", owner, repo, num)
 
 	if err := h.store.RunTransaction(ctx, func(ctx context.Context, t *firestore.Transaction) error {
-		// Get candidate docs without using transaction. We don't want all candidates to be docs, but
+		// Get candidate docs without using transaction. We don't want all candidates to be locks, but
 		// do want to fetch fresh candidates on retries, at least for now.
 		docs, err := h.users.WhereEntity(firestore.PropertyFilter{
 			Path:     "remainingReviews",
@@ -219,11 +219,11 @@ func (h *Handler) handleIssueComment(ctx context.Context, event *github.IssueCom
 	if _, _, err := gh.Issues.CreateComment(ctx, owner, repo, num, &github.IssueComment{
 		Body: github.String(fmt.Sprintf(`Hi there! I'm currently under development but will be happy to help after I'm working.
 
-Currently, I only detect the languages in the PR. The languages I detected for this PR are: %s.
+Currently, I only detect the main language in the PR. The language I detected for this PR is: %s.
 
 I don't actually match against these languages yet. But I do still find an arbitrary user to nag.
 @%s, could you please review this PR? Thanks!
-`, strings.Join(langs, ", "), ghUser.GetLogin())),
+`, mainLang, ghUser.GetLogin())),
 	}); err != nil {
 		return fmt.Errorf("handler: create comment: %w", err)
 	}
@@ -231,12 +231,13 @@ I don't actually match against these languages yet. But I do still find an arbit
 	return nil
 }
 
-func diffLanguages(diff string) []int {
-	var langIDs []int
+func diffMainLanguage(diff string) int {
+	langLines := map[int]int{}
 
 	skip := false
 
-	var filename string
+	filename := ""
+	lines := 0
 	var content bytes.Buffer
 	for len(diff) > 0 {
 		line, rest, _ := strings.Cut(diff, "\n")
@@ -249,9 +250,10 @@ func diffLanguages(diff string) []int {
 			// Note that if the patch content contained diff --git, it would be following
 			// a +/- or space, so this is surprisingly robust.
 
-			langIDs = maybeAppendFileLanguageID(langIDs, filename, content.Bytes())
+			addLanguageLines(langLines, filename, content.Bytes(), lines)
 			skip = false
 			filename = ""
+			lines = 0
 			content.Reset()
 		case skip:
 		case len(filename) == 0:
@@ -265,24 +267,35 @@ func diffLanguages(diff string) []int {
 			}
 		case line[0] == '+' || line[0] == ' ':
 			content.WriteString(line[1:])
+			lines++
 		}
 	}
-	langIDs = maybeAppendFileLanguageID(langIDs, filename, content.Bytes())
+	addLanguageLines(langLines, filename, content.Bytes(), lines)
 
-	return langIDs
+	mainLang := -1
+	mainLangLines := -1
+
+	for langID, lines := range langLines {
+		if lines > mainLangLines {
+			mainLang = langID
+			mainLangLines = lines
+		}
+	}
+
+	return mainLang
 }
 
-func maybeAppendFileLanguageID(langIDs []int, filename string, content []byte) []int {
+func addLanguageLines(langLines map[int]int, filename string, content []byte, lines int) {
 	if len(filename) == 0 {
-		return langIDs
+		return
 	}
 
 	if langs := enry.GetLanguages(filename, content); len(langs) == 1 {
 		langID, _ := enry.GetLanguageID(langs[0])
-		return append(langIDs, langID)
+		if languages.IsSupported(langID) {
+			langLines[langID] += lines
+		}
 	}
-
-	return langIDs
 }
 
 func (h *Handler) handlePullRequest(ctx context.Context, event *github.PullRequestEvent) error {
