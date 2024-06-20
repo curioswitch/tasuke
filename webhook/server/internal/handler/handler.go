@@ -127,10 +127,18 @@ func (h *Handler) handleIssueComment(ctx context.Context, event *github.IssueCom
 	}
 
 	mainLangID := diffMainLanguage(diff)
-	mainLang := "unknown"
+	var mainLang string
 	if mainLangID >= 0 {
 		lang, _ := enry.GetLanguageInfoByID(mainLangID)
 		mainLang = lang.Name
+	} else {
+		if _, _, err := gh.Issues.CreateComment(ctx, owner, repo, num, &github.IssueComment{
+			Body: github.String(`Sorry, I couldn't detect a supported programming language for this PR.
+Please make sure it is one of our [supported languages](https://github.com/github-linguist/linguist/blob/master/lib/linguist/popular.yml).`),
+		}); err != nil {
+			return fmt.Errorf("handler: create comment: %w", err)
+		}
+		return nil
 	}
 
 	review := tasukedb.Review{
@@ -149,8 +157,7 @@ func (h *Handler) handleIssueComment(ctx context.Context, event *github.IssueCom
 		return nil
 	}
 
-	// TODO: Actually match with a reviewer. First, we just find any.
-	var user tasukedb.User
+	var user *tasukedb.User
 	existing := false
 
 	reviewID := fmt.Sprintf("%s-%s-%d", owner, repo, num)
@@ -158,11 +165,20 @@ func (h *Handler) handleIssueComment(ctx context.Context, event *github.IssueCom
 	if err := h.store.RunTransaction(ctx, func(ctx context.Context, t *firestore.Transaction) error {
 		// Get candidate docs without using transaction. We don't want all candidates to be locks, but
 		// do want to fetch fresh candidates on retries, at least for now.
-		docs, err := h.users.WhereEntity(firestore.PropertyFilter{
-			Path:     "remainingReviews",
-			Operator: ">",
-			Value:    0,
-		}).Limit(100).Documents(ctx).GetAll()
+		docs, err := h.users.WhereEntity(firestore.AndFilter{
+			Filters: []firestore.EntityFilter{
+				firestore.PropertyFilter{
+					Path:     "programmingLanguageIds",
+					Operator: "array-contains",
+					Value:    mainLangID,
+				},
+				firestore.PropertyFilter{
+					Path:     "remainingReviews",
+					Operator: ">",
+					Value:    0,
+				},
+			},
+		}).OrderBy("remainingReviews", firestore.Desc).Limit(100).Documents(ctx).GetAll()
 		if err != nil {
 			return fmt.Errorf("handler: get available users: %w", err)
 		}
@@ -179,27 +195,39 @@ func (h *Handler) handleIssueComment(ctx context.Context, event *github.IssueCom
 			return fmt.Errorf("handler: refetch user: %w", err)
 		}
 
-		if err := doc.DataTo(&user); err != nil {
+		var u tasukedb.User
+		if err := doc.DataTo(&u); err != nil {
 			return fmt.Errorf("handler: parse user: %w", err)
 		}
 
-		user.RemainingReviews--
+		u.RemainingReviews--
 		if err := t.Update(doc.Ref, []firestore.Update{
 			{
 				Path:  "remainingReviews",
-				Value: user.RemainingReviews,
+				Value: u.RemainingReviews,
 			},
 		}); err != nil {
 			return fmt.Errorf("handler: update remaining reviews: %w", err)
 		}
 
-		if _, err := doc.Ref.Collection("reviews").Doc(reviewID).Set(ctx, review); err != nil {
+		if err := t.Set(doc.Ref.Collection("reviews").Doc(reviewID), review); err != nil {
 			return fmt.Errorf("handler: create review: %w", err)
 		}
+
+		user = &u
 
 		return nil
 	}); err != nil {
 		return err
+	}
+
+	if user == nil {
+		if _, _, err := gh.Issues.CreateComment(ctx, owner, repo, num, &github.IssueComment{
+			Body: github.String(fmt.Sprintf(`Sorry, I could not find an available reviewer for %s. Please try again later.`, mainLang)),
+		}); err != nil {
+			return fmt.Errorf("handler: create comment: %w", err)
+		}
+		return nil
 	}
 
 	if existing {
@@ -217,13 +245,8 @@ func (h *Handler) handleIssueComment(ctx context.Context, event *github.IssueCom
 	}
 
 	if _, _, err := gh.Issues.CreateComment(ctx, owner, repo, num, &github.IssueComment{
-		Body: github.String(fmt.Sprintf(`Hi there! I'm currently under development but will be happy to help after I'm working.
-
-Currently, I only detect the main language in the PR. The language I detected for this PR is: %s.
-
-I don't actually match against these languages yet. But I do still find an arbitrary user to nag.
-@%s, could you please review this PR? Thanks!
-`, mainLang, ghUser.GetLogin())),
+		Body: github.String(fmt.Sprintf(`Hi there! %s, could you please review this PR for %s? Thanks!
+`, ghUser.GetLogin(), mainLang)),
 	}); err != nil {
 		return fmt.Errorf("handler: create comment: %w", err)
 	}
