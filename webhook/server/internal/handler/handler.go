@@ -4,15 +4,18 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"log/slog"
 	"math/rand"
 	"net/http"
+	"slices"
 	"strings"
 
 	"cloud.google.com/go/firestore"
 	"github.com/go-enry/go-enry/v2"
 	"github.com/google/go-github/v62/github"
+	"google.golang.org/api/iterator"
 
 	"github.com/curioswitch/tasuke/common/languages"
 	"github.com/curioswitch/tasuke/common/tasukedb"
@@ -119,6 +122,30 @@ func (h *Handler) handleIssueComment(ctx context.Context, event *github.IssueCom
 	repo := event.Repo.GetName()
 	num := event.Issue.GetNumber()
 
+	requesterDoc, err := h.users.WhereEntity(firestore.PropertyFilter{
+		Path:     "githubUserId",
+		Operator: "==",
+		Value:    event.Sender.GetID(),
+	}).Limit(1).Documents(ctx).Next()
+	if err != nil && !errors.Is(err, iterator.Done) {
+		return fmt.Errorf("handler: get sender: %w", err)
+	}
+	var requester tasukedb.User
+	if requesterDoc != nil {
+		if err := requesterDoc.DataTo(&requester); err != nil {
+			return fmt.Errorf("handler: parse sender: %w", err)
+		}
+	}
+	if requester.RemainingReviews <= 0 {
+		if _, _, err := gh.Issues.CreateComment(ctx, owner, repo, num, &github.IssueComment{
+			Body: github.String(`Sorry, currently we require review requests to come from registered reviewers (this may change in the future).
+Please create an account at https://tasuke.dev and set maximum open reviews to at least 1.`),
+		}); err != nil {
+			return fmt.Errorf("handler: create comment: %w", err)
+		}
+		return nil
+	}
+
 	diff, _, err := gh.PullRequests.GetRaw(ctx, owner, repo, num, github.RawOptions{
 		Type: github.Diff,
 	})
@@ -186,6 +213,10 @@ Please make sure it is one of our [supported languages](https://github.com/githu
 			return nil
 		}
 
+		docs = slices.DeleteFunc(docs, func(doc *firestore.DocumentSnapshot) bool {
+			return doc.Ref.ID == requesterDoc.Ref.ID
+		})
+
 		// For now just pick a random user.
 		doc := docs[rand.Intn(len(docs))] //nolint:gosec // We don't need cryptographically secure randomness here.
 
@@ -245,7 +276,7 @@ Please make sure it is one of our [supported languages](https://github.com/githu
 	}
 
 	if _, _, err := gh.Issues.CreateComment(ctx, owner, repo, num, &github.IssueComment{
-		Body: github.String(fmt.Sprintf(`Hi there! %s, could you please review this PR for %s? Thanks!
+		Body: github.String(fmt.Sprintf(`Hi there! @%s, could you please review this PR for %s? Thanks!
 `, ghUser.GetLogin(), mainLang)),
 	}); err != nil {
 		return fmt.Errorf("handler: create comment: %w", err)
