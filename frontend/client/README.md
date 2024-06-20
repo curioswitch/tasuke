@@ -20,11 +20,4 @@ pnpm run dev
 
 VSCode users should open the repository itself as a workspace using `File > Open workspace from file`. If you install
 all recommended extensions, formatters and linters will be set up for easy development. You will also find a launch
-configuration for running the dev server.
-
-## Operations
-
-### Updating GitHub languages
-
-Copy YAML from [linguist](https://raw.githubusercontent.com/github-linguist/linguist/master/lib/linguist/languages.yml) to
-a YAML to JSON converter and copy JSON output to [languages.json](./src/pages/settings/languages.json).
+configuration for running the Frontend Client.
