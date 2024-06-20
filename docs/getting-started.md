@@ -9,7 +9,7 @@ needing to develop on any part, feel free to skip unnecessary steps.
 ## Install tools
 
 The three tools required for development are [Go](https://go.dev/dl/), [NodeJS](https://nodejs.org/en/download/package-manager),
-and and [gcloud CLI](https://cloud.google.com/sdk/docs/install). Note, for frontend development, only NodeJS is
+and [gcloud CLI](https://cloud.google.com/sdk/docs/install). Note, for frontend development, only NodeJS is
 required and for all other development, NodeJS is not required.
 
 ### MacOS
