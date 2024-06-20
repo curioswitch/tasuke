@@ -6,10 +6,10 @@ require (
 	cloud.google.com/go/firestore v1.15.0
 	connectrpc.com/connect v1.16.2
 	firebase.google.com/go/v4 v4.14.0
-	github.com/curioswitch/go-curiostack v0.0.0-20240613050500-4d2f6f0b33b1
+	github.com/curioswitch/go-curiostack v0.0.0-20240620062549-2c3f0ba16eaf
 	github.com/curioswitch/go-usegcp v0.0.0-20240524082550-9d642ba35329
-	github.com/curioswitch/tasuke/frontend/api v0.0.0
 	github.com/curioswitch/tasuke/common v0.0.0
+	github.com/curioswitch/tasuke/frontend/api v0.0.0
 	github.com/go-chi/chi/v5 v5.0.12
 	github.com/stretchr/testify v1.9.0
 	google.golang.org/grpc v1.64.0

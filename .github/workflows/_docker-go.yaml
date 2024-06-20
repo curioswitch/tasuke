@@ -69,7 +69,7 @@ jobs:
 
       - name: Build and push image
         working-directory: ${{ inputs.project_dir }}
-        run: go run ./build -v --docker-tags ${{ steps.docker-meta.outputs.tags }} --docker-labels ${{ steps.docker-meta.outputs.labels }} ${{ env.DOCKER_PUSH == 'yes' && 'push' || 'docker' }}
+        run: go run ./build -v --docker-tags ${{ steps.docker-meta.outputs.tags }} --docker-labels '${{ steps.docker-meta.outputs.labels }}' ${{ env.DOCKER_PUSH == 'yes' && 'push' || 'docker' }}
         env:
           GOOGLE_PROJECT: ${{ env.GCP_PROJECT_ID }}
 

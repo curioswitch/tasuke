@@ -6,7 +6,7 @@ require (
 	cloud.google.com/go/firestore v1.15.0
 	firebase.google.com/go/v4 v4.14.0
 	github.com/bradleyfalzon/ghinstallation/v2 v2.11.0
-	github.com/curioswitch/go-curiostack v0.0.0-20240613050500-4d2f6f0b33b1
+	github.com/curioswitch/go-curiostack v0.0.0-20240620062549-2c3f0ba16eaf
 	github.com/curioswitch/tasuke/common v0.0.0
 	github.com/go-enry/go-enry/v2 v2.8.8
 	github.com/google/go-github/v62 v62.0.0
