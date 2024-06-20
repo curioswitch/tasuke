@@ -22,3 +22,9 @@ components
 - [tasukeinfra](https://github.com/curioswitch/tasukeinfra) - the Terraform configuration
   for all the infrastructure for tasuke, on top of some bootstrapping in
   [curioinfra](https://github.com/curioswitch/curioinfra).
+
+## Development
+
+Those interested in contributing to tasuke development can read the [getting started guide](./docs/getting-started.md)
+for setup instructions to get ready for all the components. Alternatively, each component's README outlines what
+is needed for that component.
