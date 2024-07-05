@@ -23,6 +23,8 @@ jobs:
     # tarball instead as a workaround.
     runs-on: ubuntu-22.04
 
+    environment: ${{ github.event_name != 'pull_request' && (startsWith(github.ref_name, 'release/') && 'prod' || 'dev') || null }}
+
     env:
       DOCKER_PUSH: ${{ github.event_name != 'pull_request' && 'yes' || 'no' }}
 
