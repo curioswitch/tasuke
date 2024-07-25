@@ -6,7 +6,7 @@ import colors from "tailwindcss/colors";
 const config = {
   content: [
     "./src/**/*.{ts,tsx}",
-    "./node_modules/@nextui-org/theme/dist/components/(avatar|button|chip|dropdown|input|select|spinner|ripple|menu|popover|listbox|scroll-shadow).js",
+    "./node_modules/@nextui-org/theme/dist/components/(avatar|button|chip|dropdown|image|input|link|navbar|select|spinner|ripple|menu|popover|listbox|scroll-shadow).js",
   ],
   darkMode: ["class"],
   plugins: [
@@ -15,7 +15,7 @@ const config = {
       themes: {
         light: {
           colors: {
-            primary: colors.emerald,
+            primary: colors.orange,
           },
         },
       },
