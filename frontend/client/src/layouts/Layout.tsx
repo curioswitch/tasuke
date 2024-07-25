@@ -30,7 +30,7 @@ import {
 } from "react-icons/bi";
 import { navigate } from "vike/client/router";
 
-import logoImg from "@/assets/logo.png";
+import logoImg from "@/assets/logo.svg";
 import { useFirebaseUser } from "@/hooks/firebase";
 import { Image } from "@nextui-org/image";
 
