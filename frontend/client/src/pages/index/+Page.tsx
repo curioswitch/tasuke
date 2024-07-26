@@ -3,7 +3,7 @@ import { Image } from "@nextui-org/image";
 import { Link } from "@nextui-org/link";
 import { getApp } from "firebase/app";
 import { GithubAuthProvider, getAuth, signInWithPopup } from "firebase/auth";
-import { useCallback } from "react";
+import { useCallback, useRef } from "react";
 import { BiLogoGithub as LogoGithub } from "react-icons/bi";
 import { navigate } from "vike/client/router";
 
@@ -35,6 +35,20 @@ export default function Page() {
     navigate("/settings");
   }, []);
 
+  const forReviewerRef = useRef<HTMLElement>(null);
+  const scrollToForReviewer = useCallback(() => {
+    forReviewerRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, []);
+
+  const forMaintainerRef = useRef<HTMLElement>(null);
+  const scrollToForMaintainer = useCallback(() => {
+    forMaintainerRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, []);
+  const contributingRef = useRef<HTMLElement>(null);
+  const scrollToContributing = useCallback(() => {
+    contributingRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, []);
+
   return (
     <>
       <div className="col-span-4 md:col-span-8 lg:col-span-12">
@@ -44,7 +58,9 @@ export default function Page() {
         >
           <div className="basis-1/2" />
           <div className="basis-1/2">
-            <h2>A mutual assistance service for OSS developers.</h2>
+            <h2 className="text-white drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]">
+              A mutual assistance service for OSS developers.
+            </h2>
           </div>
         </div>
         <div className="flex flex-col-reverse md:flex-row md:gap-10 p-20">
@@ -80,22 +96,37 @@ export default function Page() {
           <h2 className="text-center m-0 mb-10">Getting Started</h2>
 
           <div className="flex flex-col md:flex-row gap-10 text-center px-20">
-            <div className="basis-1/3 bg-white rounded-medium border-1 py-10">
+            <button
+              type="button"
+              className="basis-1/3 bg-white rounded-medium border-1 py-10"
+              onClick={scrollToForReviewer}
+            >
               <Image classNames={{ wrapper: "mx-auto" }} src={handshakeImg} />
               <h4>For code reviewers</h4>
-            </div>
-            <div className="basis-1/3 bg-white rounded-medium border-1 py-10">
+            </button>
+            <button
+              type="button"
+              className="basis-1/3 bg-white rounded-medium border-1 py-10"
+              onClick={scrollToForMaintainer}
+            >
               <Image classNames={{ wrapper: "mx-auto" }} src={handChartImg} />
               <h4>For maintainers</h4>
-            </div>
-            <div className="basis-1/3 bg-white rounded-medium border-1 py-10">
+            </button>
+            <button
+              type="button"
+              className="basis-1/3 bg-white rounded-medium border-1 py-10"
+              onClick={scrollToContributing}
+            >
               <Image classNames={{ wrapper: "mx-auto" }} src={laptopPhoneImg} />
               <h4>Contributing to tasuke</h4>
-            </div>
+            </button>
           </div>
         </div>
 
-        <div className="flex flex-col md:flex-row md:gap-20 mt-20 items-center">
+        <div
+          ref={forReviewerRef}
+          className="flex flex-col md:flex-row md:gap-20 mt-20 items-center p-4"
+        >
           <div className="basis-1/2">
             <Image classNames={{ wrapper: "mx-auto" }} src={reviewerImg} />
           </div>
@@ -129,7 +160,10 @@ export default function Page() {
           </div>
         </div>
 
-        <div className="flex flex-col md:flex-row md:gap-20 mt-20 items-center">
+        <div
+          ref={forMaintainerRef}
+          className="flex flex-col md:flex-row md:gap-20 mt-20 items-center p-4"
+        >
           <div className="basis-1/2">
             <Image classNames={{ wrapper: "mx-auto" }} src={maintainerImg} />
           </div>
@@ -172,7 +206,7 @@ export default function Page() {
           </div>
         </div>
 
-        <div className="bg-primary-50 p-20">
+        <div ref={contributingRef} className="bg-primary-50 p-4 md:p-20">
           <div className="flex items-center flex-col md:flex-row md:gap-20 bg-primary-400 text-content1 p-10 rounded-small">
             <div className="basis-2/3">
               <p>tasuke is OSS for OSS</p>
