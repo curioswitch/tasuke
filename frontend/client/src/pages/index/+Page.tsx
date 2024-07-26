@@ -11,7 +11,7 @@ import { useFirebase } from "@/hooks/firebase";
 
 import assistanceImg from "./static/assistance.svg";
 import bannerImg from "./static/banner.svg";
-import handChartImg from "./static/hand-chart.svg";
+import handImg from "./static/hand.svg";
 import handshakeImg from "./static/handshake.svg";
 import laptopPhoneImg from "./static/laptop-phone.svg";
 import maintainerImg from "./static/maintainer.svg";
@@ -63,7 +63,7 @@ export default function Page() {
             </h2>
           </div>
         </div>
-        <div className="flex flex-col-reverse md:flex-row md:gap-10 items-center p-4 md:p-20">
+        <div className="flex flex-col-reverse md:flex-row md:gap-10 p-4 md:p-20">
           <div className="basis-1/2">
             <h2>ABOUT TASUKE</h2>
             <p>
@@ -109,7 +109,7 @@ export default function Page() {
               className="basis-1/3 bg-white rounded-medium border-1 py-10"
               onClick={scrollToForMaintainer}
             >
-              <Image classNames={{ wrapper: "mx-auto" }} src={handChartImg} />
+              <Image classNames={{ wrapper: "mx-auto" }} src={handImg} />
               <h4>For maintainers</h4>
             </button>
             <button
