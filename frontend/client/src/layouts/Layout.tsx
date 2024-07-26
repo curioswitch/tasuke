@@ -23,11 +23,7 @@ import {
 import type React from "react";
 import { useCallback } from "react";
 import { BiLogoGithub as LogoGithub } from "react-icons/bi";
-import {
-  BiHome as Home,
-  BiLogOut as LogOut,
-  BiUser as User,
-} from "react-icons/bi";
+import { BiLogOut as LogOut, BiUser as User } from "react-icons/bi";
 import { navigate } from "vike/client/router";
 
 import logoImg from "@/assets/logo.svg";
@@ -79,7 +75,10 @@ export default function Layout({
                 <NavbarContent as="div" justify="end">
                   <Dropdown placement="bottom-end">
                     <DropdownTrigger>
-                      <Avatar src={fbUser.photoURL ?? undefined} />
+                      <Avatar
+                        className="cursor-pointer"
+                        src={fbUser.photoURL ?? undefined}
+                      />
                     </DropdownTrigger>
                     <DropdownMenu aria-label="User Actions" variant="flat">
                       <DropdownItem
