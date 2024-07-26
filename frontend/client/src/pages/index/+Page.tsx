@@ -35,16 +35,16 @@ export default function Page() {
     navigate("/settings");
   }, []);
 
-  const forReviewerRef = useRef<HTMLElement>(null);
+  const forReviewerRef = useRef<HTMLDivElement>(null);
   const scrollToForReviewer = useCallback(() => {
     forReviewerRef.current?.scrollIntoView({ behavior: "smooth" });
   }, []);
 
-  const forMaintainerRef = useRef<HTMLElement>(null);
+  const forMaintainerRef = useRef<HTMLDivElement>(null);
   const scrollToForMaintainer = useCallback(() => {
     forMaintainerRef.current?.scrollIntoView({ behavior: "smooth" });
   }, []);
-  const contributingRef = useRef<HTMLElement>(null);
+  const contributingRef = useRef<HTMLDivElement>(null);
   const scrollToContributing = useCallback(() => {
     contributingRef.current?.scrollIntoView({ behavior: "smooth" });
   }, []);
@@ -63,7 +63,7 @@ export default function Page() {
             </h2>
           </div>
         </div>
-        <div className="flex flex-col-reverse md:flex-row md:gap-10 p-20">
+        <div className="flex flex-col-reverse md:flex-row md:gap-10 items-center p-4 md:p-20">
           <div className="basis-1/2">
             <h2>ABOUT TASUKE</h2>
             <p>
@@ -95,7 +95,7 @@ export default function Page() {
           <div className="text-center text-primary-400">What we serve</div>
           <h2 className="text-center m-0 mb-10">Getting Started</h2>
 
-          <div className="flex flex-col md:flex-row gap-10 text-center px-20">
+          <div className="flex flex-col md:flex-row gap-10 text-center lg:px-20">
             <button
               type="button"
               className="basis-1/3 bg-white rounded-medium border-1 py-10"
