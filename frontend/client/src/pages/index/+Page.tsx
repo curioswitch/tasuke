@@ -10,12 +10,13 @@ import { navigate } from "vike/client/router";
 import { useFirebase } from "@/hooks/firebase";
 
 import assistanceImg from "./static/assistance.svg";
-import bannerImg from "./static/banner.svg";
 import handImg from "./static/hand.svg";
 import handshakeImg from "./static/handshake.svg";
 import laptopPhoneImg from "./static/laptop-phone.svg";
 import maintainerImg from "./static/maintainer.svg";
+import peopleImg from "./static/people.svg";
 import reviewerImg from "./static/reviewer.svg";
+import shapesImg from "./static/shapes.svg";
 
 function getBotInstallLink() {
   if (import.meta.env.PUBLIC_ENV__FIREBASE_APP === "tasuke-dev") {
@@ -53,17 +54,20 @@ export default function Page() {
     <>
       <div className="col-span-4 md:col-span-8 lg:col-span-12">
         <div
-          style={{ backgroundImage: `url(${bannerImg})` }}
-          className="flex flex-col-reverse md:flex-row md:gap-10 p-20"
+          style={{ backgroundImage: `url(${shapesImg})` }}
+          className="flex flex-row gap-10"
         >
-          <div className="basis-1/2" />
+          <div
+            style={{ backgroundImage: `url(${peopleImg})` }}
+            className="basis-1/2 bg-cover size-80"
+          />
           <div className="basis-1/2">
-            <h2 className="text-white drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]">
+            <h2 className="max-w-96 text-4xl">
               A mutual assistance service for OSS developers.
             </h2>
           </div>
         </div>
-        <div className="flex flex-col-reverse md:flex-row md:gap-10 p-4 md:p-20">
+        <div className="flex flex-col md:flex-row md:gap-10 p-4 md:p-20">
           <div className="basis-1/2">
             <h2>ABOUT TASUKE</h2>
             <p>
