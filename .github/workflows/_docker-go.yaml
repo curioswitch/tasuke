@@ -48,7 +48,7 @@ jobs:
         if: ${{ env.DOCKER_PUSH == 'yes' }}
         uses: google-github-actions/auth@v2
         with:
-          workload_identity_provider: projects/${{ env.GCP_PROJECT_NUMBER }}/locations/global/workloadIdentityPools/github/providers/curioswitch
+          workload_identity_provider: projects/${{ env.GCP_PROJECT_NUMBER }}/locations/global/workloadIdentityPools/github/providers/github
           project_id: ${{ env.GCP_PROJECT_ID }}
 
       - uses: google-github-actions/setup-gcloud@v2
