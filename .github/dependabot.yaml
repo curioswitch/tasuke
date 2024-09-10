@@ -17,6 +17,6 @@ updates:
         patterns:
           - "*"
     ignore:
-      - dependency-name: '@bufbuild/protobuf'
+      - dependency-name: "@bufbuild/protobuf"
         versions:
           - ">= 2"
