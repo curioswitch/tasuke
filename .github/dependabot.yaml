@@ -11,8 +11,12 @@ updates:
   - package-ecosystem: npm
     directory: /
     schedule:
-      interval: daily
+      interval: weekly
     groups:
       node:
         patterns:
           - "*"
+    ignore:
+      - dependency-name: "@bufbuild/protobuf"
+        versions:
+          - ">= 2"
