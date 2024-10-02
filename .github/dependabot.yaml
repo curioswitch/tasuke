@@ -15,10 +15,10 @@ updates:
       - common/go/build
       - frontend/api
       - frontend/api/build
-      - frontend/server/go
-      - frontend/server/go/build
-      - webhook/server/go
-      - webhook/server/go/build
+      - frontend/server
+      - frontend/server/build
+      - webhook/server
+      - webhook/server/build
     schedule:
       interval: weekly
     groups:
