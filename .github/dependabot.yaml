@@ -8,6 +8,14 @@ updates:
       gha:
         patterns:
           - "*"
+  - package-ecosystem: gomod
+    directory: /
+    schedule:
+      interval: weekly
+    groups:
+      go:
+        patterns:
+          - "*"
   - package-ecosystem: npm
     directory: /
     schedule:
