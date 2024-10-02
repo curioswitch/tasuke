@@ -9,7 +9,16 @@ updates:
         patterns:
           - "*"
   - package-ecosystem: gomod
-    directory: /
+    directories:
+      - build
+      - common/go
+      - common/go/build
+      - frontend/api
+      - frontend/api/build
+      - frontend/server/go
+      - frontend/server/go/build
+      - webhook/server/go
+      - webhook/server/go/build
     schedule:
       interval: weekly
     groups:
