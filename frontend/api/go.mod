@@ -9,5 +9,5 @@ require (
 
 require (
 	github.com/google/go-cmp v0.6.0 // indirect
-	golang.org/x/net v0.25.0 // indirect
+	golang.org/x/net v0.28.0 // indirect
 )

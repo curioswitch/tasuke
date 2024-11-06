@@ -48,9 +48,15 @@ func TestClientCreator(t *testing.T) {
 		case "/app/installations/222/access_tokens":
 			w.Write([]byte(`{"token":"test_token"}`))
 		case "/repos/ghtest/repo/issues/3/comments":
-			require.Equal(t, "token test_token", r.Header.Get("Authorization"))
+			if have, want := r.Header.Get("Authorization"), "token test_token"; have != want {
+				t.Errorf("invalid authorization header: have %q, want %q", have, want)
+				w.WriteHeader(http.StatusInternalServerError)
+				return
+			}
 		default:
-			require.Failf(t, "unexpected request", "path: %s", r.URL.Path)
+			t.Errorf("unexpected request: %s", r.URL.Path)
+			w.WriteHeader(http.StatusInternalServerError)
+			return
 		}
 	}))
 	defer srv.Close()
