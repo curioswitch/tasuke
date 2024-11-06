@@ -1,0 +1,16 @@
+name: Go Dependabot PR Workspace Sync
+
+on:
+  pull_request:
+    types:
+      - opened
+      - reopened
+      - synchronize
+
+jobs:
+  sync:
+    uses: curioswitch/go-build/.github/workflows/export-dependabot-go-sync.yaml@62c4e7f292ca8f87149cc3fec1fcae6a24d84dbf
+    with:
+      github_app_id: "1047503"
+    secrets:
+      github_app_key: ${{ secrets.CURIOSWITCH_APP_KEY }}
