@@ -1,6 +1,7 @@
 module github.com/curioswitch/tasuke/webhook/server
 
 go 1.22
+toolchain go1.22.9
 
 require (
 	cloud.google.com/go/firestore v1.17.0
@@ -11,12 +12,12 @@ require (
 	github.com/go-enry/go-enry/v2 v2.9.1
 	github.com/google/go-github/v62 v62.0.0
 	github.com/stretchr/testify v1.9.0
-	google.golang.org/api v0.204.0
+	google.golang.org/api v0.205.0
 )
 
 require (
 	cloud.google.com/go v0.116.0 // indirect
-	cloud.google.com/go/auth v0.10.0 // indirect
+	cloud.google.com/go/auth v0.10.1 // indirect
 	cloud.google.com/go/auth/oauth2adapt v0.2.5 // indirect
 	cloud.google.com/go/compute/metadata v0.5.2 // indirect
 	cloud.google.com/go/iam v1.2.1 // indirect
@@ -82,7 +83,7 @@ require (
 	google.golang.org/genproto v0.0.0-20241021214115-324edc3d5d38 // indirect
 	google.golang.org/genproto/googleapis/api v0.0.0-20241015192408-796eee8c2d53 // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20241021214115-324edc3d5d38 // indirect
-	google.golang.org/grpc v1.67.1 // indirect
+	google.golang.org/grpc v1.68.0 // indirect
 	google.golang.org/protobuf v1.35.1 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
