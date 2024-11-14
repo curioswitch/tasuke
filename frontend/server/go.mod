@@ -1,6 +1,6 @@
 module github.com/curioswitch/tasuke/frontend/server
 
-go 1.22
+go 1.23.3
 
 require (
 	cloud.google.com/go/firestore v1.17.0

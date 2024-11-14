@@ -1,6 +1,6 @@
 module github.com/curioswitch/tasuke/build
 
-go 1.22
+go 1.23.3
 
 require (
 	github.com/cli/go-gh/v2 v2.10.0
