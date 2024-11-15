@@ -3,7 +3,7 @@ module github.com/curioswitch/tasuke/build
 go 1.23.3
 
 require (
-	github.com/cli/go-gh/v2 v2.10.0
+	github.com/cli/go-gh/v2 v2.11.0
 	github.com/curioswitch/go-build v0.0.0-20241106020945-62c4e7f292ca
 	github.com/curioswitch/tasuke/common v0.0.0
 	github.com/google/go-github/v62 v62.0.0
@@ -21,7 +21,7 @@ require (
 	github.com/mattn/go-isatty v0.0.20 // indirect
 	github.com/mattn/go-shellwords v1.0.12 // indirect
 	golang.org/x/mod v0.20.0 // indirect
-	golang.org/x/sys v0.26.0 // indirect
+	golang.org/x/sys v0.27.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
 
