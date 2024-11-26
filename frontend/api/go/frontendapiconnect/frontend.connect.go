@@ -5,14 +5,12 @@
 package frontendapiconnect
 
 import (
+	connect "connectrpc.com/connect"
 	context "context"
 	errors "errors"
+	_go "github.com/curioswitch/tasuke/frontend/api/go"
 	http "net/http"
 	strings "strings"
-
-	connect "connectrpc.com/connect"
-
-	_go "github.com/curioswitch/tasuke/frontend/api/go"
 )
 
 // This is a compile-time assertion to ensure that this generated file and the connect package are

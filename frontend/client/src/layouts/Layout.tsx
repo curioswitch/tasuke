@@ -29,6 +29,7 @@ import { navigate } from "vike/client/router";
 import logoImg from "@/assets/logo.svg";
 import { useFirebaseUser } from "@/hooks/firebase";
 import { Image } from "@nextui-org/image";
+import { IconContext } from "react-icons/lib";
 
 export default function Layout({
   children,
@@ -73,30 +74,32 @@ export default function Layout({
             {fbUser ? (
               <>
                 <NavbarContent as="div" justify="end">
-                  <Dropdown placement="bottom-end">
-                    <DropdownTrigger>
-                      <Avatar
-                        className="cursor-pointer"
-                        src={fbUser.photoURL ?? undefined}
-                      />
-                    </DropdownTrigger>
-                    <DropdownMenu aria-label="User Actions" variant="flat">
-                      <DropdownItem
-                        key="settings"
-                        onClick={onSettingsClick}
-                        startContent={<User className="mr-2 h-4 w-4" />}
-                      >
-                        Settings
-                      </DropdownItem>
-                      <DropdownItem
-                        key="logout"
-                        onClick={onLogOutClick}
-                        startContent={<LogOut className="mr-2 h-4 w-4" />}
-                      >
-                        Log out
-                      </DropdownItem>
-                    </DropdownMenu>
-                  </Dropdown>
+                  <IconContext.Provider value={{ className: "mr-2 h-4 w-4" }}>
+                    <Dropdown placement="bottom-end">
+                      <DropdownTrigger>
+                        <Avatar
+                          className="cursor-pointer"
+                          src={fbUser.photoURL ?? undefined}
+                        />
+                      </DropdownTrigger>
+                      <DropdownMenu aria-label="User Actions" variant="flat">
+                        <DropdownItem
+                          key="settings"
+                          onClick={onSettingsClick}
+                          startContent={<User />}
+                        >
+                          Settings
+                        </DropdownItem>
+                        <DropdownItem
+                          key="logout"
+                          onClick={onLogOutClick}
+                          startContent={<LogOut />}
+                        >
+                          Log out
+                        </DropdownItem>
+                      </DropdownMenu>
+                    </Dropdown>
+                  </IconContext.Provider>
                 </NavbarContent>
               </>
             ) : (
@@ -105,7 +108,11 @@ export default function Layout({
                   <Button
                     className="bg-primary-400 text-content1"
                     onClick={onSignUpClick}
-                    startContent={<LogoGithub className="size-6" />}
+                    startContent={
+                      <IconContext.Provider value={{ className: "size-6" }}>
+                        <LogoGithub />
+                      </IconContext.Provider>
+                    }
                   >
                     Sign Up
                   </Button>

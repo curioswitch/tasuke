@@ -9,6 +9,7 @@ import { navigate } from "vike/client/router";
 
 import { useFirebase } from "@/hooks/firebase";
 
+import { IconContext } from "react-icons/lib";
 import assistanceImg from "./static/assistance.svg";
 import handImg from "./static/hand.svg";
 import handshakeImg from "./static/handshake.svg";
@@ -145,7 +146,11 @@ export default function Page() {
                 <Button
                   className="bg-primary-400 text-content1"
                   onClick={onSignUpClick}
-                  startContent={<LogoGithub className="size-6" />}
+                  startContent={
+                    <IconContext.Provider value={{ className: "size-6" }}>
+                      <LogoGithub />
+                    </IconContext.Provider>
+                  }
                 >
                   Sign up with GitHub
                 </Button>
@@ -189,7 +194,11 @@ export default function Page() {
                 href={getBotInstallLink()}
                 target="_blank"
                 rel="noreferrer noopener"
-                startContent={<LogoGithub className="size-6" />}
+                startContent={
+                  <IconContext.Provider value={{ className: "size-6" }}>
+                    <LogoGithub />
+                  </IconContext.Provider>
+                }
               >
                 Install the app
               </Button>

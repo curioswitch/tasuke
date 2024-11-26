@@ -24,9 +24,10 @@
     "vite": "^5.4.11"
   },
   "dependencies": {
-    "@connectrpc/connect": "^1.6.1",
-    "@connectrpc/connect-query": "^1.4.2",
-    "@connectrpc/connect-web": "^1.6.1",
+    "@bufbuild/protobuf": "v2.2.2",
+    "@connectrpc/connect": "^2.0.0",
+    "@connectrpc/connect-query": "^2.0.0",
+    "@connectrpc/connect-web": "^2.0.0",
     "@hookform/resolvers": "^3.9.1",
     "@nextui-org/avatar": "^2.0.33",
     "@nextui-org/button": "^2.0.38",
