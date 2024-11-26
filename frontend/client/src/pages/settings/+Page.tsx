@@ -1,3 +1,4 @@
+import { create } from "@bufbuild/protobuf";
 import {
   createConnectQueryKey,
   useMutation,
@@ -9,7 +10,7 @@ import { Input } from "@nextui-org/input";
 import { Spinner } from "@nextui-org/spinner";
 import { useQueryClient } from "@tanstack/react-query";
 import {
-  SaveUserRequest,
+  SaveUserRequestSchema,
   type User,
   getUser,
   saveUser,
@@ -38,7 +39,10 @@ function SettingsForm({ user }: { user?: User }) {
   const doSaveUser = useMutation(saveUser, {
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: createConnectQueryKey(getUser),
+        queryKey: createConnectQueryKey({
+          schema: getUser,
+          cardinality: undefined,
+        }),
       });
     },
   });
@@ -59,7 +63,7 @@ function SettingsForm({ user }: { user?: User }) {
   const onFormSubmit = useCallback(
     (values: z.infer<typeof formSchema>) => {
       doSaveUser.mutate(
-        new SaveUserRequest({
+        create(SaveUserRequestSchema, {
           user: values,
         }),
       );
@@ -131,11 +135,8 @@ function SettingsForm({ user }: { user?: User }) {
 }
 
 export default function Page() {
-  // Workaround https://github.com/connectrpc/connect-query-es/pull/369
   const queryClient = useQueryClient();
-  const result = useQuery(getUser, undefined, {
-    enabled: queryClient.getDefaultOptions().queries?.enabled,
-  });
+  const result = useQuery(getUser);
 
   const { data, isPending } = result;
 

@@ -33,7 +33,3 @@ updates:
       node:
         patterns:
           - "*"
-    ignore:
-      - dependency-name: "@bufbuild/protobuf"
-        versions:
-          - ">= 2"

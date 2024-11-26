@@ -1,5 +1,5 @@
 import { Code, ConnectError, type Interceptor } from "@connectrpc/connect";
-import { TransportProvider, useQuery } from "@connectrpc/connect-query";
+import { TransportProvider } from "@connectrpc/connect-query";
 import { createConnectTransport } from "@connectrpc/connect-web";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import type { User as FirebaseUser } from "firebase/auth";
