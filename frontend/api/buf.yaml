@@ -1,12 +1,14 @@
-version: v1
-build:
-  excludes:
-    - .venv
+version: v2
+modules:
+  - path: .
+    excludes:
+      - .venv
+lint:
+  use:
+    - STANDARD
+  except:
+    - PACKAGE_VERSION_SUFFIX
+  disallow_comment_ignores: true
 breaking:
   use:
     - FILE
-lint:
-  use:
-    - DEFAULT
-  except:
-    - PACKAGE_VERSION_SUFFIX

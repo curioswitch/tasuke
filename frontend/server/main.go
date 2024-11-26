@@ -75,7 +75,7 @@ func setupServer(ctx context.Context, conf *config.Config, s *server.Server) err
 		},
 	)
 
-	server.EnableDocsFirebaseAuth(s)
+	server.EnableDocsFirebaseAuth(s, "alpha.tasuke.dev")
 
 	return server.Start(ctx, s)
 }
