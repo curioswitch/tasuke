@@ -3,7 +3,7 @@ module github.com/curioswitch/tasuke/build
 go 1.23.3
 
 require (
-	github.com/cli/go-gh/v2 v2.11.0
+	github.com/cli/go-gh/v2 v2.11.1
 	github.com/curioswitch/go-build v0.0.0-20241106020945-62c4e7f292ca
 	github.com/curioswitch/tasuke/common v0.0.0
 	github.com/google/go-github/v62 v62.0.0
