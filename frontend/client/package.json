@@ -14,14 +14,14 @@
   "author": "",
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.15",
-    "@tanstack/react-query-devtools": "^5.62.7",
-    "@types/react": "^19.0.1",
+    "@tanstack/react-query-devtools": "^5.62.8",
+    "@types/react": "^19.0.2",
     "@types/react-dom": "^19.0.2",
     "autoprefixer": "^10.4.20",
     "firebase-tools": "^13.29.1",
-    "tailwindcss": "^3.4.16",
+    "tailwindcss": "^3.4.17",
     "typescript": "^5.7.2",
-    "vite": "^6.0.3"
+    "vite": "^6.0.5"
   },
   "dependencies": {
     "@bufbuild/protobuf": "v2.2.3",
@@ -41,17 +41,17 @@
     "@nextui-org/spinner": "^2.2.4",
     "@nextui-org/system": "^2.4.4",
     "@nextui-org/theme": "^2.4.3",
-    "@tanstack/react-query": "^5.62.7",
+    "@tanstack/react-query": "^5.62.8",
     "@tasuke/frontendapi": "workspace:^",
     "@vitejs/plugin-react": "^4.3.4",
     "firebase": "^11.1.0",
     "framer-motion": "^11.15.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "react-hook-form": "^7.54.1",
+    "react-hook-form": "^7.54.2",
     "react-icons": "^5.4.0",
     "react-select": "^5.9.0",
-    "vike": "^0.4.209",
+    "vike": "^0.4.210",
     "vike-react": "^0.5.10",
     "zod": "^3.24.1"
   }
