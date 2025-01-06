@@ -5,7 +5,7 @@ go 1.23.3
 require (
 	cloud.google.com/go/firestore v1.17.0
 	firebase.google.com/go/v4 v4.15.1
-	github.com/bradleyfalzon/ghinstallation/v2 v2.12.0
+	github.com/bradleyfalzon/ghinstallation/v2 v2.13.0
 	github.com/curioswitch/go-curiostack v0.0.0-20241126011907-4c2d3c4e31af
 	github.com/curioswitch/tasuke/common v0.0.0
 	github.com/go-enry/go-enry/v2 v2.9.1
@@ -41,7 +41,7 @@ require (
 	github.com/golang-jwt/jwt/v4 v4.5.1 // indirect
 	github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da // indirect
 	github.com/golang/protobuf v1.5.4 // indirect
-	github.com/google/go-github/v66 v66.0.0 // indirect
+	github.com/google/go-github/v68 v68.0.0 // indirect
 	github.com/google/go-querystring v1.1.0 // indirect
 	github.com/google/s2a-go v0.1.8 // indirect
 	github.com/google/uuid v1.6.0 // indirect
