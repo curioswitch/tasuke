@@ -33,3 +33,7 @@ updates:
       node:
         patterns:
           - "*"
+    ignore:
+      - dependency-name: "tailwindcss"
+        versions:
+          - ">= 4"
