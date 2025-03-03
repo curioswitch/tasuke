@@ -7,7 +7,7 @@ require (
 	github.com/curioswitch/go-build v0.1.0
 	github.com/curioswitch/tasuke/common v0.0.0
 	github.com/google/go-github/v62 v62.0.0
-	github.com/goyek/goyek/v2 v2.2.0
+	github.com/goyek/goyek/v2 v2.3.0
 	github.com/goyek/x v0.2.0
 	gopkg.in/yaml.v2 v2.4.0
 )
