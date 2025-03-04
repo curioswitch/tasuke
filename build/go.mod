@@ -7,7 +7,7 @@ require (
 	github.com/curioswitch/go-build v0.1.0
 	github.com/curioswitch/tasuke/common v0.0.0
 	github.com/google/go-github/v62 v62.0.0
-	github.com/goyek/goyek/v2 v2.2.0
+	github.com/goyek/goyek/v2 v2.3.0
 	github.com/goyek/x v0.2.0
 	gopkg.in/yaml.v2 v2.4.0
 )
@@ -15,6 +15,7 @@ require (
 require (
 	github.com/cli/safeexec v1.0.0 // indirect
 	github.com/fatih/color v1.17.0 // indirect
+	github.com/google/go-cmp v0.7.0 // indirect
 	github.com/google/go-querystring v1.1.0 // indirect
 	github.com/kr/text v0.2.0 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect

@@ -11,7 +11,7 @@ require (
 require (
 	github.com/fatih/color v1.17.0 // indirect
 	github.com/go-viper/mapstructure/v2 v2.2.1 // indirect
-	github.com/goyek/goyek/v2 v2.2.0 // indirect
+	github.com/goyek/goyek/v2 v2.3.0 // indirect
 	github.com/knadh/koanf/maps v0.1.1 // indirect
 	github.com/knadh/koanf/parsers/yaml v0.1.0 // indirect
 	github.com/knadh/koanf/providers/env v1.0.0 // indirect
