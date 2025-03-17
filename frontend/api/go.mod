@@ -1,6 +1,8 @@
 module github.com/curioswitch/tasuke/frontend/api
 
-go 1.22
+go 1.23.0
+
+toolchain go1.23.3
 
 require (
 	connectrpc.com/connect v1.18.1
@@ -9,5 +11,5 @@ require (
 
 require (
 	github.com/google/go-cmp v0.7.0 // indirect
-	golang.org/x/net v0.35.0 // indirect
+	golang.org/x/net v0.37.0 // indirect
 )
