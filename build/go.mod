@@ -1,9 +1,10 @@
 module github.com/curioswitch/tasuke/build
 
 go 1.23.3
+toolchain go1.24.1
 
 require (
-	github.com/cli/go-gh/v2 v2.11.2
+	github.com/cli/go-gh/v2 v2.12.0
 	github.com/curioswitch/go-build v0.1.0
 	github.com/curioswitch/tasuke/common v0.0.0
 	github.com/google/go-github/v62 v62.0.0
