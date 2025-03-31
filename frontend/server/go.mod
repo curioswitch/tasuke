@@ -1,6 +1,7 @@
 module github.com/curioswitch/tasuke/frontend/server
 
 go 1.23.3
+
 toolchain go1.24.1
 
 require (
