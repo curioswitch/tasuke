@@ -11,7 +11,7 @@ require (
 	github.com/go-enry/go-enry/v2 v2.9.2
 	github.com/google/go-github/v62 v62.0.0
 	github.com/stretchr/testify v1.10.0
-	google.golang.org/api v0.229.0
+	google.golang.org/api v0.230.0
 )
 
 require (
