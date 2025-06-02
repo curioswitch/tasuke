@@ -3,7 +3,7 @@ module github.com/curioswitch/tasuke/webhook/server/build
 go 1.23.3
 
 require (
-	github.com/curioswitch/go-build v0.1.0
+	github.com/curioswitch/go-build v0.2.0
 	github.com/curioswitch/go-curiostack v0.0.0-20241126011907-4c2d3c4e31af
 	github.com/goyek/goyek/v2 v2.3.0
 	github.com/goyek/x v0.3.0
@@ -33,10 +33,10 @@ require (
 	go.uber.org/multierr v1.11.0 // indirect
 	golang.ngrok.com/muxado/v2 v2.0.1 // indirect
 	golang.org/x/mod v0.20.0 // indirect
-	golang.org/x/net v0.39.0 // indirect
+	golang.org/x/net v0.40.0 // indirect
 	golang.org/x/sync v0.14.0 // indirect
-	golang.org/x/sys v0.32.0 // indirect
-	golang.org/x/term v0.31.0 // indirect
+	golang.org/x/sys v0.33.0 // indirect
+	golang.org/x/term v0.32.0 // indirect
 	google.golang.org/protobuf v1.36.6 // indirect
 	gopkg.in/check.v1 v1.0.0-20201130134442-10cb98267c6c // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
