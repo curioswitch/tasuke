@@ -14,21 +14,21 @@
   "author": "",
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.16",
-    "@tanstack/react-query-devtools": "^5.79.0",
+    "@tanstack/react-query-devtools": "^5.80.6",
     "@types/react": "^19.1.6",
-    "@types/react-dom": "^19.1.5",
+    "@types/react-dom": "^19.1.6",
     "autoprefixer": "^10.4.21",
-    "firebase-tools": "^14.5.1",
+    "firebase-tools": "^14.6.0",
     "tailwindcss": "^3.4.17",
     "typescript": "^5.8.3",
     "vite": "^6.3.5"
   },
   "dependencies": {
-    "@bufbuild/protobuf": "v2.5.1",
+    "@bufbuild/protobuf": "v2.5.2",
     "@connectrpc/connect": "^2.0.2",
     "@connectrpc/connect-query": "^2.1.0",
     "@connectrpc/connect-web": "^2.0.2",
-    "@hookform/resolvers": "^5.0.1",
+    "@hookform/resolvers": "^5.1.1",
     "@nextui-org/avatar": "^2.2.6",
     "@nextui-org/button": "^2.2.9",
     "@nextui-org/chip": "^2.2.6",
@@ -41,11 +41,11 @@
     "@nextui-org/spinner": "^2.2.6",
     "@nextui-org/system": "^2.4.6",
     "@nextui-org/theme": "^2.4.5",
-    "@tanstack/react-query": "^5.79.0",
+    "@tanstack/react-query": "^5.80.6",
     "@tasuke/frontendapi": "workspace:^",
-    "@vitejs/plugin-react": "^4.5.0",
-    "firebase": "^11.8.1",
-    "framer-motion": "^12.15.0",
+    "@vitejs/plugin-react": "^4.5.1",
+    "firebase": "^11.9.0",
+    "framer-motion": "^12.16.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-hook-form": "^7.57.0",
@@ -53,6 +53,6 @@
     "react-select": "^5.10.1",
     "vike": "^0.4.231",
     "vike-react": "^0.6.4",
-    "zod": "^3.25.48"
+    "zod": "^3.25.56"
   }
 }
