@@ -11,6 +11,6 @@
   },
   "packageManager": "pnpm@9.11.0",
   "dependencies": {
-    "@bufbuild/protobuf": "^2.5.2"
+    "@bufbuild/protobuf": "^2.6.0"
   }
 }
