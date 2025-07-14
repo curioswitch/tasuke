@@ -10,7 +10,7 @@
   },
   "packageManager": "pnpm@9.14.2",
   "devDependencies": {
-    "@biomejs/biome": "^1.9.4",
-    "prettier": "^3.5.3"
+    "@biomejs/biome": "^2.1.1",
+    "prettier": "^3.6.2"
   }
 }
