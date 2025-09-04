@@ -31,7 +31,7 @@ jobs:
     steps:
       - uses: actions/checkout@v5
 
-      - uses: actions/setup-go@v5
+      - uses: actions/setup-go@v6
         with:
           go-version-file: go.work
           # We have different go run commands between _check-go and _docker-go, but execute different
